@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class PublicController extends AbstractController
 {
@@ -30,7 +31,9 @@ public function private(): JsonResponse
     return new JsonResponse(['message' => 'Ceci est une route protégée']);
 }
 
-#[Route('/admin', name: 'app_admin', methods: ['GET'])]
+#[Route('/admin/user', name: 'app_admin_user', methods: ['GET'])]
+
+
 
 public function admin(): JsonResponse
 {
