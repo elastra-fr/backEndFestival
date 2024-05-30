@@ -4,14 +4,59 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    
+
+
     firewalls:
+
+        #Parefeu pour les routes publiques#
+        api_public:
+            pattern: ^/api/public
+            stateless: true
+            
+       #Parefeu pour les routes privées protégées par jwt#
+        api_user_login:
+            pattern: ^/api/user/login
+            stateless: true
+            json_login:
+                check_path: /api/user/login
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+                username_path: email
+                password_path: password
+        
+        
+        api_user:
+            pattern: ^/api/user
+            stateless: true
+            jwt: ~
+
+
+        #Parefeu pour les routes admin#
+        admin :
+            pattern: ^/admin
+            provider: app_user_provider
+            form_login:
+                login_path: app_admin_login
+                check_path: app_admin_login  
+            logout:
+                path: app_admin_logout
+                target: app_admin_login
+
+
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            lazy: true
-            provider: users_in_memory
+        #main:
+           # lazy: true
+            #provider: users_in_memory
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -37,3 +82,10 @@ when@test:
                 cost: 4 # Lowest possible value for bcrypt
                 time_cost: 3 # Lowest possible value for argon
                 memory_cost: 10 # Lowest possible value for argon
+
+    access_control:
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS}
+        - { path: ^/api/user/login, roles: PUBLIC_ACCESS}
+        - { path: ^/api/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
