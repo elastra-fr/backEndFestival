@@ -1,0 +1,17 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Ajout | Style de musique{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <h3>Ajout d'un style de musique</h3>
+    <div class="form-group">
+        {{ form_label(form.name, 'Nouveau Style') }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.name) }}
+    </div>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+    <a href="{{ path('app_admin_style') }}" class="btn btn-secondary">Annuler</a>
+    {{ form_end(form) }}
+{% endblock %}

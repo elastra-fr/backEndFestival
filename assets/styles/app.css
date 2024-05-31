@@ -163,5 +163,19 @@ font-size: 0.8rem;
 
 display: flex;
 min-height: 90vh;
+width: 100%;
 
+}
+
+.contentContainer{
+
+flex-grow: 1;
+padding: 15px;
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.contentContainer h1{
+    width: 100%;
 }
