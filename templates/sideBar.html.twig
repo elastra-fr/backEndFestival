@@ -1,5 +1,5 @@
 <aside id="sidebarMenu">
-<div>
+<div class="userInfos">
 <h2>Utilisateur connecté</h2>
 <p>{{ firstName }}</p>
 <p>{{ role }}</p>
@@ -7,16 +7,34 @@
 </div>
 
     <nav>
-        <h2>Gestion contenu</h2>
-        <ul>
-            <li><a href="/home">Groupes</a></li>
-            <li><a href="/about">Styles Musicaux</a></li>
-            <li><a href="/services">Scènes</a></li>
-            <li><a href="/about">Concerts</a></li>
-            <li><a href="/services">Informations</a></li>
-            <li><a href="/contact">Evènements</a></li>
-            <li><a href="/contact">Carte interractive</a></li>
-           
+        <h3>Gestion contenu</h3>
+        <ul class="menu">
+            <li><a href="/admin/band">Groupes</a>
+            <ul class="sub-menu">
+                <li><a href="/admin/band">Gérer les Groupes</a></li>
+                <li><a href="/admin/band/style">Gérer les styles Musicaux</a></li>
+            </ul>
+            </li>
+            <li><a href="/about">Concerts</a>
+            <ul class="sub-menu">
+                <li><a href="/admin/concert">Gérer les Concerts</a></li>
+                <li><a href="/admin/concert/booking">Gérer les Scènes</a></li>
+            </ul>
+            </li>
+            <li><a href="/services">Informations</a>
+            <ul class="sub-menu">
+                <li><a href="/admin/services">Gérer les actualités</a></li>
+                <li><a href="/admin/services/booking">Gérer les Evènements</a></li>
+                <li><a href="/admin/services/booking">Gérer la FAQ</a></li>
+                <li><a href="/admin/services/booking">Gérer les partenaires</a></li>
+            </ul>
+            </li>
+            <li><a href="/contact">Carte interractive</a>
+            <ul class="sub-menu">
+                <li><a href="/admin/contact">Paramètres</a></li>
+                <li><a href="/admin/contact">Gérer les lieux</a></li>
+            </ul>
+            </li>
         </ul>
     </nav>
 
@@ -24,10 +42,10 @@
 
 
     <nav>
-        <h2>Gestion Editeurs</h2>
+        <h3>Menu Admnistrateur</h3>
         <ul>
             <li><a href="/users">Liste des Editeurs</a></li>
-     
+            <li><a href="/users">Paramètres</a></li>
         </ul>
 
     </nav>

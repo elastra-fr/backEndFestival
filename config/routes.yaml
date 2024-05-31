@@ -11,3 +11,10 @@ app_admin_login:
 app_admin_logout:
     path: /admin/logout
     controller: App\Controller\AdminSecurityController::logout
+
+root:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /admin/login
+        permanent: true
