@@ -1,0 +1,30 @@
+<aside id="sidebarMenu">
+    <nav>
+        <h2>Gestion contenu</h2>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/blog">Blog</a></li>
+        </ul>
+    </nav>
+
+    {% if is_granted('ROLE_ADMIN') %}
+
+
+    <nav>
+        <h2>Gestion utilisateurs</h2>
+        <ul>
+            <li><a href="/users">Liste des utilisateurs</a></li>
+            <li><a href="/users/add">Ajouter un utilisateur</a></li>
+        </ul>
+
+    </nav>
+
+    {% endif %}
+
+
+</aside>
+
+

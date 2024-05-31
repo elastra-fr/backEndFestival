@@ -1,0 +1,23 @@
+<header id="appHeader">
+    <div id="headerContainer">
+        
+            <div id="mainLogo">
+                <a href="/">Mon application</a>
+            </div>
+            
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="/admin/home">Accueil</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        {% if app.user %}
+                            <li><a href="/profile">Profil</a></li>
+                            <li><a href="/admin/logout">Déconnexion</a></li>
+                        {% else %}
+                            <li><a href="/admin/login">Connexion</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            
+        
+    </div>
+</header>
