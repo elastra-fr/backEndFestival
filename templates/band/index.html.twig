@@ -1,8 +1,21 @@
 {% extends 'home/index.html.twig' %}
 
-{% block title %}Groupes{% endblock %}
+{% block title %}Style de musique{% endblock %}
 
 {% block content %}
-<h1>Groupes</h1>
-<p>Contenu dynamique pour les Groupes</p>
+<div class="contentContainer">
+<h2>Gestion des Groupes</h2>
+    <a href="{{ path('app_admin_band_new') }}" class="button">Créer groupe</a>
+
+<h3>Liste des Groupes</h3>
+
+ 
+   <ul class="listBase">
+        {% for band in bands %}
+            
+            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/music-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ band.name }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_style_delete', {'id': band.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_style_delete', {'id': band.id}) }}" class="button">Effacer</a></div></li>
+        {% endfor %}
+    </ul>
+
+</div>
 {% endblock %}
