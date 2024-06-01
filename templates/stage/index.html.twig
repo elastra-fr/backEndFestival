@@ -5,7 +5,7 @@
 {% block content %}
 <div class="contentContainer">
 <h2>Gestion des Scènes</h2>
-    <a href="{{ path('app_admin_style_new') }}" class="button">Créer scène</a>
+    <a href="{{ path('app_admin_stage_new') }}" class="button">Créer scène</a>
 
 <h3>Liste des Scènes</h3>
 
@@ -13,7 +13,7 @@
    <ul class="listBase">
         {% for stage in stages %}
             
-            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/music-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ stage.name }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_style_edit', {'id': style.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_style_delete', {'id': style.id}) }}" class="button">Effacer</a></div></li>
+            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/music-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ stage.name }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_stage_edit', {'id': stage.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_stage_delete', {'id': stage.id}) }}" class="button">Effacer</a></div></li>
         {% endfor %}
     </ul>
 

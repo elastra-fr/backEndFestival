@@ -1,0 +1,31 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Edition | Scènes{% endblock %}
+
+{% block content %}
+   
+
+    {{ form_start(form, {'attr': {'class':'formBase'}}) }}
+
+    <div class="formContainerBase">
+
+ <h3>Modifier la scène</h3>
+
+        <div class="formGroup">
+            {{ form_label(form.name, 'Nom de la scène') }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+        
+        <div class="formGroup">
+            {{ form_label(form.stage_number, 'Numéro de la scène') }}
+            {{ form_widget(form.stage_number, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.stage_number) }}
+        </div>
+
+        <button type="submit" class="button">Enregistrer modification</button>
+        <a href="{{ path('app_admin_stage') }}" class="button">Annuler</a>
+
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
