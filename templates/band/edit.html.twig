@@ -1,6 +1,6 @@
 {% extends 'home/index.html.twig' %}
 
-{% block title %}Ajout | Groupe{% endblock %}
+{% block title %}Edition | Groupe{% endblock %}
 
 {% block content %}
  
@@ -29,7 +29,13 @@
 </div>
 
 
-       <div id="imagePreview"></div>
+       <div id="imagePreview">
+
+        {% if urlImage %}
+            <img src="{{ asset(urlImage) }}" alt="Image" class="imagePreview" />
+        {% endif %}
+
+       </div>
     
     <div class="formGroup">
         {{ form_label(form.music_style, 'Style de musique') }}
@@ -40,7 +46,7 @@
     {# Notez que url_image est de type HiddenType, donc nous n'affichons pas de label ou de widget ici #}
     {{ form_widget(form.url_image) }}
 
-    <button type="submit" class="button">Enregistrer</button>
+    <button type="submit" class="button">Enregistrer modification</button>
     <a href="{{ path('app_admin_band') }}" class="button">Annuler</a>
 
     </div>

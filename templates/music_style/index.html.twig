@@ -13,7 +13,7 @@
    <ul class="listBase">
         {% for style in styles %}
             
-            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/music-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ style.name }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_style_delete', {'id': style.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_style_delete', {'id': style.id}) }}" class="button">Effacer</a></div></li>
+            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/music-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ style.name }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_style_edit', {'id': style.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_style_delete', {'id': style.id}) }}" class="button">Effacer</a></div></li>
         {% endfor %}
     </ul>
 

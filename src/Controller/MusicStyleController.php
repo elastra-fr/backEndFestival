@@ -74,6 +74,31 @@ class MusicStyleController extends AbstractController
         return $this->redirectToRoute('app_admin_style');
     }
 
+    #[Route('/admin/band/style/edit/{id}', name: 'app_admin_style_edit')]
+
+    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, MusicStyle $musicStyle): Response
+    {
+
+        $form = $this->createForm(MusicStyleType::class, $musicStyle);
+
+        $user = $this->getUserInfo($security);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($musicStyle);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_admin_style');
+        }
+
+        return $this->render('music_style/edit.html.twig', [
+            'controller_name' => 'MusicStyleController',
+            'firstName' => $user['firstName'],
+            'role' => $user['role'],
+            'form' => $form->createView(),
+        ]);
+    }
+
 
 
 }

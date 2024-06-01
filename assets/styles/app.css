@@ -23,6 +23,13 @@ gap:15px;
 
 }
 
+.formGroup{
+
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
 .formContainerBase{
     margin-top: 50px;
     display: flex;
@@ -246,5 +253,17 @@ gap: 15px;
 }
 
 .contentContainer h1{
+    width: 100%;
+}
+
+/*****Formulaire concert*****/
+
+#imagePreview{
+
+width: 100%;
+
+}
+
+#imagePreview img{
     width: 100%;
 }

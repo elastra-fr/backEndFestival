@@ -7,4 +7,32 @@ import './bootstrap.js';
  */
 import './styles/app.css';
 
-//console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+//Mise en place listener pour le l'input file
+
+if (document.getElementById('band_file') !== null){
+
+
+document.getElementById('band_file').addEventListener('change', function (e) {
+
+const fileInput = e.target;
+            const files = fileInput.files;
+            if (files.length > 0) {
+                const file = files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imagePreview = document.getElementById('imagePreview');
+                    imagePreview.innerHTML = `<img src="${e.target.result}" class="previewImage" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('imagePreview').innerHTML = '';
+            }
+
+
+
+
+
+
+});
+
+}
