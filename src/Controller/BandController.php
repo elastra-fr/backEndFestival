@@ -27,9 +27,9 @@ class BandController extends AbstractController
         $bands = $bandRepository->findAll();
 
 
-     
-     
-     
+
+
+
         return $this->render('band/index.html.twig', [
             'controller_name' => 'BandController',
             'firstName' => $user['firstName'],
@@ -38,7 +38,7 @@ class BandController extends AbstractController
         ]);
     }
 
-#[Route('/admin/band/new', name: 'app_admin_band_new')]
+    #[Route('/admin/band/new', name: 'app_admin_band_new')]
     public function add(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, SluggerInterface $sluggerInterface): Response
     {
 
@@ -49,28 +49,28 @@ class BandController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-                //Gestion de l'upload de l'image
+            //Gestion de l'upload de l'image
 
-                $file = $form->get('file')->getData();
+            $file = $form->get('file')->getData();
 
-                   if ($file) {
+            if ($file) {
 
 
-                    switch ($file->getClientMimeType()) {
-    case 'image/jpeg':
-        $extension = 'jpg'; // Utiliser l'extension .jpg pour les fichiers JPEG
-        break;
-    case 'image/png':
-        $extension = 'png'; // Utiliser l'extension .png pour les fichiers PNG
-        break;
-    case 'image/avif':
-        $extension = 'avif'; // Utiliser l'extension .avif pour les fichiers AVIF
-        break;
-    case 'image/webp':
-        $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
-        break;
-    // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
-}
+                switch ($file->getClientMimeType()) {
+                    case 'image/jpeg':
+                        $extension = 'jpg'; // Utiliser l'extension .jpg pour les fichiers JPEG
+                        break;
+                    case 'image/png':
+                        $extension = 'png'; // Utiliser l'extension .png pour les fichiers PNG
+                        break;
+                    case 'image/avif':
+                        $extension = 'avif'; // Utiliser l'extension .avif pour les fichiers AVIF
+                        break;
+                    case 'image/webp':
+                        $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
+                        break;
+                        // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
+                }
 
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $sluggerInterface->slug($originalFilename);
@@ -103,8 +103,6 @@ class BandController extends AbstractController
             'role' => $user['role'],
             'form' => $form->createView(),
         ]);
-
-
     }
 
 
@@ -112,6 +110,16 @@ class BandController extends AbstractController
 
     public function delete(Security $security, EntityManagerInterface $entityManagerInterface, Band $band): Response
     {
+
+        // Suppression de l'image associée au groupe
+        $imageUrl = $band->getUrlImage();
+
+        if ($imageUrl) {
+
+            unlink('.' . $imageUrl);
+        }
+
+
         $entityManagerInterface->remove($band);
         $entityManagerInterface->flush();
 
@@ -124,43 +132,43 @@ class BandController extends AbstractController
     public function edit(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, Band $band, SluggerInterface $sluggerInterface): Response
     {
 
-$form = $this->createForm(BandType::class, $band);
+        $form = $this->createForm(BandType::class, $band);
 
         $user = $this->getUserInfo($security);
         $form->handleRequest($request);
-      
+
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-                //Gestion de l'upload de l'image
+            //Gestion de l'upload de l'image
 
-                $file = $form->get('file')->getData();
+            $file = $form->get('file')->getData();
 
-                   if ($file) {
+            if ($file) {
 
-                    switch ($file->getClientMimeType()) {
-    case 'image/jpeg':
+                switch ($file->getClientMimeType()) {
+                    case 'image/jpeg':
 
-        $extension = 'jpg'; // Utiliser l'extension .jpg pour les fichiers JPEG
-        break;
+                        $extension = 'jpg'; // Utiliser l'extension .jpg pour les fichiers JPEG
+                        break;
 
-    case 'image/png':
-        $extension = 'png'; // Utiliser l'extension .png pour les fichiers PNG
-        break;
+                    case 'image/png':
+                        $extension = 'png'; // Utiliser l'extension .png pour les fichiers PNG
+                        break;
 
-    case 'image/avif':
+                    case 'image/avif':
 
-        $extension = 'avif'; // Utiliser l'extension .avif pour les fichiers AVIF
-        break;
+                        $extension = 'avif'; // Utiliser l'extension .avif pour les fichiers AVIF
+                        break;
 
-    case 'image/webp':
+                    case 'image/webp':
 
-        $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
-        break;
+                        $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
+                        break;
 
-    // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
+                        // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
 
-}
+                }
 
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $sluggerInterface->slug($originalFilename);
@@ -183,7 +191,6 @@ $form = $this->createForm(BandType::class, $band);
             $entityManagerInterface->flush();
 
             return $this->redirectToRoute('app_admin_band');
-
         }
 
         return $this->render('band/edit.html.twig', [
@@ -194,16 +201,5 @@ $form = $this->createForm(BandType::class, $band);
             'urlImage' => $band->getUrlImage(),
 
         ]);
-
-
-
-
-
-
     }
-
-
-
-
 }
-
