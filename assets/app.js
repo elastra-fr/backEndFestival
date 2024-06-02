@@ -9,10 +9,15 @@ import './styles/app.css';
 
 //Mise en place listener pour le l'input file
 
-if (document.getElementById('band_file') !== null){
+//if (document.getElementById('band_file') !== null){
+
+if (document.querySelector('.form-control-file') !== null){
+//selection de l'input file qui a la classe form-control-file
+
+var fileInput = document.querySelector('.form-control-file');
 
 
-document.getElementById('band_file').addEventListener('change', function (e) {
+fileInput.addEventListener('change', function (e) {
 
 const fileInput = e.target;
             const files = fileInput.files;
@@ -27,10 +32,6 @@ const fileInput = e.target;
             } else {
                 document.getElementById('imagePreview').innerHTML = '';
             }
-
-
-
-
 
 
 });

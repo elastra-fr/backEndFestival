@@ -1,0 +1,41 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Ajout | Partenaire{% endblock %}
+
+{% block content %}
+    
+
+    {{ form_start(form, {'attr':{'class':'formBase'} }) }}
+
+    <div class="formContainerBase">
+    <h3>Ajouter partenaire</h3>
+
+    <div class="formGroup">
+    {{ form_label(form.name, 'Nom*') }}
+        {{ form_widget(form.name) }}
+    </div>
+
+    <div class="formGroup">
+    {{ form_label(form.url_logo, 'Logo') }}
+ {{ form_widget(form.file, {'attr': { 'class': 'form-control-file'}}) }}
+    </div>
+
+       <div id="imagePreview"></div>
+
+    <div class="formGroup">
+    {{ form_label(form.description, 'Description') }}
+{{ form_widget(form.description) }}
+    </div>
+
+    <div class="formGroup">
+    {{ form_label(form.category, 'Catégorie*') }} 
+    {{ form_widget(form.category) }}
+    </div>
+        
+    <button type="submit" class="button">Enregistrer</button>
+    <a href="{{ path('app_admin_partner') }}" class="button">Annuler</a>
+
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

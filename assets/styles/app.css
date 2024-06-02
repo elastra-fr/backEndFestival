@@ -250,10 +250,13 @@ padding: 15px;
 display: flex;
 flex-direction: column;
 gap: 15px;
+margin: 25px;
 }
 
 .contentContainer h1{
     width: 100%;
+
+  
 }
 
 /*****Formulaire concert*****/
