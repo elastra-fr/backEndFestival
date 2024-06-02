@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class FaqController extends AbstractController
+class FaqContentController extends AbstractController
 {
-    #[Route('/faq', name: 'app_faq')]
+    #[Route('/faq/content', name: 'app_faq_content')]
     public function index(): Response
     {
-        return $this->render('faq/index.html.twig', [
-            'controller_name' => 'FaqController',
+        return $this->render('faq_content/index.html.twig', [
+            'controller_name' => 'FaqContentController',
         ]);
     }
 }

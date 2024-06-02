@@ -1,0 +1,21 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Sections | Informations - FAQ{% endblock %}
+
+{% block content %}
+<div class="contentContainer">
+<h2>Gestion des sections Informations et FAQ</h2>
+    <a href="{{ path('app_admin_faq_category_new') }}" class="button">Créer section</a>
+
+<h3>Liste des Sections</h3>
+
+ 
+   <ul class="listBase">
+        {% for category in categories %}
+            
+            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/info-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ category.category }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_faq_category_edit', {'id': category.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_faq_category_delete', {'id': category.id}) }}" class="button">Effacer</a></div></li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}
