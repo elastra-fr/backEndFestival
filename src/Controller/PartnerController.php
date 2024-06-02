@@ -7,6 +7,7 @@ use App\Form\PartnerType;
 use App\Repository\PartnerRepository;
 use App\Trait\UserInfoTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class PartnerController extends AbstractController
@@ -202,6 +204,41 @@ class PartnerController extends AbstractController
 
 
     }
+
+    //Route publique pour l'API pour afficher les partenaires avec retour en JSON
+
+    #[Route('/api/public/partner', name: 'app_public_partner', methods: ['GET'])]   
+
+    public function public(PartnerRepository $partnerRepository, Request $request): JsonResponse
+    {
+
+        $headerApiKey= $request->headers->get('APIKEY');
+
+        if ($headerApiKey === null || $headerApiKey !== "123456") {
+            return new JsonResponse(['message' => 'Accès non autorisé'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $partners=$partnerRepository->findAll();
+
+        $partnersArray=[];
+
+        foreach ($partners as $partner) {
+            $partnersArray[]=[
+                'id'=>$partner->getId(),
+                'name'=>$partner->getName(),
+                'url_logo'=>$partner->getUrlLogo(),
+                'description'=>$partner->getDescription(),
+                'category'=>$partner->getCategory()->getCategory(),
+            ];
+        }
+
+        return new JsonResponse($partnersArray);
+
+    }
+
+
+
+
 
 
 
