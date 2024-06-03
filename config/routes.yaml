@@ -12,6 +12,13 @@ app_admin_logout:
     path: /admin/logout
     controller: App\Controller\AdminSecurityController::logout
 
+api_user_login:
+    path: /api/user/login_check
+    methods: POST
+    
+   
+    
+
 root:
     path: /
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction

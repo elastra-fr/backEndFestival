@@ -22,10 +22,11 @@ security:
             
        #Parefeu pour les routes privées protégées par jwt#
         api_user_login:
-            pattern: ^/api/user/login
+            pattern: ^/api/user/login_check
+            provider: app_user_provider
             stateless: true
             json_login:
-                check_path: /api/user/login
+                check_path: api_user_login
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
                 username_path: email
@@ -82,6 +83,7 @@ security:
         - { path: ^/admin/login, roles: PUBLIC_ACCESS}
         - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/user/login, roles: PUBLIC_ACCESS}
+        - { path: ^/api/user/register, roles: PUBLIC_ACCESS}
         - { path: ^/api/public, roles:  PUBLIC_ACCESS}
         - { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY }
 
