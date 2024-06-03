@@ -23,6 +23,20 @@ gap:15px;
 
 }
 
+#mainLogo a
+{
+
+text-decoration: none;
+
+}
+
+#mainLogo a h1{
+
+font-size: 1rem;
+color: black;
+
+}
+
 .formGroup{
 
 display: flex;

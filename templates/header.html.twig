@@ -2,16 +2,14 @@
     <div id="headerContainer">
         
             <div id="mainLogo">
-                <a href="/">Mon application</a>
+                <a href="/admin/home" title="Retour à l'accueil"><h1>NationSound 2024</h1></a>
             </div>
             
                 <nav id="mainNav">
                     <ul>
-                        <li><a href="/admin/home">Accueil</a></li>
-                        <li><a href="/contact">Contact</a></li>
-                        {% if app.user %}
-                            <li><a href="/profile">Profil</a></li>
-                            <li><a href="/admin/logout">Déconnexion</a></li>
+                                            {% if app.user %}
+                            <li><a href="/profil"><img src="{{ asset('images/icons/user-solid.svg') }}" alt="Icon" class="listItemIcon" title="Profil utilisateur"/></a></li>
+                            <li><a href="/admin/logout"><img src="{{ asset('images/icons/logout-solid.svg') }}" alt="Icon" class="listItemIcon" title="Deconnexion"/></a></li>
                         {% else %}
                             <li><a href="/admin/login">Connexion</a></li>
                         {% endif %}
