@@ -38,6 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email_verification_token = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -133,6 +136,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    
+    public function generateEmailVerificationToken(): self
+    {
+        $this->email_verification_token = bin2hex(random_bytes(32));
+        return $this;
+    }
+
+    public function getEmailVerificationToken(): ?string
+    {
+        return $this->email_verification_token;
+    }
+
+    public function setEmailVerificationToken(?string $email_verification_token): static
+    {
+        $this->email_verification_token = $email_verification_token;
 
         return $this;
     }

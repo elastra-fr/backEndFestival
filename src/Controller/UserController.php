@@ -10,7 +10,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Service\PasswordValidatorService;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserController extends AbstractController
 {
@@ -50,15 +50,27 @@ public function register(Request $request, EntityManagerInterface $entityManager
     }
 
 
-    $user->setPassword($this->$passwordHasher->encodePassword($user, $data['password']));
+    $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+
     $user->setRoles(['ROLE_USER']);
-    $this->$entityManager->persist($user);
-    $this->$entityManager->flush();
-    return $this->json(['message' => 'Utilisateur créé avec succès !'], Response::HTTP_CREATED);
+    //$user->generateEmailVerificationToken();
+    $entityManager->persist($user);
+    $entityManager->flush();
+
+    //Envoi d'un email de vérification
+return $this->json(['message' => 'Utilisateur enregistré !'], Response::HTTP_CREATED);
+
 
 }
 
+#[Route(path: '/api/user/profil', name: 'app_user_profil', methods: ['GET'])]
 
+function profil(): Response
+{
+ 
+ return new JsonResponse(['message' => 'Profil utilisateur'], Response::HTTP_OK);
+
+}
 
 
 
