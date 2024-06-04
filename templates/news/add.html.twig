@@ -1,0 +1,38 @@
+{% extends 'home/index.html.twig' %}
+
+{% block content %}
+
+
+    {{ form_start(form, {'attr': {'class': 'formBase'}}) }}
+    
+    <div class="formContainerBase">
+
+        <h3>Ajouter/Éditer Actualité</h3>
+
+        <div class="formGroup">
+        {{ form_label(form.title, 'Titre')}}
+        {{ form_widget(form.title) }}
+        {{ form_errors(form.title) }}
+    </div>
+        
+    <div class="formGroup">
+        {{ form_label(form.news_content, 'Contenu') }}
+        {{ form_widget(form.news_content) }}
+        {{ form_errors(form.news_content) }}
+    </div>
+
+ <div class="toggle-group">
+            <label>{{ form_label(form.enable_notification) }}</label>
+            <label class="toggle-switch">
+                {{ form_widget(form.enable_notification) }}
+                <span class="slider"></span>
+            </label>
+        </div>
+
+    
+ <button type="submit" class="button">Enregistrer</button>
+            <a href="{{ path('app_admin_news') }}" class="button">Annuler</a>
+    
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
