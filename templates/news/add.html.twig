@@ -9,6 +9,11 @@
 
         <h3>Ajouter/Éditer Actualité</h3>
 
+    <div class="formGroup">
+        {{ form_label(form.NewsCategory, 'Catégorie') }}
+        {{ form_widget(form.NewsCategory) }}
+        {{ form_errors(form.NewsCategory) }}
+
         <div class="formGroup">
         {{ form_label(form.title, 'Titre')}}
         {{ form_widget(form.title) }}

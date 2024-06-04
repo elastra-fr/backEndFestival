@@ -1,20 +1,21 @@
-{% extends 'base.html.twig' %}
+{% extends 'home/index.html.twig' %}
 
-{% block title %}Hello NewsCategoryController!{% endblock %}
+{% block title %}Catégories Actualités{% endblock %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% block content %}
+<div class="contentContainer">
+<h2>Gestion des Catégories</h2>
+    <a href="{{ path('app_admin_news_category_new') }}" class="button">Créer catégories</a>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<h3>Liste des catégories</h3>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/emman/Documents/backEndFestival/src/Controller/NewsCategoryController.php</code></li>
-        <li>Your template at <code>C:/Users/emman/Documents/backEndFestival/templates/news_category/index.html.twig</code></li>
+ 
+   <ul class="listBase">
+        {% for category in categories %}
+            
+            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/music-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ category.category }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_news_category_edit', {'id': category.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_news_category_delete', {'id': category.id}) }}" class="button">Effacer</a></div></li>
+        {% endfor %}
     </ul>
+
 </div>
 {% endblock %}

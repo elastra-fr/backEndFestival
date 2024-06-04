@@ -23,6 +23,10 @@ class News
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $news_date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'news')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?NewsCategory $NewsCategory = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,18 @@ class News
     public function setNewsDate(\DateTimeInterface $news_date): static
     {
         $this->news_date = $news_date;
+
+        return $this;
+    }
+
+    public function getNewsCategory(): ?NewsCategory
+    {
+        return $this->NewsCategory;
+    }
+
+    public function setNewsCategory(?NewsCategory $NewsCategory): static
+    {
+        $this->NewsCategory = $NewsCategory;
 
         return $this;
     }
