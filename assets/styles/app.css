@@ -158,6 +158,13 @@ input:checked + .slider:before {
 
 }
 
+/*****Mise en forme de la map*****/
+
+#map {
+    min-height: 400px;
+    width: 100%;
+}
+
 /*****Mise en forme du formulaire de login*****/
 
 #loginForm {

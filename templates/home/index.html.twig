@@ -10,7 +10,36 @@
 
 {% include 'sideBar.html.twig'%}
 
-{% block content %} {% endblock %}
+{% block content %} 
+
+<div class="contentContainer">
+<h2>Bienvenue</h2>
+
+<p>Bienvenue sur le backend du festival NationSound2024</p>
+
+<p>Cette interface va vous permettre de gérer les artistes, les concerts, les partenaires, les informations générales et FAQ, les actualités et événements et la carte interactive.</p>
+
+{% if is_granted('ROLE_ADMIN') %}
+
+<p>En tant qu'administrateur vous avez également accès à la gestion des éditeurs.</p>
+
+{% endif %}
+
+<p>L'ensemble de ces données va permettre d'alimenter le contenu du site  <a href="http://nationsound2024-festival.fr" target="_blank">NationSound2024.</a></p>
+
+<p>Vous pouvez naviguer dans le menu de gauche pour accéder aux différentes sections.</p>
+
+<p>Vous pouvez également consulter les informations de votre compte en haut à droite.</p>
+
+<p>En cas de problème, n'hésitez pas à contacter l'administrateur via le formulaire de contact.</p>
+
+
+
+
+</div>
+
+
+{% endblock %}
 
 
 

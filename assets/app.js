@@ -1,3 +1,5 @@
+
+
 import './bootstrap.js';
 /*
  * Welcome to your app's main JavaScript file!
@@ -37,3 +39,49 @@ const fileInput = e.target;
 });
 
 }
+
+
+//Gestion de la carte leaflet
+
+
+
+if (mymap !== null){
+    console.log('ok map');
+    var mymap = L.map('map').setView([48.7689, 2.09454], 14);
+    //ajout de la carte
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    }).addTo(mymap);
+
+//ajout d'un marker
+
+var centerMarker = L.marker([48.7689, 2.09454]).addTo(mymap);
+
+
+
+
+
+mymap.on('contextmenu', function(e) {
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+
+    console.log(lat + ', ' + lng);
+});
+
+
+  
+}
+/*
+
+document.getElementById('map').addEventListener('contextmenu', function (e) {
+
+    e.preventDefault();
+
+var latlng=map.mouseEventToLatLng(e);
+  //    var lat = e.latlng.lat;
+    //    var lng = e.latlng.lng;
+
+console.log(latlng);
+
+
+});*/

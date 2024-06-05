@@ -1,0 +1,27 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Ajout | Catégorie marqueur{% endblock %}
+
+{% block content %}
+    {{ form_start(form, {'attr' : {'class' : 'formBase'}}) }}
+    <div class="formContainerBase">
+    <h3>Ajout d'une catégorie de marqueur</h3>
+    <div class="formGroup">
+        {{ form_label(form.PointCategory, 'Nouveau Style') }}
+        {{ form_widget(form.PointCategory, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.PointCategory) }}
+    </div>
+
+        <div class="formGroup">
+        {{ form_label(form.file, 'Icone') }}
+        {{ form_widget(form.file, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.file) }}
+    </div>
+
+    <button type="submit" class="button">Enregistrer</button>
+
+    <a href="{{ path('app_admin_map_points_category') }}" class="button">Annuler</a>
+    {{ form_end(form) }}
+
+    </div>
+{% endblock %}
