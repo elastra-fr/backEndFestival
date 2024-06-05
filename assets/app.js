@@ -45,7 +45,7 @@ const fileInput = e.target;
 
 
 
-if (mymap !== null){
+if (document.getElementById("map") !== null){
     console.log('ok map');
     var mymap = L.map('map').setView([48.7689, 2.09454], 14);
     //ajout de la carte
