@@ -11,11 +11,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Service\PasswordValidatorService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class UserController extends AbstractController
 {
 
 
+#[Route(path: '/access-denied', name: 'access_denied')]
+
+public function accessDenied(): Response
+{
+    return new RedirectResponse('https://www.nationsound2024-festival.fr/home');
+}
 /***Routes utilisées dans le cadre de l'API JWT par les utilisateurs du front end pour s'enregister, se connecter et modifier leur profil et préférence */
 
 #[Route(path: '/api/user/register', name: 'app_user_register', methods: ['POST'])]

@@ -9,6 +9,8 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+    
+    access_denied_url: /access-denied
 
     role_hierarchy:
         ROLE_ADMIN: [ROLE_EDITOR, ROLE_USER]
@@ -83,7 +85,7 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
     access_control:
         - { path: ^/admin/login, roles: PUBLIC_ACCESS}
-        - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, roles: ROLE_EDITOR}
         - { path: ^/api/user/login, roles: PUBLIC_ACCESS}
         - { path: ^/api/user/register, roles: PUBLIC_ACCESS}
         - { path: ^/api/public, roles:  PUBLIC_ACCESS}
