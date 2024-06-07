@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Service\JsonResponseNormalizer;
 
 
 class PartnerController extends AbstractController
@@ -236,8 +237,31 @@ class PartnerController extends AbstractController
 
     }
 
+    //Route publique pour l'API pour afficher la liste des partenaires avec un  id de category spécifique 
+
+    #[Route('/api/public/partner/category/{id}', name: 'app_public_partnerbycategory', methods: ['GET'])]
+
+    public function publicByCategory(PartnerRepository $partnerRepository, Request $request, int $id, JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
+    {
 
 
+        $partners=$partnerRepository->findBy(['category'=>$id]);
+
+        $partnersArray=[];
+
+        foreach ($partners as $partner) {
+            $partnersArray[]=[
+                'name'=>$partner->getName(),
+                'url_logo'=>$partner->getUrlLogo(),
+                'description'=>$partner->getDescription(),
+                'category'=>$partner->getCategory()->getCategory(),
+            ];
+        }
+
+        return $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $partnersArray);
+
+
+    }
 
 
 
