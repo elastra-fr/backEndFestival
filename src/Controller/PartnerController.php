@@ -210,14 +210,10 @@ class PartnerController extends AbstractController
 
     #[Route('/api/public/partner', name: 'app_public_partner', methods: ['GET'])]   
 
-    public function public(PartnerRepository $partnerRepository, Request $request): JsonResponse
+    public function public(PartnerRepository $partnerRepository, Request $request, JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
     {
 
-        $headerApiKey= $request->headers->get('APIKEY');
 
-        if ($headerApiKey === null || $headerApiKey !== "123456") {
-            return new JsonResponse(['message' => 'Accès non autorisé'], Response::HTTP_UNAUTHORIZED);
-        }
 
         $partners=$partnerRepository->findAll();
 
@@ -233,7 +229,7 @@ class PartnerController extends AbstractController
             ];
         }
 
-        return new JsonResponse($partnersArray);
+        return $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $partnersArray);
 
     }
 
@@ -251,6 +247,7 @@ class PartnerController extends AbstractController
 
         foreach ($partners as $partner) {
             $partnersArray[]=[
+                'id'=>$partner->getId(),
                 'name'=>$partner->getName(),
                 'url_logo'=>$partner->getUrlLogo(),
                 'description'=>$partner->getDescription(),
