@@ -35,7 +35,7 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
                 username_path: email
                 password_path: password
-            cors: true
+            
            
         
         
