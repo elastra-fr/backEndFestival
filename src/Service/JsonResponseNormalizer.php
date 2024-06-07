@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JsonResponseNormalizer
 {
+    
     /**
      * Fonction pour normaliser les réponses en cas d'erreur
      *

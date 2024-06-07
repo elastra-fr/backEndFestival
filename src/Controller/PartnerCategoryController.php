@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\PartnerCategory;
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\PartnerCategoryType;
+use App\Service\JsonResponseNormalizer;
 
 class PartnerCategoryController extends AbstractController
 {
@@ -106,6 +108,35 @@ class PartnerCategoryController extends AbstractController
         ]);
 
     }
+
+
+    //Route publique pour obtenir toutes les catégories de partenaires sous format JSON triées par ordre alphabétique 
+
+    #[Route('api/public/partner/category', name: 'app_public_partner_category')]
+
+    public function publicIndex(PartnerCategoryRepository $partnerCategoryRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
+    {
+
+        $categories = $partnerCategoryRepository->findBy([], ['category' => 'ASC']);
+
+        $categoriesArray = [];
+
+        foreach ($categories as $category) {
+            $categoriesArray[] = [
+                'id' => $category->getId(),
+                'category' => $category->getCategory(),
+            ];
+        }
+
+      $response = $jsonResponseNormalizer->respondSuccess(200, $categoriesArray);
+
+        return $response;
+        
+
+   
+
+    }
+
 
 
 
