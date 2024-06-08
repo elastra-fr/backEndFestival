@@ -80,7 +80,7 @@ public function register(Request $request, EntityManagerInterface $entityManager
     $confirmationLink = $this->generateUrl('confirm_email', ['token' => $user->getEmailVerificationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
       
         $emailBody = sprintf(
-    '       Bonjour %s,<br><p>Votre inscription a été effectuée avec succès. Veuillez cliquer sur le lien suivant pour confirmer votre adresse email : <a href="%s">Confirmer votre adresse email</a></p>',
+    '       Bonjour %s,<br><p>Votre inscription a été effectuée avec succès. Veuillez cliquer sur le lien suivant pour confirmer votre adresse email : <a href="%s">Confirmer votre adresse email</a>.</p><br><p>A bientôt sur le festival ! </p><br>      <p>L\'équipe du festival NationSound2024</p>',
         $user->getFirstName(),
             $confirmationLink
 );

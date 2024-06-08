@@ -17,6 +17,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\JsonResponseNormalizer;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+
 
 
 class PartnerController extends AbstractController
@@ -76,6 +79,10 @@ class PartnerController extends AbstractController
                         $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
                         break;
                         // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
+
+                    case 'image/svg+xml':
+                        $extension = 'svg'; // Utiliser l'extension .svg pour les fichiers SVG
+                        break;
                 }
 
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -215,12 +222,14 @@ class PartnerController extends AbstractController
 
     #[Route('/api/public/partner', name: 'app_public_partner', methods: ['GET'])]   
 
-    public function public(PartnerRepository $partnerRepository, Request $request, JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
+    public function public(PartnerRepository $partnerRepository, Request $request, JsonResponseNormalizer $jsonResponseNormalizer, UrlGeneratorInterface $urlGeneratorInterface): JsonResponse
     {
 
 
 
         $partners=$partnerRepository->findAll();
+
+        //$publicUrlImage = $urlGeneratorInterface->generate('/public/images/logos', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $partnersArray=[];
 
@@ -228,7 +237,7 @@ class PartnerController extends AbstractController
             $partnersArray[]=[
                 'id'=>$partner->getId(),
                 'name'=>$partner->getName(),
-                'url_logo'=>$partner->getUrlLogo(),
+                'url_logo'=>"https://https://backend.nationsound2024-festival.fr".$partner->getUrlLogo(),
                 'description'=>$partner->getDescription(),
                 'category'=>$partner->getCategory()->getCategory(),
             ];
@@ -242,7 +251,7 @@ class PartnerController extends AbstractController
 
     #[Route('/api/public/partner/category/{id}', name: 'app_public_partnerbycategory', methods: ['GET'])]
 
-    public function publicByCategory(PartnerRepository $partnerRepository, Request $request, int $id, JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
+    public function publicByCategory(PartnerRepository $partnerRepository, Request $request, int $id, JsonResponseNormalizer $jsonResponseNormalizer, UrlGeneratorInterface $urlGeneratorInterface): JsonResponse
     {
 
 
@@ -250,11 +259,14 @@ class PartnerController extends AbstractController
 
         $partnersArray=[];
 
+        
+//$publicUrlImage = $urlGeneratorInterface->generate('/public/images/logos', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
         foreach ($partners as $partner) {
             $partnersArray[]=[
                 'id'=>$partner->getId(),
                 'name'=>$partner->getName(),
-                'url_logo'=>$partner->getUrlLogo(),
+                'url_logo'=>"https://https://backend.nationsound2024-festival.fr".$partner->getUrlLogo(),
                 'description'=>$partner->getDescription(),
                 'category'=>$partner->getCategory()->getCategory(),
             ];

@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\News;
 use App\Form\NewsType;
+use App\Service\JsonResponseNormalizer;
 
 class NewsController extends AbstractController
 {
@@ -135,6 +136,37 @@ public function edit(Security $security, EntityManagerInterface $entityManager, 
         'role' => $user['role'],
         'form' => $form->createView(),
     ]);
+
+}
+
+
+//Route publique pour les actualités les plus récentes pour les catégories  id 1, 2 et 5
+
+#[Route('/api/public/lastnews', name: 'app_api_public_lastnews')]
+
+public function lastNews(NewsRepository $newsRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
+{
+
+
+    $news = $newsRepository->findBy(['NewsCategory' => [1, 2, 5]], ['news_date' => 'DESC'], 5);
+
+    $lastNews = [];
+
+    foreach ($news as $newsItem) {
+
+        $lastNews[] = [
+            'id'=> $newsItem->getId(),
+            'title' => $newsItem->getTitle(),
+            'content' => $newsItem->getNewsContent(),
+            'newsDate' => $newsItem->getNewsDate(),
+        ];
+
+    }
+
+$response = $jsonResponseNormalizer->respondSuccess(200, $lastNews);
+
+return $response;
+
 
 }
 
