@@ -41,6 +41,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email_verification_token = null;
 
+    #[ORM\Column]
+    private bool $UserVerified = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -155,6 +158,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmailVerificationToken(?string $email_verification_token): static
     {
         $this->email_verification_token = $email_verification_token;
+
+        return $this;
+    }
+
+    public function isUserVerified(): ?bool
+    {
+        return $this->UserVerified;
+    }
+
+    public function setUserVerified(bool $UserVerified): static
+    {
+        $this->UserVerified = $UserVerified;
 
         return $this;
     }

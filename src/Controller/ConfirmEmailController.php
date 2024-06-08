@@ -42,13 +42,13 @@ class ConfirmEmailController extends AbstractController
     #[Route('/confirm-email/{token}', name: 'confirm_email', methods: ['GET'])]
     public function confirmEmail(string $token): Response
     {
-        $user = $this->userRepository->findOneBy(['emailVerificationToken' => $token]);
+        $user = $this->userRepository->findOneBy(['email_verification_token' => $token]);
 
         if (!$user) {
             return $this->respondInvalidToken();
         }
 
-        $user->setEmailVerified(true);
+        $user->setUserVerified(true);
         $user->setEmailVerificationToken(null);
 
         $this->manager->persist($user);
