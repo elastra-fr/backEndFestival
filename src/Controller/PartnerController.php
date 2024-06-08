@@ -149,6 +149,11 @@ class PartnerController extends AbstractController
                         $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
                         break;
                         // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
+
+                    case 'image/svg+xml':
+                        $extension = 'svg'; // Utiliser l'extension .svg pour les fichiers SVG
+                        break;
+
                 }
 
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);

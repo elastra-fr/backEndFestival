@@ -14,6 +14,8 @@ use App\Service\JsonResponseNormalizer;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Service\MailerService;
 
 class UserController extends AbstractController
 {
@@ -29,7 +31,7 @@ public function accessDenied(): Response
 
 #[Route(path: '/api/user/register', name: 'app_user_register', methods: ['POST'])]
 
-public function register(Request $request, EntityManagerInterface $entityManager, PasswordValidatorService $passwordValidatorService, UserPasswordHasherInterface $passwordHasher, JsonResponseNormalizer $jsonResponseNormalizer): Response
+public function register(Request $request, EntityManagerInterface $entityManager, PasswordValidatorService $passwordValidatorService, UserPasswordHasherInterface $passwordHasher, JsonResponseNormalizer $jsonResponseNormalizer, MailerService $mailerService): Response
 {
     
     $data = json_decode($request->getContent(), true);
@@ -39,6 +41,7 @@ public function register(Request $request, EntityManagerInterface $entityManager
     $user->setEmail($data['email']);
     $user->setFirstName($data['firstName']);
     $user->setLastName($data['lastName']);
+    $user->generateEmailVerificationToken();
 
     $plainPassword = $data['password'];
 
@@ -73,6 +76,17 @@ public function register(Request $request, EntityManagerInterface $entityManager
     //$user->generateEmailVerificationToken();
     $entityManager->persist($user);
     $entityManager->flush();
+
+    $confirmationLink = $this->generateUrl('confirm_email', ['token' => $user->getEmailVerificationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+      
+        $emailBody = sprintf(
+    '       Bonjour %s,<br><p>Votre inscription a été effectuée avec succès. Veuillez cliquer sur le lien suivant pour confirmer votre adresse email : <a href="%s">Confirmer votre adresse email</a></p>',
+        $user->getFirstName(),
+            $confirmationLink
+);
+
+$mailerService->sendEmail($user->getEmail(), 'Confirmation de votre adresse email', $emailBody);
+
 
     //Envoi d'un email de vérification
 
