@@ -188,8 +188,36 @@ $response = $jsonResponseNormalizer->respondSuccess(200, $lastNews);
 
 return $response;
 
+}
+
+//Route publique pour afficher les actualités des catégories  id 3 et 4 avec envoi en JSON et qui donnera lieu à une redband alerte sur le front end.
+
+#[Route('/api/public/news/alert', name: 'app_api_public_alertnews')]
+
+public function alertNews(NewsRepository $newsRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
+{
+
+    $news = $newsRepository->findBy(['NewsCategory' => [3, 4]], ['news_date' => 'DESC']);
+
+    $alertNews = [];
+
+    foreach ($news as $newsItem) {
+
+        $alertNews[] = [
+            'id'=> $newsItem->getId(),
+            'title' => $newsItem->getTitle(),
+            'content' => $newsItem->getNewsContent(),
+            'newsDate' => $newsItem->getNewsDate(),
+        ];
+
+    }
+
+$response = $jsonResponseNormalizer->respondSuccess(200, $alertNews);
+
+return $response;
 
 }
+
 
 
 }
