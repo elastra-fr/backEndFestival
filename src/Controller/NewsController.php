@@ -139,8 +139,15 @@ public function edit(Security $security, EntityManagerInterface $entityManager, 
 
 }
 
+/**
+ * Route publique pour les actualités pour les catégories  id 1, 2 et 5 avec envoi d'un paramètre limit pour limiter le nombre d'actualités à afficher ou 'all' pour afficher toutes les actualités
+ *
+ * @param NewsRepository $newsRepository
+ * @param JsonResponseNormalizer $jsonResponseNormalizer
+ * @param Request $request
+ * @return Response
+ */
 
-//Route publique pour les actualités les plus récentes pour les catégories  id 1, 2 et 5
 
 #[Route('/api/public/news', name: 'app_api_public_lastnews')]
 
@@ -184,33 +191,5 @@ return $response;
 
 }
 
-//Retourne toutes les actualités pour les catégories  id 1, 2 et 5 en format JSON de la plus récente à la plus ancienne
-
-#[Route('/api/public/allnews', name: 'app_api_public_allnews')]
-
-public function allNews(NewsRepository $newsRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
-{
-
-    $news = $newsRepository->findBy(['NewsCategory' => [1, 2, 5]], ['news_date' => 'DESC']);
-
-    $allNews = [];
-
-    foreach ($news as $newsItem) {
-
-        $allNews[] = [
-            'id'=> $newsItem->getId(),
-            'title' => $newsItem->getTitle(),
-            'content' => $newsItem->getNewsContent(),
-            'newsDate' => $newsItem->getNewsDate(),
-        ];
-
-    }
-
-$response = $jsonResponseNormalizer->respondSuccess(200, $allNews);
-
-return $response;
-
-
-}
 
 }

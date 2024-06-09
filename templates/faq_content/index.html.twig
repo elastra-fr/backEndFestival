@@ -9,7 +9,19 @@
 
 <h3>Liste des contenus</h3>
 
- 
+
+ <div class="filterOptions">
+        <h4>Filtrer par section</h4>
+        <form method="get" action="{{ path('app_admin_faq_content') }}">
+            <select name="sectionId" onchange="this.form.submit()">
+                <option value="">Toutes les sections</option>
+                {% for section in sections %}
+                    <option value="{{ section.id }}" {% if section.id == sectionFilter %}selected{% endif %}>{{ section.category }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
    <ul class="listBase">
         {% for content in contents %}
             
