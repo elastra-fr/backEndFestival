@@ -4,6 +4,10 @@ namespace App\Service;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
+use Imagine\Image\ImageInterface;
+
 
 class FileUploaderService
 {
@@ -26,6 +30,24 @@ class FileUploaderService
 
         try {
             $file->move($targetDirectory, $fileName);
+
+            $resized600FileName = '600-' . $fileName;
+            $resized400FileName = '400-' . $fileName;
+            $resized200FileName = '200-' . $fileName;
+            
+            $resized600FilePath = $targetDirectory . '/' . $resized600FileName;
+            $resized400FilePath = $targetDirectory . '/' . $resized400FileName;
+            $resized200FilePath = $targetDirectory . '/' . $resized200FileName;
+
+            $filePath = $targetDirectory . '/' . $fileName;
+
+            $this->resizeImage($filePath, $resized600FilePath, 600);
+            $this->resizeImage($filePath,  $resized400FilePath, 400);
+            $this->resizeImage($filePath, $resized200FilePath, 200);
+
+
+
+
         } catch (FileException $e) {
             throw new \Exception('File upload failed: ' . $e->getMessage());
         }
@@ -53,5 +75,18 @@ class FileUploaderService
         }
     }
 
+    private function resizeImage(string $filePath, string $resizedFilePath, int $targetWidth): void
+    {
+        $imagine = new Imagine();
+        $image = $imagine->open($filePath);
+        $size = $image->getSize();
+        $ratio = $size->getWidth() / $size->getHeight();
+        $targetHeight = (int) ($targetWidth / $ratio);
 
+        $image->resize(new Box($targetWidth, $targetHeight), ImageInterface::FILTER_LANCZOS)
+              ->save($resizedFilePath);
+    }
 }
+
+
+

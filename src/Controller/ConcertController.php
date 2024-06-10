@@ -165,14 +165,39 @@ class ConcertController extends AbstractController
 
         foreach ($concerts as $concert) {
             $imageName = $concert->getArtist()->getUrlImage();
-            $imagePath = 'https://backend.nationsound2024-festival.fr/images/bands/' . $imageName;
+            $commonPath = 'https://backend.nationsound2024-festival.fr/images/bands/';
+            $localPath = './images/bands/';
+
+/*
+            $imagesPath = [
+                'original' => $commonPath . $imageName, 
+                '600' => $commonPath . '600-' . $imageName,
+                '400' => $commonPath . '400-' . $imageName,
+                '200' => $commonPath . '200-' . $imageName,
+            ];
+
+*/
+
+
+
+            $imagesPath = [
+        'original' => file_exists($localPath.$imageName) ? $commonPath.$imageName : null,
+        '600' => file_exists($localPath. '600-'.$imageName) ? $commonPath.'600-' .$imageName : null,
+        '400' => file_exists($localPath. '400-'. $imageName) ? $commonPath.'400-'.$imageName : null,
+        '200' => file_exists($localPath. '200-'. $imageName) ? $commonPath.'200-'.$imageName : null,
+    ];
+
+    var_dump($localPath. $imageName);
+            
+
+            //$imagePath = 'https://backend.nationsound2024-festival.fr/images/bands/' . $imageName;
             $concertsList[] = [
                 'id' => $concert->getId(),
                 'date' => $concert->getConcertDate()->format('Y-m-d H:i:s'),
                 'location' => $concert->getStage()->getName(),
                 'description' => $concert->getArtist()->getDescription(),
                 'artist' => $concert->getArtist()->getName(),
-                'image' => $imagePath,
+                'images' => $imagesPath,
             ];
         }
 
