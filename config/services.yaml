@@ -5,7 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     api_key: '%env(API_KEY)%'
-    upload_directory: '%kernel.project_dir%/public/images/bands'
+    upload_bands_directory: '%kernel.project_dir%/public/images/bands'
     upload_logos_directory: '%kernel.project_dir%/public/images/logos'
     upload_icons_directory: '%kernel.project_dir%/public/images/icons'
 
@@ -27,6 +27,8 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+
 
 #Firewall pour l'authentification des utilisateurs en utilisant le bundle LexikJWTAuthenticationBundle#
 

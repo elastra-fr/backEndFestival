@@ -18,6 +18,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\JsonResponseNormalizer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Service\FileUploaderService;
 
 
 
@@ -45,7 +46,7 @@ class PartnerController extends AbstractController
 
     #[Route('/admin/partner/new', name: 'app_admin_partner_new')]
 
-    public function add(Security $security, EntityManagerInterface $entityManager, Request $request, SluggerInterface $sluggerInterface): Response
+    public function add(Security $security, EntityManagerInterface $entityManager, Request $request, SluggerInterface $sluggerInterface, FileUploaderService $fileUploaderService): Response
     {
 
         $partner=new Partner();
@@ -64,42 +65,14 @@ class PartnerController extends AbstractController
 
             if ($file) {
 
+                $targetDirectory = $this->getParameter('upload_logos_directory');
 
-                switch ($file->getClientMimeType()) {
-                    case 'image/jpeg':
-                        $extension = 'jpg'; // Utiliser l'extension .jpg pour les fichiers JPEG
-                        break;
-                    case 'image/png':
-                        $extension = 'png'; // Utiliser l'extension .png pour les fichiers PNG
-                        break;
-                    case 'image/avif':
-                        $extension = 'avif'; // Utiliser l'extension .avif pour les fichiers AVIF
-                        break;
-                    case 'image/webp':
-                        $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
-                        break;
-                        // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
+                $fileName = $fileUploaderService->upload($file, $targetDirectory);
 
-                    case 'image/svg+xml':
-                        $extension = 'svg'; // Utiliser l'extension .svg pour les fichiers SVG
-                        break;
-                }
+                $partner->setUrlLogo($fileName);
 
-                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $sluggerInterface->slug($originalFilename);
-                $fileName = $safeFilename . '-' . uniqid() . '.' . $extension;
 
-                try {
-                    $file->move(
-                        $this->getParameter('upload_logos_directory'),
-                        $fileName
-                    );
-                } catch (FileException $e) {
-                    // Handle exception if something happens during file upload
-                }
 
-                $fileUrl =  '/images/logos/' . $fileName;
-                $partner->setUrlLogo($fileUrl);
             }
 
 
@@ -124,7 +97,7 @@ class PartnerController extends AbstractController
 
     #[Route('/admin/partner/edit/{id}', name: 'app_admin_partner_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, Partner $partner, SluggerInterface $sluggerInterface): Response
+    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, Partner $partner, SluggerInterface $sluggerInterface, FileUploaderService $fileUploaderService): Response
     {
 
         $form=$this->createForm(PartnerType::class, $partner);
@@ -141,43 +114,15 @@ class PartnerController extends AbstractController
 
             if ($file) {
 
+                $targetDirectory = $this->getParameter('upload_logos_directory');
 
-                switch ($file->getClientMimeType()) {
-                    case 'image/jpeg':
-                        $extension = 'jpg'; // Utiliser l'extension .jpg pour les fichiers JPEG
-                        break;
-                    case 'image/png':
-                        $extension = 'png'; // Utiliser l'extension .png pour les fichiers PNG
-                        break;
-                    case 'image/avif':
-                        $extension = 'avif'; // Utiliser l'extension .avif pour les fichiers AVIF
-                        break;
-                    case 'image/webp':
-                        $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
-                        break;
-                        // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
+                $fileName = $fileUploaderService->upload($file, $targetDirectory);
 
-                    case 'image/svg+xml':
-                        $extension = 'svg'; // Utiliser l'extension .svg pour les fichiers SVG
-                        break;
+                $partner->setUrlLogo($fileName);
+            }
 
-                }
-
-                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $sluggerInterface->slug($originalFilename);
-                $fileName = $safeFilename . '-' . uniqid() . '.' . $extension;
-
-                try {
-                    $file->move(
-                        $this->getParameter('upload_logos_directory'),
-                        $fileName
-                    );
-                } catch (FileException $e) {
-                    // Handle exception if something happens during file upload
-                }
-
-                $fileUrl =  '/images/logos/' . $fileName;
-                $partner->setUrlLogo($fileUrl);
+            else {
+                $partner->setUrlLogo(null);
             }
 
             $entityManager->persist($partner);
@@ -187,12 +132,24 @@ class PartnerController extends AbstractController
 
         }
 
+
+
+        $currentLogoName=$partner->getUrlLogo();
+
+        if ($currentLogoName != null) {
+            $currentLogoPath='./images/logos/'.$currentLogoName;
+        } else {
+            $currentLogoPath=null;
+        }
+        //$currentLogoPath='./images/logos/'.$currentLogoName;
+
+
         return $this->render('partner/edit.html.twig', [
             'controller_name' => 'PartnerController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
             'form' => $form->createView(),
-            'urlLogo' => $partner->getUrlLogo(),
+            'urlLogo' => $currentLogoPath,
         ]);
 
 
@@ -204,10 +161,12 @@ class PartnerController extends AbstractController
     {
 
         $logoUrl=$partner->getUrlLogo();
+        $imageName=$partner->getUrlLogo();
+        $imagePath='./images/logos/'.$imageName;
 
         if ($logoUrl != null) {
             
-            unlink('.'.$logoUrl);
+            unlink($imagePath);
         }
 
         $entityManager->remove($partner);
@@ -233,11 +192,22 @@ class PartnerController extends AbstractController
 
         $partnersArray=[];
 
+        
+
         foreach ($partners as $partner) {
+
+                //verifie si l'url du logo est null ou non
+            if ($partner->getUrlLogo() != null) {
+                $urlLogo = "https://backend.nationsound2024-festival.fr".$partner->getUrlLogo();
+            } else {
+                $urlLogo = null;
+            }
+
+
             $partnersArray[]=[
                 'id'=>$partner->getId(),
                 'name'=>$partner->getName(),
-                'url_logo'=>"https://https://backend.nationsound2024-festival.fr".$partner->getUrlLogo(),
+                'url_logo'=>$urlLogo,
                 'description'=>$partner->getDescription(),
                 'category'=>$partner->getCategory()->getCategory(),
             ];
@@ -263,10 +233,18 @@ class PartnerController extends AbstractController
 //$publicUrlImage = $urlGeneratorInterface->generate('/public/images/logos', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         foreach ($partners as $partner) {
+                //verifie si l'url du logo est null ou non
+                if ($partner->getUrlLogo() != null) {
+                    $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos".$partner->getUrlLogo();
+                } else {
+                    $urlLogo = null;
+                }
+           
             $partnersArray[]=[
-                'id'=>$partner->getId(),
+
+                           'id'=>$partner->getId(),
                 'name'=>$partner->getName(),
-                'url_logo'=>"https://https://backend.nationsound2024-festival.fr".$partner->getUrlLogo(),
+                'url_logo'=>$urlLogo,
                 'description'=>$partner->getDescription(),
                 'category'=>$partner->getCategory()->getCategory(),
             ];

@@ -13,22 +13,29 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\BandType;
+use App\Service\FileUploaderService;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
 
 class BandController extends AbstractController
 {
     use UserInfoTrait;
+
+
+    /**
+     * Affiche la liste des groupes/artistes
+     *
+     * @param Security $security
+     * @param BandRepository $bandRepository
+     * @return Response
+     */
     #[Route('/admin/band', name: 'app_admin_band')]
     public function index(Security $security, BandRepository $bandRepository): Response
     {
         $user = $this->getUserInfo($security);
 
         $bands = $bandRepository->findAll();
-
-
-
-
 
         return $this->render('band/index.html.twig', [
             'controller_name' => 'BandController',
@@ -38,8 +45,9 @@ class BandController extends AbstractController
         ]);
     }
 
+
     #[Route('/admin/band/new', name: 'app_admin_band_new')]
-    public function add(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, SluggerInterface $sluggerInterface): Response
+    public function add(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, SluggerInterface $sluggerInterface, FileUploaderService $fileUploaderService): Response
     {
 
         $band = new Band();
@@ -55,40 +63,13 @@ class BandController extends AbstractController
 
             if ($file) {
 
+                $targetDirectory=$this->getParameter('upload_bands_directory');
 
-                switch ($file->getClientMimeType()) {
-                    case 'image/jpeg':
-                        $extension = 'jpg'; // Utiliser l'extension .jpg pour les fichiers JPEG
-                        break;
-                    case 'image/png':
-                        $extension = 'png'; // Utiliser l'extension .png pour les fichiers PNG
-                        break;
-                    case 'image/avif':
-                        $extension = 'avif'; // Utiliser l'extension .avif pour les fichiers AVIF
-                        break;
-                    case 'image/webp':
-                        $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
-                        break;
-                        // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
-                }
+                $fileName = $fileUploaderService->upload($file, $targetDirectory);
+                $band->setUrlImage($fileName);
 
-                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $sluggerInterface->slug($originalFilename);
-                $fileName = $safeFilename . '-' . uniqid() . '.' . $extension;
-
-                try {
-                    $file->move(
-                        $this->getParameter('upload_directory'),
-                        $fileName
-                    );
-                } catch (FileException $e) {
-                    // Handle exception if something happens during file upload
-                }
-
-                $fileUrl =  '/images/bands/' . $fileName;
-                $band->setUrlImage($fileUrl);
             }
-
+  
 
 
             $entityManagerInterface->persist($band);
@@ -113,23 +94,30 @@ class BandController extends AbstractController
 
         // Suppression de l'image associée au groupe
         $imageUrl = $band->getUrlImage();
+$imageName=$band->getUrlImage();
+        $imagePath = './images/bands/' . $imageName;
 
         if ($imageUrl) {
 
-            unlink('.' . $imageUrl);
+
+          
+                unlink($imagePath);
+            
         }
 
-
+        
         $entityManagerInterface->remove($band);
         $entityManagerInterface->flush();
 
         return $this->redirectToRoute('app_admin_band');
+
+ 
     }
 
 
     #[Route('/admin/band/edit/{id}', name: 'app_admin_band_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, Band $band, SluggerInterface $sluggerInterface): Response
+    public function edit(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, Band $band, fileUploaderService $fileUploaderService): Response
     {
 
         $form = $this->createForm(BandType::class, $band);
@@ -145,46 +133,11 @@ class BandController extends AbstractController
             $file = $form->get('file')->getData();
 
             if ($file) {
-
-                switch ($file->getClientMimeType()) {
-                    case 'image/jpeg':
-
-                        $extension = 'jpg'; // Utiliser l'extension .jpg pour les fichiers JPEG
-                        break;
-
-                    case 'image/png':
-                        $extension = 'png'; // Utiliser l'extension .png pour les fichiers PNG
-                        break;
-
-                    case 'image/avif':
-
-                        $extension = 'avif'; // Utiliser l'extension .avif pour les fichiers AVIF
-                        break;
-
-                    case 'image/webp':
-
-                        $extension = 'webp'; // Utiliser l'extension .webp pour les fichiers WebP
-                        break;
-
-                        // Ajouter d'autres cas pour d'autres formats de fichiers si nécessaire
-
-                }
-
-                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $sluggerInterface->slug($originalFilename);
-                $fileName = $safeFilename . '-' . uniqid() . '.' . $extension;
-
-                try {
-                    $file->move(
-                        $this->getParameter('upload_directory'),
-                        $fileName
-                    );
-                } catch (FileException $e) {
-                    // Handle exception if something happens during file upload
-                }
-
-                $fileUrl =  '/images/bands/' . $fileName;
-                $band->setUrlImage($fileUrl);
+    
+                    $targetDirectory=$this->getParameter('upload_bands_directory');
+    
+                    $fileName = $fileUploaderService->upload($file, $targetDirectory);
+                    $band->setUrlImage($fileName);
             }
 
             $entityManagerInterface->persist($band);
@@ -193,12 +146,15 @@ class BandController extends AbstractController
             return $this->redirectToRoute('app_admin_band');
         }
 
+        $currentImageName=$band->getUrlImage();
+        $currentImagePath = './images/bands/' . $currentImageName;
+
         return $this->render('band/edit.html.twig', [
             'controller_name' => 'BandController',
             'form' => $form->createView(),
             'firstName' => $user['firstName'],
             'role' => $user['role'],
-            'urlImage' => $band->getUrlImage(),
+            'urlImage' => $currentImagePath,
 
         ]);
     }

@@ -25,7 +25,7 @@ class BandType extends AbstractType
             ->add('file', FileType::class, [
                 'label' => 'Image',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
             ])
             ->add('music_style', EntityType::class, [
                 'class' => MusicStyle::class,

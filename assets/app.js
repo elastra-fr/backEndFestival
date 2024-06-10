@@ -9,17 +9,55 @@ import './bootstrap.js';
  */
 import './styles/app.css';
 
+// Fonction pour afficher l'image sélectionnée
+function displayImage(e) {
+    const fileInput = e.target;
+    const files = fileInput.files;
+    if (files.length > 0) {
+        const file = files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.innerHTML = `<img src="${e.target.result}" class="previewImage" alt="Preview"><button type="button" onclick="window.removeImage()">Supprimer image</button>`;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        document.getElementById('imagePreview').innerHTML = '';
+    }
+}
+
+// Fonction pour supprimer l'image
+window.removeImage = function() {
+  
+    document.querySelector('.form-control-file').value = ''; // Réinitialise l'input file
+    document.getElementById('imagePreview').innerHTML = ''; // Supprime le nom de l'image affiché
+};
+
+// Vérifie si un input file avec la classe .form-control-file existe
+const fileInput = document.querySelector('.form-control-file');
+if (fileInput !== null) {
+    // Ajoute un écouteur d'événements onchange à l'input file
+    fileInput.addEventListener('change', displayImage);
+}
+
 //Mise en place listener pour le l'input file
 
 //if (document.getElementById('band_file') !== null){
-
+/*
 if (document.querySelector('.form-control-file') !== null){
 //selection de l'input file qui a la classe form-control-file
+
+
+
 
 var fileInput = document.querySelector('.form-control-file');
 
 
+
+
 fileInput.addEventListener('change', function (e) {
+
+
 
 const fileInput = e.target;
             const files = fileInput.files;
@@ -28,7 +66,7 @@ const fileInput = e.target;
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imagePreview = document.getElementById('imagePreview');
-                    imagePreview.innerHTML = `<img src="${e.target.result}" class="previewImage" alt="Preview">`;
+                    imagePreview.innerHTML = `<img src="${e.target.result}" class="previewImage" alt="Preview"><p>${e.target.result}<button type="button" onclick="removeImage">Supprimer</button></p>`;
                 };
                 reader.readAsDataURL(file);
             } else {
@@ -38,8 +76,17 @@ const fileInput = e.target;
 
 });
 
-}
+        
 
+}*/
+/*
+function removeImage() {
+    console.log('removeImage');
+
+            document.querySelector('.form-control-file').value = ''; // Réinitialise l'input file
+            document.getElementById('imagePreview').innerHTML = ''; // Supprime le nom de l'image affiché
+        }
+*/
 
 //Gestion de la carte leaflet
 
