@@ -1,0 +1,21 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Programmation{% endblock %}
+
+{% block content %}
+<div class="contentContainer">
+<h2>Gestion des concerts</h2>
+    <a href="{{ path('app_admin_concert_new') }}" class="button">Créer concert</a>
+
+<h3>Liste des concerts</h3>
+
+ 
+   <ul class="listBase">
+        {% for concert in concerts %}
+            
+            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/guitar-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ concert.artist }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_concert_edit', {'id': concert.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_concert_delete', {'id': concert.id}) }}" class="button">Effacer</a></div></li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}

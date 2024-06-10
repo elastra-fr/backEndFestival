@@ -1,0 +1,3 @@
+parameters :
+    festival_start_date: '%env(FESTIVAL_START_DATE)%'
+    festival_end_date: '%env(FESTIVAL_END_DATE)%'

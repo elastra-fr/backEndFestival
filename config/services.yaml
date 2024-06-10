@@ -28,6 +28,11 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Form\ConcertType:
+        arguments:
+            $festivalStartDate: '%festival_start_date%'
+            $festivalEndDate: '%festival_end_date%'
+
 
 
 #Firewall pour l'authentification des utilisateurs en utilisant le bundle LexikJWTAuthenticationBundle#

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BandRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BandRepository::class)]
@@ -25,6 +27,17 @@ class Band
     #[ORM\ManyToOne(inversedBy: 'bands')]
     #[ORM\JoinColumn(nullable: false)]
     private ?MusicStyle $music_style = null;
+
+    /**
+     * @var Collection<int, Concert>
+     */
+    #[ORM\OneToMany(targetEntity: Concert::class, mappedBy: 'Artist')]
+    private Collection $concerts;
+
+    public function __construct()
+    {
+        $this->concerts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +88,36 @@ class Band
     public function setMusicStyle(?MusicStyle $music_style): static
     {
         $this->music_style = $music_style;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Concert>
+     */
+    public function getConcerts(): Collection
+    {
+        return $this->concerts;
+    }
+
+    public function addConcert(Concert $concert): static
+    {
+        if (!$this->concerts->contains($concert)) {
+            $this->concerts->add($concert);
+            $concert->setArtist($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConcert(Concert $concert): static
+    {
+        if ($this->concerts->removeElement($concert)) {
+            // set the owning side to null (unless already changed)
+            if ($concert->getArtist() === $this) {
+                $concert->setArtist(null);
+            }
+        }
 
         return $this;
     }

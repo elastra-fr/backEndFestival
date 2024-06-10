@@ -1,0 +1,44 @@
+{# templates/concert_form.html.twig #}
+
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Ajout - Concert{% endblock %}
+
+{% block content %}
+
+ {% for label, messages in app.flashes %}
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    {{ form_start(form, {'attr':{'class':'formBase'}}) }}
+<div class="formContainerBase">
+        <h3>Créer/Editer Concert</h3>
+
+        <div class="formGroup">
+            {{ form_label(form.ConcertDate) }}
+            {{ form_widget(form.ConcertDate) }}
+            {{ form_errors(form.ConcertDate) }}
+        </div>
+        
+        <div class="formGroup">
+            {{ form_label(form.Artist) }}
+            {{ form_widget(form.Artist) }}
+            {{ form_errors(form.Artist) }}
+        </div>
+        
+        <div class="formGroup">
+            {{ form_label(form.Stage) }}
+            {{ form_widget(form.Stage) }}
+            {{ form_errors(form.Stage) }}
+        </div>
+        
+    <button type="submit" class="button">Enregistrer</button>
+    <a href="{{ path('app_admin_concert') }}" class="button">Annuler</a>
+    
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
