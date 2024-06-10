@@ -198,7 +198,7 @@ class PartnerController extends AbstractController
 
                 //verifie si l'url du logo est null ou non
             if ($partner->getUrlLogo() != null) {
-                $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos".$partner->getUrlLogo();
+                $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos/".$partner->getUrlLogo();
             } else {
                 $urlLogo = null;
             }
