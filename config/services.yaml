@@ -32,6 +32,8 @@ services:
         arguments:
             $festivalStartDate: '%festival_start_date%'
             $festivalEndDate: '%festival_end_date%'
+    
+
 
 
 

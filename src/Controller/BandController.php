@@ -18,6 +18,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
+
 class BandController extends AbstractController
 {
     use UserInfoTrait;
@@ -74,6 +75,8 @@ class BandController extends AbstractController
 
             $entityManagerInterface->persist($band);
             $entityManagerInterface->flush();
+
+         
 
             return $this->redirectToRoute('app_admin_band');
         }
@@ -142,6 +145,7 @@ $imageName=$band->getUrlImage();
 
             $entityManagerInterface->persist($band);
             $entityManagerInterface->flush();
+
 
             return $this->redirectToRoute('app_admin_band');
         }

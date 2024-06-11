@@ -35,3 +35,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###Ignorer les dossiers images bands et logos###
+/public/images/bands/
+/public/images/logos/

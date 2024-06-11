@@ -16,6 +16,15 @@ class BandRepository extends ServiceEntityRepository
         parent::__construct($registry, Band::class);
     }
 
+       public function findAllImageUrls(): array
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.url_image')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     //    /**
     //     * @return Band[] Returns an array of Band objects
     //     */
