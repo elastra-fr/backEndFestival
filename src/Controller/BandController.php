@@ -2,21 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Band;
+use App\Form\BandType;
+use App\Repository\BandRepository;
+use App\Service\DeleteImagesService;
+use App\Service\FileUploaderService;
+use App\Trait\UserInfoTrait;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Trait\UserInfoTrait;
-use Symfony\Bundle\SecurityBundle\Security;
-use App\Entity\Band;
-use App\Repository\BandRepository;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use App\Form\BandType;
-use App\Service\FileUploaderService;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use App\Service\DeleteImagesService;
 
 
 
@@ -27,6 +24,8 @@ class BandController extends AbstractController
 
     /**
      * Affiche la liste des groupes/artistes
+     * Le contrôleur permet de gérer l'affichage de la liste des groupes/artistes
+     * 
      *
      * @param Security $security
      * @param BandRepository $bandRepository
@@ -39,7 +38,7 @@ class BandController extends AbstractController
 
         $bands = $bandRepository->findAll();
 
-        return $this->render('band/index.html.twig', [
+        return $this->render('band/band-index.html.twig', [
             'controller_name' => 'BandController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -48,8 +47,19 @@ class BandController extends AbstractController
     }
 
 
+/**
+ * Route pour créer un nouveau groupe/artistes
+ *Le contrôleur permet de gérer l'ajout d'un groupe/artistes via un formulaire
+ *Upload de l'image via le service FileUploaderService
+ * 
+ * @param Security $security
+ * @param EntityManagerInterface $entityManagerInterface
+ * @param Request $request
+ * @param FileUploaderService $fileUploaderService
+ * @return Response
+ */
     #[Route('/admin/band/new', name: 'app_admin_band_new')]
-    public function add(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, SluggerInterface $sluggerInterface, FileUploaderService $fileUploaderService): Response
+    public function add(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, FileUploaderService $fileUploaderService): Response
     {
 
         $band = new Band();
@@ -59,30 +69,27 @@ class BandController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //Gestion de l'upload de l'image
-
             $file = $form->get('file')->getData();
 
             if ($file) {
 
-                $targetDirectory=$this->getParameter('upload_bands_directory');
+                $targetDirectory = $this->getParameter('upload_bands_directory');
 
                 $fileName = $fileUploaderService->upload($file, $targetDirectory);
                 $band->setUrlImage($fileName);
-
             }
-  
+
 
 
             $entityManagerInterface->persist($band);
             $entityManagerInterface->flush();
 
-         
+
 
             return $this->redirectToRoute('app_admin_band');
         }
 
-        return $this->render('band/add.html.twig', [
+        return $this->render('band/band-add.html.twig', [
             'controller_name' => 'BandController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -91,37 +98,57 @@ class BandController extends AbstractController
     }
 
 
+/**
+ * Route pour effacer un groupe/artistes
+ * Le contrôleur permet de gérer la suppression d'un groupe/artistes
+ * Suppression de l'image via le service DeleteImagesService
+ * 
+ * @param EntityManagerInterface $entityManagerInterface
+ * @param Band $band
+ * @param DeleteImagesService $deleteImagesService
+ * @return Response
+ */
+
     #[Route('/admin/band/delete/{id}', name: 'app_admin_band_delete')]
 
-    public function delete(Security $security, EntityManagerInterface $entityManagerInterface, Band $band, DeleteImagesService $deleteImagesService): Response
+    public function delete( EntityManagerInterface $entityManagerInterface, Band $band, DeleteImagesService $deleteImagesService): Response
     {
 
 
         try {
-        
-   $imageName=$band->getUrlImage();
-    $directory=$this->getParameter('upload_bands_directory');
 
-    $deleteImagesService->deleteImages($imageName, $directory);
+            $imageName = $band->getUrlImage();
+            $directory = $this->getParameter('upload_bands_directory');
 
-        
+            $deleteImagesService->deleteImages($imageName, $directory);
+
+
             $entityManagerInterface->remove($band);
             $entityManagerInterface->flush();
             return $this->redirectToRoute('app_admin_band');
-        
         } catch (\Exception $e) {
 
-                $this->addFlash('danger', 'Erreur lors de la suppression du groupe - Veuiilez vérifier qu\'il n\'est pas associé à un événement');
-                return $this->redirectToRoute('app_admin_band');
-            
+            $this->addFlash('danger', 'Erreur lors de la suppression du groupe - Veuiilez vérifier qu\'il n\'est pas associé à un événement');
+            return $this->redirectToRoute('app_admin_band');
         }
-        
-
-
-
- 
     }
 
+
+/**
+ * Route pour éditer un groupe/artistes
+ * Le contrôleur permet de gérer la modification d'un groupe/artistes via un formulaire
+ * Upload de l'image via le service FileUploaderService
+ * Suppression de l'ancienne image via le service DeleteImagesService
+ * 
+ * @param Security $security
+ * @param EntityManagerInterface $entityManagerInterface
+ * @param Request $request
+ * @param Band $band
+ * @param FileUploaderService $fileUploaderService
+ * @param DeleteImagesService $deleteImagesService
+ * @return Response
+ * 
+ */
 
     #[Route('/admin/band/edit/{id}', name: 'app_admin_band_edit')]
 
@@ -136,23 +163,20 @@ class BandController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //Gestion de l'upload de l'image
 
             $file = $form->get('file')->getData();
 
             if ($file) {
 
-                    //Suppression de l'ancienne image
-
-                    $imageName=$band->getUrlImage();
-                    $directory=$this->getParameter('upload_bands_directory');
-                    $deleteImagesService->deleteImages($imageName, $directory);
+                $imageName = $band->getUrlImage();
+                $directory = $this->getParameter('upload_bands_directory');
+                $deleteImagesService->deleteImages($imageName, $directory);
 
 
-                    $targetDirectory=$this->getParameter('upload_bands_directory');
-    
-                    $fileName = $fileUploaderService->upload($file, $targetDirectory);
-                    $band->setUrlImage($fileName);
+                $targetDirectory = $this->getParameter('upload_bands_directory');
+
+                $fileName = $fileUploaderService->upload($file, $targetDirectory);
+                $band->setUrlImage($fileName);
             }
 
             $entityManagerInterface->persist($band);
@@ -162,10 +186,10 @@ class BandController extends AbstractController
             return $this->redirectToRoute('app_admin_band');
         }
 
-        $currentImageName=$band->getUrlImage();
+        $currentImageName = $band->getUrlImage();
         $currentImagePath = './images/bands/' . $currentImageName;
 
-        return $this->render('band/edit.html.twig', [
+        return $this->render('band/band-edit.html.twig', [
             'controller_name' => 'BandController',
             'form' => $form->createView(),
             'firstName' => $user['firstName'],

@@ -5,13 +5,7 @@
 {% block content %}
 <div class="contentContainer">
 
-  {% for label, messages in app.flashes %}
-        <div class="flash-{{ label }}">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endfor %}
+{% include 'flashband.html.twig'%}
 
 
 <h2>Gestion des Groupes</h2>

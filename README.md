@@ -112,6 +112,9 @@ Les routes d'administration derrière /admin/ nécessitent à minima le rôle ED
 
 # Gestion des images
 
+Entrée service upload
+
+Service delete
 
 
 

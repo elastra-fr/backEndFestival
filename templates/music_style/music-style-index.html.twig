@@ -3,7 +3,15 @@
 {% block title %}Style de musique{% endblock %}
 
 {% block content %}
+
+
+
 <div class="contentContainer">
+
+{% include 'flashband.html.twig'%}
+
+
+
 <h2>Gestion des styles musicaux</h2>
     <a href="{{ path('app_admin_style_new') }}" class="button">Créer style</a>
 

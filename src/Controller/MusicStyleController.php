@@ -2,32 +2,42 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use App\Trait\UserInfoTrait;
-use Symfony\Bundle\SecurityBundle\Security;
 use App\Entity\MusicStyle;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use App\Form\MusicStyleType;
 use App\Repository\MusicStyleRepository;
+use App\Trait\UserInfoTrait;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MusicStyleController extends AbstractController
 {
     use UserInfoTrait;
+
+    /**
+     * Route pour afficher la liste des styles de musique
+     * Le controller permet d'afficher la liste des styles de musique 
+     * @param Security $security
+     * @param MusicStyleRepository $musicStyleRepository
+     * @return Response
+     * 
+     */
+
     #[Route('/admin/band/style', name: 'app_admin_style')]
     public function index(Security $security, MusicStyleRepository $musicStyleRepository): Response
     {
 
         $user = $this->getUserInfo($security);
 
-        $styles= $musicStyleRepository->findAll();
+        $styles = $musicStyleRepository->findAll();
 
 
 
 
-        return $this->render('music_style/index.html.twig', [
+        return $this->render('music_style/music-style-index.html.twig', [
             'controller_name' => 'MusicStyleController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -35,8 +45,17 @@ class MusicStyleController extends AbstractController
         ]);
     }
 
+    /**
+     * Route pour ajouter un style de musique via un formulaire
+     * Le controller permet d'ajouter un style de musique via un formulaire
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
+     */
 
-#[Route('/admin/band/style/new', name: 'app_admin_style_new')]
+
+    #[Route('/admin/band/style/new', name: 'app_admin_style_new')]
     public function add(Security $security, EntityManagerInterface $entityManager, Request $request): Response
     {
 
@@ -45,7 +64,7 @@ class MusicStyleController extends AbstractController
         $form = $this->createForm(MusicStyleType::class, $musicStyle);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) { 
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($musicStyle);
             $entityManager->flush();
 
@@ -54,25 +73,45 @@ class MusicStyleController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        return $this->render('music_style/add.html.twig', [
+        return $this->render('music_style/music-style-add.html.twig', [
             'controller_name' => 'MusicStyleController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
             'form' => $form->createView(),
         ]);
-
-
     }
 
+    /**
+     * Route pour supprimer un style de musique
+     * Le controller permet de supprimer un style de musique
+     * En cas de violation de clé étrangère, un message flash est affiché
+     * @param EntityManagerInterface $entityManager
+     * @param MusicStyle $musicStyle
+     * @return Response
+     */
     #[Route('/admin/band/style/delete/{id}', name: 'app_admin_style_delete')]
 
-    public function delete(Security $security, EntityManagerInterface $entityManager, MusicStyle $musicStyle): Response
+    public function delete(EntityManagerInterface $entityManager, MusicStyle $musicStyle): Response
     {
-        $entityManager->remove($musicStyle);
-        $entityManager->flush();
 
-        return $this->redirectToRoute('app_admin_style');
+        try {
+            $entityManager->remove($musicStyle);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_admin_style');
+        } catch (\Exception $e) {
+            //Message flash
+            $this->addFlash('danger', 'Impossible de supprimer ce style de musique car il est utilisé par un ou plusieurs groupes');
+            return $this->redirectToRoute('app_admin_style');
+        }
     }
+
+    /**
+     * Route pour modifier un style de musique
+     * Le controller permet de modifier un style de musique
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     */
 
     #[Route('/admin/band/style/edit/{id}', name: 'app_admin_style_edit')]
 
@@ -91,14 +130,11 @@ class MusicStyleController extends AbstractController
             return $this->redirectToRoute('app_admin_style');
         }
 
-        return $this->render('music_style/edit.html.twig', [
+        return $this->render('music_style/music-style-edit.html.twig', [
             'controller_name' => 'MusicStyleController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
             'form' => $form->createView(),
         ]);
     }
-
-
-
 }
