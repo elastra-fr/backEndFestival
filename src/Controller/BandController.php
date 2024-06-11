@@ -16,6 +16,7 @@ use App\Form\BandType;
 use App\Service\FileUploaderService;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use App\Service\DeleteImagesService;
 
 
 
@@ -92,24 +93,16 @@ class BandController extends AbstractController
 
     #[Route('/admin/band/delete/{id}', name: 'app_admin_band_delete')]
 
-    public function delete(Security $security, EntityManagerInterface $entityManagerInterface, Band $band): Response
+    public function delete(Security $security, EntityManagerInterface $entityManagerInterface, Band $band, DeleteImagesService $deleteImagesService): Response
     {
 
 
         try {
         
-        $imageUrl = $band->getUrlImage();
-        $imageName=$band->getUrlImage();
-        $imagePath = './images/bands/' . $imageName;
+   $imageName=$band->getUrlImage();
+    $directory=$this->getParameter('upload_bands_directory');
 
-        if ($imageUrl) {
-
-
-          
-                unlink($imagePath);
-            
-        }
-
+    $deleteImagesService->deleteImages($imageName, $directory);
 
         
             $entityManagerInterface->remove($band);
@@ -132,7 +125,7 @@ class BandController extends AbstractController
 
     #[Route('/admin/band/edit/{id}', name: 'app_admin_band_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, Band $band, fileUploaderService $fileUploaderService): Response
+    public function edit(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, Band $band, fileUploaderService $fileUploaderService, deleteImagesService $deleteImagesService): Response
     {
 
         $form = $this->createForm(BandType::class, $band);
@@ -148,7 +141,14 @@ class BandController extends AbstractController
             $file = $form->get('file')->getData();
 
             if ($file) {
-    
+
+                    //Suppression de l'ancienne image
+
+                    $imageName=$band->getUrlImage();
+                    $directory=$this->getParameter('upload_bands_directory');
+                    $deleteImagesService->deleteImages($imageName, $directory);
+
+
                     $targetDirectory=$this->getParameter('upload_bands_directory');
     
                     $fileName = $fileUploaderService->upload($file, $targetDirectory);
