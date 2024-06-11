@@ -90,7 +90,7 @@ function removeImage() {
 
 //Gestion de la carte leaflet
 
-
+console.log(mapPoints);
 
 if (document.getElementById("map") !== null){
     console.log('ok map');
@@ -105,14 +105,40 @@ if (document.getElementById("map") !== null){
 var centerMarker = L.marker([48.7689, 2.09454]).addTo(mymap);
 
 
+//ajout de tous les markers avec les coordonnées de mapPoints
+
+    // Ajouter des marqueurs à la carte
+    mapPoints.forEach(function(point) {
+
+let lat = parseFloat(point.latitude);
+let lng = parseFloat(point.longitude);
+
+       
+        var marker = L.marker([lat, lng]).addTo(mymap);
+        // Ajouter un popup au marqueur avec titre et description
+        marker.bindPopup(`<b>${point.title}</b><br>${point.description}`).openPopup();
+        
+    });
+
+
 
 
 
 mymap.on('contextmenu', function(e) {
-    var lat = e.latlng.lat;
-    var lng = e.latlng.lng;
+var lat = parseFloat(e.latlng.lat).toFixed(7);
+var lng = parseFloat(e.latlng.lng).toFixed(7);
 
     console.log(lat + ', ' + lng);
+
+    let latInput = document.getElementById('map_point_entity_Latitude');
+    let lngInput = document.getElementById('map_point_entity_Longitude');
+
+    latInput.value = lat;
+    lngInput.value = lng;
+
+
+
+
 });
 
 

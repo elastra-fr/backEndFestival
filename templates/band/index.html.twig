@@ -4,6 +4,16 @@
 
 {% block content %}
 <div class="contentContainer">
+
+  {% for label, messages in app.flashes %}
+        <div class="flash-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+
 <h2>Gestion des Groupes</h2>
     <a href="{{ path('app_admin_band_new') }}" class="button">Créer groupe</a>
 

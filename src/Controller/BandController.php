@@ -95,9 +95,11 @@ class BandController extends AbstractController
     public function delete(Security $security, EntityManagerInterface $entityManagerInterface, Band $band): Response
     {
 
-        // Suppression de l'image associée au groupe
+
+        try {
+        
         $imageUrl = $band->getUrlImage();
-$imageName=$band->getUrlImage();
+        $imageName=$band->getUrlImage();
         $imagePath = './images/bands/' . $imageName;
 
         if ($imageUrl) {
@@ -108,11 +110,21 @@ $imageName=$band->getUrlImage();
             
         }
 
-        
-        $entityManagerInterface->remove($band);
-        $entityManagerInterface->flush();
 
-        return $this->redirectToRoute('app_admin_band');
+        
+            $entityManagerInterface->remove($band);
+            $entityManagerInterface->flush();
+            return $this->redirectToRoute('app_admin_band');
+        
+        } catch (\Exception $e) {
+
+                $this->addFlash('danger', 'Erreur lors de la suppression du groupe - Veuiilez vérifier qu\'il n\'est pas associé à un événement');
+                return $this->redirectToRoute('app_admin_band');
+            
+        }
+        
+
+
 
  
     }
