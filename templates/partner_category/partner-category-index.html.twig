@@ -4,6 +4,9 @@
 
 {% block content %}
 <div class="contentContainer">
+
+{% include 'flashband.html.twig'%}
+
 <h2>Gestion des catégories de partenaires</h2>
     <a href="{{ path('app_admin_partner_category_new') }}" class="button">Créer catégorie</a>
 

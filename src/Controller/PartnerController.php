@@ -5,20 +5,19 @@ namespace App\Controller;
 use App\Entity\Partner;
 use App\Form\PartnerType;
 use App\Repository\PartnerRepository;
+use App\Service\DeleteImagesService;
+use App\Service\FileUploaderService;
+use App\Service\JsonResponseNormalizer;
 use App\Trait\UserInfoTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Service\JsonResponseNormalizer;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use App\Service\FileUploaderService;
+
+
 
 
 
@@ -27,11 +26,21 @@ class PartnerController extends AbstractController
 {
     use UserInfoTrait;
 
+    /**
+     * Affiche la liste des partenaires
+     * Le contrôleur permet de gérer l'affichage de la liste des partenaires
+     * 
+     * @param Security $security
+     * @param PartnerRepository $partnerRepository
+     * @return Response
+     * 
+     */
+
     #[Route('/admin/partner', name: 'app_admin_partner')]
     public function index(Security $security, PartnerRepository $partnerRepository): Response
     {
 
-        $user=$this->getUserInfo($security);
+        $user = $this->getUserInfo($security);
 
         $partners = $partnerRepository->findAll();
 
@@ -41,70 +50,31 @@ class PartnerController extends AbstractController
             'role' => $user['role'],
             'partners' => $partners,
         ]);
-
     }
 
+
+/**
+ * Route pour créer un nouveau partenaire
+ * Le contrôleur permet de gérer l'ajout d'un partenaire via un formulaire
+ *
+ * @param Security $security
+ * @param EntityManagerInterface $entityManager
+ * @param Request $request
+ * @param FileUploaderService $fileUploaderService
+ * @return Response
+ */
     #[Route('/admin/partner/new', name: 'app_admin_partner_new')]
 
-    public function add(Security $security, EntityManagerInterface $entityManager, Request $request, SluggerInterface $sluggerInterface, FileUploaderService $fileUploaderService): Response
+    public function add(Security $security, EntityManagerInterface $entityManager, Request $request, FileUploaderService $fileUploaderService): Response
     {
 
-        $partner=new Partner();
+        $partner = new Partner();
 
-        $form=$this->createForm(PartnerType::class, $partner);
+        $form = $this->createForm(PartnerType::class, $partner);
 
         $form->handleRequest($request);
 
-        $user=$this->getUserInfo($security);
-
-                if ($form->isSubmitted() && $form->isValid()) {
-
-            //Gestion de l'upload de l'image
-
-            $file = $form->get('file')->getData();
-
-            if ($file) {
-
-                $targetDirectory = $this->getParameter('upload_logos_directory');
-
-                $fileName = $fileUploaderService->upload($file, $targetDirectory);
-
-                $partner->setUrlLogo($fileName);
-
-
-
-            }
-
-
-
-            $entityManager->persist($partner);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_admin_partner');
-
-
-    }
-
-        return $this->render('partner/add.html.twig', [
-            'controller_name' => 'PartnerController',
-            'firstName' => $user['firstName'],
-            'role' => $user['role'],
-            'form' => $form->createView(),
-        ]);
-
-    }
-
-
-    #[Route('/admin/partner/edit/{id}', name: 'app_admin_partner_edit')]
-
-    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, Partner $partner, SluggerInterface $sluggerInterface, FileUploaderService $fileUploaderService): Response
-    {
-
-        $form=$this->createForm(PartnerType::class, $partner);
-
-        $form->handleRequest($request);
-
-        $user=$this->getUserInfo($security);
+        $user = $this->getUserInfo($security);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -121,7 +91,66 @@ class PartnerController extends AbstractController
                 $partner->setUrlLogo($fileName);
             }
 
-            else {
+
+
+            $entityManager->persist($partner);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_admin_partner');
+        }
+
+        return $this->render('partner/add.html.twig', [
+            'controller_name' => 'PartnerController',
+            'firstName' => $user['firstName'],
+            'role' => $user['role'],
+            'form' => $form->createView(),
+        ]);
+    }
+
+/**
+ * Route pour éditer un partenaire
+ * Le contrôleur permet de gérer l'édition d'un partenaire via un formulaire
+ * 
+ * @param Security $security
+ * @param EntityManagerInterface $entityManager
+ * @param Request $request
+ * @param Partner $partner
+ * @param FileUploaderService $fileUploaderService
+ * @param DeleteImagesService $deleteImagesService
+ * @return Response
+ * 
+ */
+    #[Route('/admin/partner/edit/{id}', name: 'app_admin_partner_edit')]
+
+    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, Partner $partner, FileUploaderService $fileUploaderService, DeleteImagesService $deleteImagesService): Response
+    {
+
+        $form = $this->createForm(PartnerType::class, $partner);
+
+        $form->handleRequest($request);
+
+        $user = $this->getUserInfo($security);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+
+            $file = $form->get('file')->getData();
+
+            if ($file) {
+
+                $targetDirectory = $this->getParameter('upload_logos_directory');
+
+                $oldImage = $partner->getUrlLogo();
+
+
+                $deleteImagesService->deleteImages($oldImage, $targetDirectory);
+
+
+                $fileName = $fileUploaderService->upload($file, $targetDirectory);
+
+                $partner->setUrlLogo($fileName);
+            } else {
                 $partner->setUrlLogo(null);
             }
 
@@ -129,17 +158,16 @@ class PartnerController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('app_admin_partner');
-
         }
 
 
 
-        $currentLogoName=$partner->getUrlLogo();
+        $currentLogoName = $partner->getUrlLogo();
 
         if ($currentLogoName != null) {
-            $currentLogoPath='./images/logos/'.$currentLogoName;
+            $currentLogoPath = './images/logos/' . $currentLogoName;
         } else {
-            $currentLogoPath=null;
+            $currentLogoPath = null;
         }
         //$currentLogoPath='./images/logos/'.$currentLogoName;
 
@@ -151,111 +179,129 @@ class PartnerController extends AbstractController
             'form' => $form->createView(),
             'urlLogo' => $currentLogoPath,
         ]);
-
-
     }
+
+/**
+ * Route pour supprimer un partenaire
+ * Le contrôleur permet de gérer la suppression d'un partenaire
+ * 
+ * @param EntityManagerInterface $entityManager
+ * @param Partner $partner
+ * @param DeleteImagesService $deleteImagesService
+ * @return Response
+ */
 
     #[Route('/admin/partner/delete/{id}', name: 'app_admin_partner_delete')]
 
-    public function delete(Security $security, EntityManagerInterface $entityManager, Partner $partner): Response
+    public function delete(EntityManagerInterface $entityManager, Partner $partner, DeleteImagesService $deleteImagesService): Response
     {
 
-        $logoUrl=$partner->getUrlLogo();
-        $imageName=$partner->getUrlLogo();
-        $imagePath='./images/logos/'.$imageName;
+        try {
 
-        if ($logoUrl != null) {
-            
-            unlink($imagePath);
+            $logoName = $partner->getUrlLogo();
+            $directory = $this->getParameter('upload_logos_directory');
+            $deleteImagesService->deleteImages($logoName, $directory);
+            $entityManager->remove($partner);
+            $entityManager->flush();
+        } catch (\Exception $e) {
+
+            $this->addFlash('danger', 'Erreur lors de la suppression du partenaire. Veuillez contacter l\'administrateur.');
         }
 
-        $entityManager->remove($partner);
-        $entityManager->flush();
-
         return $this->redirectToRoute('app_admin_partner');
-
-
     }
 
-    //Route publique pour l'API pour afficher les partenaires avec retour en JSON
 
-    #[Route('/api/public/partner', name: 'app_public_partner', methods: ['GET'])]   
+/**
+ * Route publique pour l'API pour afficher la liste des partenaires
+ * réponses en JSON
+ * 
+ * @param PartnerRepository $partnerRepository
+ * @param JsonResponseNormalizer $jsonResponseNormalizer
+ * @return JsonResponse
+ * 
+ */
 
-    public function public(PartnerRepository $partnerRepository, Request $request, JsonResponseNormalizer $jsonResponseNormalizer, UrlGeneratorInterface $urlGeneratorInterface): JsonResponse
+    #[Route('/api/public/partner', name: 'app_public_partner', methods: ['GET'])]
+
+    public function public(PartnerRepository $partnerRepository, JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
     {
 
 
 
-        $partners=$partnerRepository->findAll();
+        $partners = $partnerRepository->findAll();
 
         //$publicUrlImage = $urlGeneratorInterface->generate('/public/images/logos', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $partnersArray=[];
+        $partnersArray = [];
 
-        
+
 
         foreach ($partners as $partner) {
 
-                //verifie si l'url du logo est null ou non
+            //verifie si l'url du logo est null ou non
             if ($partner->getUrlLogo() != null) {
-                $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos/".$partner->getUrlLogo();
+                $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos/" . $partner->getUrlLogo();
             } else {
                 $urlLogo = null;
             }
 
 
-            $partnersArray[]=[
-                'id'=>$partner->getId(),
-                'name'=>$partner->getName(),
-                'url_logo'=>$urlLogo,
-                'description'=>$partner->getDescription(),
-                'category'=>$partner->getCategory()->getCategory(),
+            $partnersArray[] = [
+                'id' => $partner->getId(),
+                'name' => $partner->getName(),
+                'url_logo' => $urlLogo,
+                'description' => $partner->getDescription(),
+                'category' => $partner->getCategory()->getCategory(),
             ];
         }
 
         return $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $partnersArray);
-
     }
 
+
+    /**
+     * Route publique pour l'API pour afficher un partenaire spécifique
+     * réponses en JSON
+     * 
+     * @param Partner $partner
+     * @param JsonResponseNormalizer $jsonResponseNormalizer
+     * @return JsonResponse
+     * 
+     */
     //Route publique pour l'API pour afficher la liste des partenaires avec un  id de category spécifique 
 
     #[Route('/api/public/partner/category/{id}', name: 'app_public_partnerbycategory', methods: ['GET'])]
 
-    public function publicByCategory(PartnerRepository $partnerRepository, Request $request, int $id, JsonResponseNormalizer $jsonResponseNormalizer, UrlGeneratorInterface $urlGeneratorInterface): JsonResponse
+    public function publicByCategory(PartnerRepository $partnerRepository, int $id, JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
     {
 
 
-        $partners=$partnerRepository->findBy(['category'=>$id]);
+        $partners = $partnerRepository->findBy(['category' => $id]);
 
-        $partnersArray=[];
+        $partnersArray = [];
 
-        
-//$publicUrlImage = $urlGeneratorInterface->generate('/public/images/logos', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        //$publicUrlImage = $urlGeneratorInterface->generate('/public/images/logos', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         foreach ($partners as $partner) {
-                //verifie si l'url du logo est null ou non
-                if ($partner->getUrlLogo() != null) {
-                    $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos/".$partner->getUrlLogo();
-                } else {
-                    $urlLogo = null;
-                }
-           
-            $partnersArray[]=[
+            //verifie si l'url du logo est null ou non
+            if ($partner->getUrlLogo() != null) {
+                $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos/" . $partner->getUrlLogo();
+            } else {
+                $urlLogo = null;
+            }
 
-                           'id'=>$partner->getId(),
-                'name'=>$partner->getName(),
-                'url_logo'=>$urlLogo,
-                'description'=>$partner->getDescription(),
-                'category'=>$partner->getCategory()->getCategory(),
+            $partnersArray[] = [
+
+                'id' => $partner->getId(),
+                'name' => $partner->getName(),
+                'url_logo' => $urlLogo,
+                'description' => $partner->getDescription(),
+                'category' => $partner->getCategory()->getCategory(),
             ];
         }
 
         return $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $partnersArray);
-
-
     }
-
-
-
-
 }

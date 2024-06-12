@@ -1,6 +1,7 @@
   <div>
   {% for label, messages in app.flashes %}
-        <div class="flash-{{ label }}">
+        <div class="flashBand">
+        <img src="{{ asset('images/icons/info-solid.svg') }}" alt="Icon" class="listItemIcon" />
             {% for message in messages %}
                 <p>{{ message }}</p>
             {% endfor %}

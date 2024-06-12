@@ -1,70 +1,66 @@
 <aside id="sidebarMenu">
-<div class="userInfos">
-<h2>Utilisateur connecté</h2>
-<p>{{ firstName }}</p>
-<p>{{ role }}</p>
-
-</div>
+    <div class="userInfos">
+        <h2>Utilisateur connecté</h2>
+        <p>{{ firstName }}</p>
+        <p>{{ role }}</p>
+    </div>
 
     <nav>
         <h3>Gestion contenu</h3>
         <ul class="menu">
-            <li><a href="/admin/band">Groupes</a>
-            <ul class="sub-menu">
-                <li><a href="/admin/band">Gérer les Groupes</a></li>
-                <li><a href="/admin/band/style">Gérer les styles Musicaux</a></li>
-            </ul>
+            <li class ="menu-item">
+                <a href="">Artistes <span class="toggle-arrow">&#9660;</span></a>
+                <ul class="sub-menu">
+                    <li><a href="/admin/band">Gérer les Groupes/Artistes</a></li>
+                    <li><a href="/admin/band/style">Gérer les styles Musicaux</a></li>
+                </ul>
             </li>
-            <li><a href="/admin/concert">Concerts</a>
-            <ul class="sub-menu">
-                <li><a href="/admin/concert">Gérer les Concerts</a></li>
-                <li><a href="/admin/concert/stage">Gérer les Scènes</a></li>
-            </ul>
+            <li class="menu-item">
+                <a href="#">Concerts <span class="toggle-arrow">&#9660;</span></a>
+                <ul class="sub-menu">
+                    <li><a href="/admin/concert">Gérer les Concerts</a></li>
+                    <li><a href="/admin/concert/stage">Gérer les Scènes</a></li>
+                </ul>
             </li>
-            <li><a href="/admin/faq">Informations générales et FAQ</a>
-            <ul class="sub-menu">
-                <li><a href="/admin/faq">Contenu Informations et FAQ</a></li>
-                <li><a href="/admin/faq/category">Sections Informations et FAQ</a></li>
-            </ul>
-               <li><a>Actualités - Evénèments</a>
-            <ul class="sub-menu">
-                <li><a href="/admin/news">Gérer évenements</a></li>
-                <li><a href="/admin/news/category">Catégories d'évenements</a></li>
-            </ul>            
+            <li class="menu-item">
+                <a href="#">Informations générales et FAQ <span class="toggle-arrow">&#9660;</span></a>
+                <ul class="sub-menu">
+                    <li><a href="/admin/faq">Contenu Informations et FAQ</a></li>
+                    <li><a href="/admin/faq/category">Sections Informations et FAQ</a></li>
+                </ul>
             </li>
-            <li><a>Partenaires</a>
-            <ul class="sub-menu">
-                <li><a href="/admin/partner">Gérer les partenaires</a></li>
-                <li><a href="/admin/partner/category">Gérer les catégories de partenaires</a></li>
-            </ul>            
+            <li class="menu-item">
+                <a href="#">Actualités - Evénèments <span class="toggle-arrow">&#9660;</span></a>
+                <ul class="sub-menu">
+                    <li><a href="/admin/news">Gérer évenements</a></li>
+                    <li><a href="/admin/news/category">Catégories d'évenements</a></li>
+                </ul>
             </li>
-            <li><a href="/admin/map">Carte interactive</a>
-            <ul class="sub-menu">
-                <li><a href="/admin/map/">Paramètres</a></li>
-                <li><a href="/admin/map/points/category">Catégories de marqueurs</a></li>
-            </ul>
+            <li class="menu-item">
+                <a href="#">Partenaires <span class="toggle-arrow">&#9660;</span></a>
+                <ul class="sub-menu">
+                    <li><a href="/admin/partner">Gérer les partenaires</a></li>
+                    <li><a href="/admin/partner/category">Gérer les catégories de partenaires</a></li>
+                </ul>
+            </li>
+            <li class="menu-item">
+                <a href="#">Carte interactive <span class="toggle-arrow">&#9660;</span></a>
+                <ul class="sub-menu">
+                    <li><a href="/admin/map/">Gérer les marqueurs</a></li>
+                    <li><a href="/admin/map/points/category">Catégories de marqueurs</a></li>
+                </ul>
             </li>
             <li><a href="/admin/contact">Contact Administrateur</a></li>
         </ul>
     </nav>
 
     {% if is_granted('ROLE_ADMIN') %}
-
-
     <nav>
         <h3>Menu Administrateur</h3>
         <ul>
             <li><a href="/users">Liste des Editeurs</a></li>
-            <li><a href="/users">Paramètres</a></li>
+       
         </ul>
-
     </nav>
-
     {% endif %}
-
-
-
-
 </aside>
-
-

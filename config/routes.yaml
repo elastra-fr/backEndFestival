@@ -15,6 +15,13 @@ app_admin_logout:
 api_user_login:
     path: /api/user/login_check
     methods: POST
+
+redirect_to_admin_home:
+    path: /admin
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults: 
+        path : /admin/home
+        permanent: true
     
    
     
@@ -23,5 +30,5 @@ root:
     path: /
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
     defaults:
-        path: /admin/login
+        path: /admin/home
         permanent: true

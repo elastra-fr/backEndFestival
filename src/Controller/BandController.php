@@ -128,7 +128,7 @@ class BandController extends AbstractController
             return $this->redirectToRoute('app_admin_band');
         } catch (\Exception $e) {
 
-            $this->addFlash('danger', 'Erreur lors de la suppression du groupe - Veuiilez vérifier qu\'il n\'est pas associé à un événement');
+            $this->addFlash('danger', 'Erreur lors de la suppression du groupe - Veuillez vérifier qu\'il n\'est pas associé à un événement');
             return $this->redirectToRoute('app_admin_band');
         }
     }
@@ -167,13 +167,15 @@ class BandController extends AbstractController
             $file = $form->get('file')->getData();
 
             if ($file) {
-
-                $imageName = $band->getUrlImage();
-                $directory = $this->getParameter('upload_bands_directory');
-                $deleteImagesService->deleteImages($imageName, $directory);
-
-
+                
                 $targetDirectory = $this->getParameter('upload_bands_directory');
+                
+                $imageName = $band->getUrlImage();
+                
+                $deleteImagesService->deleteImages($imageName, $targetDirectory);
+
+
+
 
                 $fileName = $fileUploaderService->upload($file, $targetDirectory);
                 $band->setUrlImage($fileName);

@@ -11,6 +11,7 @@ body {
     min-height: 100vh;
 }
 
+/**************Formulaire**************/
 .formBase{
 
 flex-grow: 1;
@@ -103,6 +104,30 @@ gap: 25px;
 
 width: 15px;
 }
+
+/*********************Bandeau flash**********************/
+
+.flashBand{
+
+display: flex;
+justify-content: space-between;
+align-items: center; ;
+color: white;
+border-radius: 10px;
+padding: 10px;
+margin: 15px;
+border: 2px solid red;
+color: black;
+font-weight: bold;
+gap: 15px;
+
+}
+
+.flashBand img{
+height: 30px;
+}
+
+
 
 /*****Toggle Button*****/
 
@@ -313,6 +338,22 @@ font-size: 0.8rem;
     margin: 5px 0;
     font-size: 1rem;
     font-weight: bold;
+}
+
+.sub-menu {
+    display: none;
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.toggle-arrow {
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.sub-menu-visible {
+    display: block;
 }
 
 /***Main Content***/
