@@ -393,3 +393,68 @@ width: 100%;
 #imagePreview img{
     width: 100%;
 }
+
+/***Planning concerts***/
+
+.contentContainer {
+    margin: 20px;
+}
+
+.calendar {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 10px;
+}
+
+.calendar-header {
+    display: grid;
+    gap: 10px;
+}
+
+.calendar-hour {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.calendar-day {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.calendar-body {
+    display: grid;
+  
+    gap: 10px;
+}
+
+.calendar-slot {
+    border: 1px solid #e0e0e0;
+    min-height: 50px;
+    position: relative;
+}
+
+.calendar-event {
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.event-title {
+    font-weight: bold;
+}
+
+.event-actions {
+    margin-top: 10px;
+}
+
+.event-actions .button {
+    margin-right: 5px;
+}

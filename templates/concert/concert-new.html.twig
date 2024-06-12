@@ -6,16 +6,13 @@
 
 {% block content %}
 
- {% for label, messages in app.flashes %}
-        <div class="alert alert-{{ label }}">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endfor %}
+
 
     {{ form_start(form, {'attr':{'class':'formBase'}}) }}
 <div class="formContainerBase">
+
+    {% include 'flashband.html.twig' %}
+    
         <h3>Créer/Editer Concert</h3>
 
         <div class="formGroup">

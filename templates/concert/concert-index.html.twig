@@ -3,19 +3,107 @@
 {% block title %}Programmation{% endblock %}
 
 {% block content %}
+
+<style>
+
+.calendar-header{
+ 
+    grid-template-columns: 0.5fr repeat({{ duration }}, 1fr);
+
+}
+
+.calendar-body{
+    grid-template-columns: 0.5fr repeat({{ duration }}, 1fr);
+}
+
+</style>
+
+
 <div class="contentContainer">
-<h2>Gestion des concerts</h2>
+    <h2>Gestion des concerts</h2>
     <a href="{{ path('app_admin_concert_new') }}" class="button">Créer concert</a>
 
-<h3>Liste des concerts</h3>
+        <h3>Filtrer par scène</h3>
+    <form method="get" action="{{ path('app_admin_concert') }}">
+        <select name="stage" onchange="this.form.submit()">
+            {% for stage in stages %}
+                <option value="{{ stage.id }}" {% if selectedStageId == stage.id %}selected{% endif %}>
+                    {{ stage.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <noscript><input type="submit" value="Filtrer"></noscript>
+    </form>
 
- 
-   <ul class="listBase">
+    <h3>Planning des concerts - {{currentStageName}}</h3>
+
+    <div class="calendar">
+        <div class="calendar-header">
+            <div class="calendar-hour"></div>
+            {% for i in 0..duration - 1 %}
+                {% set currentDate = startDate|date_modify('+' ~ i ~ ' days') %}
+                <div class="calendar-day">
+                    {{ currentDate|date('d/m/Y') }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="calendar-body">
+            {% for hour in 14..23 %}
+                <div class="calendar-hour">{{ hour }}:00</div>
+                {% for i in 0..duration - 1 %}
+                    {% set currentDate = startDate|date_modify('+' ~ i ~ ' days') %}
+                    <div class="calendar-slot" data-day="{{ i + 1 }}" data-hour="{{ hour }}">
+                        {% for concert in concerts %}
+                            {% set concertDate = concert.date|date('Y-m-d') %}
+                            {% if concertDate == currentDate.format('Y-m-d') and concert.date|date('H') == hour %}
+                                <div class="calendar-event">
+                                    <div class="event-title">{{ concert.artist }}</div>
+                                    <div class="event-actions">
+                                        <a href="{{ path('app_admin_concert_edit', {'id': concert.id}) }}" class="button">Editer</a>
+                                        <a href="{{ path('app_admin_concert_delete', {'id': concert.id}) }}" class="button">Effacer</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="calendar-hour">0:00</div>
+            {% for i in 0..duration - 1 %}
+                {% set currentDate = startDate|date_modify('+' ~ i ~ ' days') %}
+                <div class="calendar-slot" data-day="{{ i + 1 }}" data-hour="0">
+                    {% for concert in concerts %}
+                        {% set concertDate = concert.date|date('Y-m-d') %}
+                        {% if concertDate == currentDate.format('Y-m-d') and concert.date|date('H') == 0 %}
+                            <div class="calendar-event">
+                                <div class="event-title">{{ concert.artist }}</div>
+                                <div class="event-actions">
+                                    <a href="{{ path('app_admin_concert_edit', {'id': concert.id}) }}" class="button">Editer</a>
+                                    <a href="{{ path('app_admin_concert_delete', {'id': concert.id}) }}" class="button">Effacer</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+
+ {#   <ul class="listBase">
         {% for concert in concerts %}
             
             <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/guitar-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ concert.artist }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_concert_edit', {'id': concert.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_concert_delete', {'id': concert.id}) }}" class="button">Effacer</a></div></li>
         {% endfor %}
-    </ul>
+    </ul>#}
 
-</div>
-{% endblock %}
+
+

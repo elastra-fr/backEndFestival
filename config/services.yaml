@@ -8,6 +8,9 @@ parameters:
     upload_bands_directory: '%kernel.project_dir%/public/images/bands'
     upload_logos_directory: '%kernel.project_dir%/public/images/logos'
     upload_icons_directory: '%kernel.project_dir%/public/images/icons'
+    festival_start_date: '%env(FESTIVAL_START_DATE)%'
+    festival_end_date: '%env(FESTIVAL_END_DATE)%'
+
 
 services:
     # default configuration for services in *this* file
