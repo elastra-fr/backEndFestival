@@ -1,0 +1,39 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Ajout Editeur{% endblock %}
+
+{% block content %}
+    
+
+{{ form_start(form, {'attr':{'class':'formBase'} }) }}
+
+
+<div class="formContainerBase">
+<h3>Enregistrer un éditeur</h3>
+
+{% include 'flashband.html.twig'%}
+
+
+<div class="formGroup">
+            {{ form_label(form.email, 'Email') }}
+        {{ form_row(form.email) }}
+</div>
+
+<div class="formGroup">
+           {{ form_label(form.firstName, 'Prénom') }}
+        {{ form_row(form.firstName) }}
+        
+</div>
+
+<div class="formGroup">
+            {{ form_label(form.lastName, 'Nom') }}
+        {{ form_row(form.lastName) }}
+
+</div>
+
+            <button type="submit" class="button">Enregistrer</button>
+    <a href="{{ path('app_admin_user') }}" class="button">Annuler</a>
+
+</div>
+    {{ form_end(form) }}
+{% endblock %}

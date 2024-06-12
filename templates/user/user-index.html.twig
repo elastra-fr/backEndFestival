@@ -1,0 +1,38 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Gestion des éditeurs{% endblock %}
+
+{% block content %}
+
+
+
+<div class="contentContainer">
+
+{% include 'flashband.html.twig'%}
+
+
+
+<h2>Gestion des éditeurs</h2>
+    <a href="{{ path('app_admin_user_new') }}" class="button">Créer Editeur</a>
+
+<h3>Liste des éditeurs</h3>
+
+ 
+   <ul class="listBase">
+        {% for user in users %}
+            
+            <li class="listBaseItem">
+            <div class="listItemTitle"><img src="{{ asset('images/icons/user-solid.svg') }}" alt="Icon" class="listItemIcon" />
+            <span>{{ user.firstName }} {{user.lastName}} ({{user.email}})</span>
+                {% if user.isVerified %}
+                        <span>Vérifié</span>
+                    {% else %}
+                        <span class>Non Vérifié</span>
+                    {% endif %} 
+            </div>
+            <div class="listItemAction"><a href="{{ path('app_admin_user_new', {'id': user.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_style_delete', {'id': user.id}) }}" class="button">Effacer</a></div></li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}
