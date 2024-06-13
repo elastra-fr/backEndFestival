@@ -250,6 +250,7 @@ class ConcertController extends AbstractController
     $criteria = [];
 
     if ($filterJour !== 'Tout') {
+            $filterJour = DateTime::createFromFormat('Y-m-d', $filterJour)->format('Y-m-d');
         $criteria['ConcertDate'] = new DateTime($filterJour);
     }
 
@@ -257,21 +258,27 @@ class ConcertController extends AbstractController
         $criteria['Stage'] = $filterScene;
     }
 
-       if ($filterGenre !== 'Tout') {
-            // On recherche les concerts dont l'artiste appartient au genre musical spécifié
-            $criteria['Artist'] = $concertRepository->findArtistsByMusicStyle($filterGenre);
-        }
-
+    if ($filterGenre !== 'Tout') {
+        $criteria['Artist.music_style'] = $filterGenre;
+    }
 
         //obtenir tous les concerts triés par date de concert
 
-        $concerts = $concertRepository->findBy($criteria, ['ConcertDate' => 'ASC']);
+     //   $concerts = $concertRepository->findBy($criteria, ['ConcertDate' => 'ASC']);
+         
+            $concerts = $concertRepository->findByCriteria($criteria);
 
      //   $concertsList = [];
 
         $concertByDay = [];
 
         foreach ($concerts as $concert) {
+
+            if ($filterJour !== 'Tout' && $concert->getConcertDate()->format('Y-m-d') !== $filterJour) {
+            continue;
+        }
+
+
             $imageName = $concert->getArtist()->getUrlImage();
             $commonPath = 'https://backend.nationsound2024-festival.fr/images/bands/';
             $localPath = './images/bands/';

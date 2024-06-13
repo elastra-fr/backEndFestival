@@ -16,15 +16,30 @@ class ConcertRepository extends ServiceEntityRepository
         parent::__construct($registry, Concert::class);
     }
 
-    public function findArtistsByMusicStyle(string $musicStyle): array
+public function findByCriteria(array $criteria): array
 {
-    return $this->createQueryBuilder('c')
-        ->join('c.Artist', 'a')
-        ->join('a.music_style', 'ms')
-        ->andWhere('ms.name = :musicStyle')
-        ->setParameter('musicStyle', $musicStyle)
-        ->getQuery()
-        ->getResult();
+    $qb = $this->createQueryBuilder('c');
+
+    if (isset($criteria['ConcertDate'])) && $criteria['ConcertDate'] instanceof \DateTime) {
+        $qb->andWhere('c.ConcertDate = :ConcertDate')
+            ->setParameter('ConcertDate', $criteria['ConcertDate']);
+    }
+
+    if (isset($criteria['Stage'])) {
+        $qb->andWhere('c.Stage = :Stage')
+            ->setParameter('Stage', $criteria['Stage']);
+    }
+
+    if (isset($criteria['Artist.music_style'])) {
+        $qb->join('c.Artist', 'a')
+            ->join('a.music_style', 'm')
+            ->andWhere('m.id = :music_style')
+            ->setParameter('music_style', $criteria['Artist.music_style']);
+    }
+
+    $qb->orderBy('c.ConcertDate', 'ASC');
+
+    return $qb->getQuery()->getResult();
 }
 
     //    /**
