@@ -4,15 +4,16 @@
 <p>Effectuer un clic droit sur la carte pour compléter les coordonnées ci-dessous</p>
 
 
-{{ form_start(form) }}
+        {{ form_start(form, {'attr': {'class': 'formBase'}}) }}
+<div class="formContainerBase">
 
-    <div>
-        {{ form_label(form.title) }}
+    <div class="formGroup">
+        {{ form_label(form.title, 'Titre') }}
         {{ form_widget(form.title) }}
         {{ form_errors(form.title) }}
     </div>
 
-    <div>
+    <div class="formGroup">
         {{ form_label(form.description) }}
         {{ form_widget(form.description) }}
         {{ form_errors(form.description) }}
@@ -20,23 +21,28 @@
     </div>
 
 
-    <div>
+    <div class="formGroup">
         {{ form_label(form.Longitude) }}
         {{ form_widget(form.Longitude) }}
         {{ form_errors(form.Longitude) }}
     </div>
-    <div>
+    <div class="formGroup">
         {{ form_label(form.Latitude) }}
         {{ form_widget(form.Latitude) }}
         {{ form_errors(form.Latitude) }}
     </div>
-    <div>
+    <div class="formGroup">
         {{ form_label(form.type) }}
         {{ form_widget(form.type) }}
         {{ form_errors(form.type) }}
     </div>
+
     <div>
-        <button type="submit">{{ 'Submit'|trans }}</button>
+              <button type="submit" class="button">Enregistrer</button>
+            <a href="{{ path('app_admin_map') }}" class="button">Annuler</a>
     </div>
+
+</div>
+
 {{ form_end(form) }}
 

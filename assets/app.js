@@ -80,7 +80,7 @@ if (fileInput !== null) {
 
 /**********************Gestion de la carte leaflet**********************/
 
-console.log(mapPoints);
+//console.log(mapPoints);
 
 if (document.getElementById("map") !== null) {
   console.log("ok map");
@@ -94,6 +94,59 @@ if (document.getElementById("map") !== null) {
 
   var centerMarker = L.marker([48.7689, 2.09454]).addTo(mymap);
   centerMarker.bindPopup("Site du festival").openPopup();
+
+//Ajouter un bouton pour centrer la carte sur le site du festival
+
+var target = L.latLng(48.7689, 2.09454);
+
+var backButtonControl = L.control({ position: 'topright' });
+
+backButtonControl.onAdd = function(mymap) {
+    var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+    div.innerHTML = '<button id="returnToTarget">Retour Festival</button>';
+    return div;
+};
+
+backButtonControl.addTo(mymap);
+
+//Ajouter un bouton pour localiser l'utilisateur
+var locateControl = L.control({ position: 'topright' });
+var userLocationMarker = null;
+
+    locateControl.onAdd = function(mymap) {
+        var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        div.innerHTML = '<button id="locateUserButton">Localiser Utilisateur</button>';
+        return div;
+    };
+
+    locateControl.addTo(mymap);
+
+        // Fonction pour localiser l'utilisateur
+    function locateUser() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latlng = L.latLng(position.coords.latitude, position.coords.longitude);
+                
+                // Centrer la carte sur la position de l'utilisateur
+                mymap.setView(latlng, 14);
+
+                // Ajouter un marqueur à la position de l'utilisateur
+                if (!userLocationMarker) {
+                    userLocationMarker = L.marker(latlng).addTo(mymap);
+                } else {
+                    userLocationMarker.setLatLng(latlng);
+                }
+
+                userLocationMarker.bindPopup("Votre position").openPopup();
+            }, function(error) {
+                console.error('Erreur de géolocalisation : ', error.message);
+            });
+        } else {
+            alert("La géolocalisation n'est pas prise en charge par votre navigateur.");
+        }
+    }
+
+
 
   //ajout de tous les markers avec les coordonnées de mapPoints
 
@@ -121,4 +174,20 @@ if (document.getElementById("map") !== null) {
     latInput.value = lat;
     lngInput.value = lng;
   });
+
+
+  //Ajout d'un écouteur d'événement pour le bouton de retour
+
+  document.getElementById("returnToTarget").addEventListener("click", function () {
+    mymap.setView(target, 14);
+  });
+
+  //Ajout d'un écouteur d'événement pour le bouton de localisation
+
+  document.getElementById('locateUserButton').onclick = locateUser;
+  
+
+
 }
+
+

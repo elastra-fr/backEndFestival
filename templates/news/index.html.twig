@@ -16,7 +16,14 @@
    <ul class="listBase">
         {% for content in news %}
             
-            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/music-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ content.title }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_news_edit', {'id': content.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_news_delete', {'id': content.id}) }}" class="button">Effacer</a></div></li>
+            <li class="listBaseItem">
+            <div class="listItemTitle"><img src="{{ asset('images/icons/newspaper-solid.svg') }}" alt="Icon" class="listItemIcon" />
+            <span>{{ content.title }} </span></div>
+            <div class="listItemAction">
+            <a href="{{ path('app_admin_news_edit', {'id': content.id}) }}" class="button">Editer</a>
+            <a href="{{ path('app_admin_news_delete', {'id': content.id}) }}" class="button">Effacer</a>
+            </div>
+            </li>
         {% endfor %}
     </ul>
 

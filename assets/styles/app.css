@@ -224,15 +224,16 @@ input:checked + .slider:before {
 
 .button {
     padding: 10px;
-    background-color: cornflowerblue;
+    background-color: black;
+    border-radius: 4px;
     color: white;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
     text-align: center;
     font-size: 1rem;
     max-width: 200px;
+    font-weight: bold;
 
 }
 
@@ -441,11 +442,12 @@ width: 100%;
 .calendar-event {
     background-color: #e0e0e0;
     padding: 10px;
-    border-radius: 5px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: 
+
 }
 
 .event-title {
@@ -454,6 +456,9 @@ width: 100%;
 
 .event-actions {
     margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
 }
 
 .event-actions .button {

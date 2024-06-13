@@ -8,7 +8,6 @@
                 <nav id="mainNav">
                     <ul>
                                             {% if app.user %}
-                            <li><a href="/profil"><img src="{{ asset('images/icons/user-solid.svg') }}" alt="Icon" class="listItemIcon" title="Profil utilisateur"/></a></li>
                             <li><a href="/admin/logout"><img src="{{ asset('images/icons/logout-solid.svg') }}" alt="Icon" class="listItemIcon" title="Deconnexion"/></a></li>
                         {% else %}
                             <li><a href="/admin/login">Connexion</a></li>
