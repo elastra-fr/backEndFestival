@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Concert;
 use App\Form\ConcertType;
 use App\Repository\ConcertRepository;
+use App\Repository\MusicStyleRepository;
 use App\Repository\StageRepository;
 use App\Service\JsonResponseNormalizer;
 use App\Service\SlotCheckerService;
@@ -276,4 +277,79 @@ class ConcertController extends AbstractController
         $concerts = $jsonResponseNormalizer->respondSuccess(200, $concertsList);
         return $concerts;
     }
+
+
+    //Route pour renvoyer les jours du festival  ainsi que les créneau horaires au format JSON
+
+    #[Route('/api/public/concert/filters', name: 'app_api_concert_filters' , methods: ['GET'])]
+
+    public function festivalFilters(JsonResponseNormalizer $jsonResponseNormalizer, StageRepository $stageRepository, MusicStyleRepository $musicStyleRepository): Response
+    {
+
+{
+    $startDate = new DateTime($this->getParameter('festival_start_date'));
+    $endDate = new DateTime($this->getParameter('festival_end_date'));
+
+    $festivalDuration = $endDate->diff($startDate)->days + 1;
+
+    $days = [];
+    $openingTime = '14:00';
+    $closingTime = '00:00';
+
+    for ($i = 0; $i < $festivalDuration; $i++) {
+        $days[] = [
+            'day' => $i + 1,
+            'date' => $startDate->format('Y-m-d'),
+            'openingTime' => $openingTime,
+            'closingTime' => $closingTime,
+        ];
+        $startDate->modify('+1 day');
+    }
+
+
+
+
+    $musicStyles = $musicStyleRepository->findAll();
+
+    $musicStylesList = [];
+
+    foreach ($musicStyles as $musicStyle) {
+        $musicStylesList[] = [
+            'id' => $musicStyle->getId(),
+            'name' => $musicStyle->getName(),
+        ];
+    }
+
+    $stages = $stageRepository->findAll();
+
+    $stagesList = [];
+
+    foreach ($stages as $stage) {
+        $stagesList[] = [
+            'id' => $stage->getId(),
+            'name' => $stage->getName(),
+        ];
+    }
+
+
+    $response = [
+        'days' => $days,
+        'amplitudeHoraire' => [
+            'min' => $openingTime,
+            'max' => $closingTime,
+        ],
+        'musicStyles' => $musicStylesList,
+        'stages' => $stagesList,
+    ];
+
+    $response = $jsonResponseNormalizer->respondSuccess(200, $response);
+    return $response;
+}
+    }
+
+
+
+
+
+
 }
