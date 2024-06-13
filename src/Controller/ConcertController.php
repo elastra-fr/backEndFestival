@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+
 class ConcertController extends AbstractController
 {
     use UserInfoTrait;
@@ -238,14 +239,36 @@ class ConcertController extends AbstractController
 
 
     #[Route('/api/public/concert', name: 'app_api_concert')]
-    public function concert(ConcertRepository $concertRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
+    public function concert(Request $request, ConcertRepository $concertRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
     {
 
-        $concerts = $concertRepository->findAll();
+    $filterJour = $request->query->get('jour', 'Tout');
+    $filterScene = $request->query->get('scene', 'Tout');
+    $filterHoraire = $request->query->get('horaire', 'Tout');
+    $filterGenre = $request->query->get('genre', 'Tout');
 
-        $concertsList = [];
+    $criteria = [];
+
+    if ($filterJour !== 'Tout') {
+        $criteria['concertDate'] = new DateTime($filterJour);
+    }
+
+    if ($filterScene !== 'Tout') {
+        $criteria['stage'] = $filterScene;
+    }
+
+    if ($filterGenre !== 'Tout') {
+        $criteria['artist.genre'] = $filterGenre;
+    }
 
 
+        //obtenir tous les concerts triés par date de concert
+
+        $concerts = $concertRepository->findBy($criteria, ['ConcertDate' => 'ASC']);
+
+     //   $concertsList = [];
+
+        $concertByDay = [];
 
         foreach ($concerts as $concert) {
             $imageName = $concert->getArtist()->getUrlImage();
@@ -260,11 +283,11 @@ class ConcertController extends AbstractController
                 '200' => file_exists($localPath . '200-' . $imageName) ? $commonPath . '200-' . $imageName : null,
             ];
 
-            var_dump($localPath . $imageName);
+            //var_dump($localPath . $imageName);
 
 
             
-            $concertsList[] = [
+            $concertData = [
                 'id' => $concert->getId(),
                 'date' => $concert->getConcertDate()->format('Y-m-d H:i:s'),
                 'location' => $concert->getStage()->getName(),
@@ -272,9 +295,23 @@ class ConcertController extends AbstractController
                 'artist' => $concert->getArtist()->getName(),
                 'images' => $imagesPath,
             ];
+
+            $day=$concert->getConcertDate()->format('Y-m-d');
+
+
+            if (!isset($concertByDay[$day])) {
+                $concertByDay[$day] = [];
+            }
+
+      if ($filterHoraire === 'Tout' || (int)$filterHoraire <= (int)$concert->getConcertDate()->format('H')) {
+            $concertByDay[$day][] = $concertData;
         }
 
-        $concerts = $jsonResponseNormalizer->respondSuccess(200, $concertsList);
+
+
+        }
+
+        $concerts = $jsonResponseNormalizer->respondSuccess(200, $concertByDay);
         return $concerts;
     }
 

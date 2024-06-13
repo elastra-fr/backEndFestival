@@ -39,3 +39,6 @@ yarn-error.log
 ###Ignorer les dossiers images bands et logos###
 /public/images/bands/
 /public/images/logos/
+
+###Ignorer le dossier migrations###
+/src/Migrations/
