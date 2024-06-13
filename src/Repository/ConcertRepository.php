@@ -16,6 +16,17 @@ class ConcertRepository extends ServiceEntityRepository
         parent::__construct($registry, Concert::class);
     }
 
+    public function findArtistsByMusicStyle(string $musicStyle): array
+{
+    return $this->createQueryBuilder('c')
+        ->join('c.Artist', 'a')
+        ->join('a.music_style', 'ms')
+        ->andWhere('ms.name = :musicStyle')
+        ->setParameter('musicStyle', $musicStyle)
+        ->getQuery()
+        ->getResult();
+}
+
     //    /**
     //     * @return Concert[] Returns an array of Concert objects
     //     */

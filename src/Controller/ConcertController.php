@@ -257,11 +257,12 @@ class ConcertController extends AbstractController
         $criteria['Stage'] = $filterScene;
     }
 
-    if ($filterGenre !== 'Tout') {
-        $criteria['Artist.music_style'] = $filterGenre;
-    }
+       if ($filterGenre !== 'Tout') {
+            // On recherche les concerts dont l'artiste appartient au genre musical spécifié
+            $criteria['Artist'] = $concertRepository->findArtistsByMusicStyle($filterGenre);
+        }
 
-var_dump($criteria);
+
         //obtenir tous les concerts triés par date de concert
 
         $concerts = $concertRepository->findBy($criteria, ['ConcertDate' => 'ASC']);
