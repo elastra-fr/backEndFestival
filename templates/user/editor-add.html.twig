@@ -15,19 +15,26 @@
 
 
 <div class="formGroup">
-            {{ form_label(form.email, 'Email') }}
-        {{ form_row(form.email) }}
+       
+          {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.email) }}
+        {{ form_errors(form.email) }}
+
 </div>
 
 <div class="formGroup">
-           {{ form_label(form.firstName, 'Prénom') }}
-        {{ form_row(form.firstName) }}
+
+        {{ form_label(form.firstName, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}      
+        {{ form_widget(form.firstName) }}
+        {{ form_errors(form.firstName) }}
         
 </div>
 
 <div class="formGroup">
-            {{ form_label(form.lastName, 'Nom') }}
-        {{ form_row(form.lastName) }}
+        
+        {{ form_label(form.lastName, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.lastName) }}
+        {{ form_errors(form.lastName) }}
 
 </div>
 

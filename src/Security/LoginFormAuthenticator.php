@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use App\Repository\UserRepository;
 
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -24,8 +25,10 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     public const LOGIN_ROUTE = 'app_admin_login';
     public const REDIRECT_AFTER_LOGIN = 'app_admin_dashboard';
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator, private UserRepository $userRepository)
     {
+            $this->urlGenerator = $urlGenerator;
+            $this->userRepository = $userRepository;
     }
 
     public function authenticate(Request $request): Passport
@@ -33,6 +36,16 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $email = $request->getPayload()->getString('email');
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
+
+        $user= $this->userRepository->findOneBy(['email' => $email]);
+
+        if (!$user || $user->isBlocked()) {
+          
+      
+            throw new AuthenticationException('Utilisateur non trouvé ou bloqué.');
+
+          
+        }
 
         return new Passport(
             new UserBadge($email),

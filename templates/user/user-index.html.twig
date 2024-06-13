@@ -22,15 +22,30 @@
         {% for user in users %}
             
             <li class="listBaseItem">
-            <div class="listItemTitle"><img src="{{ asset('images/icons/user-solid.svg') }}" alt="Icon" class="listItemIcon" />
-            <span>{{ user.firstName }} {{user.lastName}} ({{user.email}})</span>
-                {% if user.isVerified %}
-                        <span>Vérifié</span>
+            <div class="listItemTitle">
+            {% if user.isVerified %}
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="green"><title>Editeur vérifié</title><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
                     {% else %}
-                        <span class>Non Vérifié</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="red"> <title>Editeur non vérifié</title><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
                     {% endif %} 
+
+            {% if user.isBlocked %}
+             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="red"><title>Editeur bloqué</title><path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/></svg>
+            {% endif %}
+
+            
+            <span>{{ user.firstName }} {{user.lastName}} ({{user.email}})</span>
             </div>
-            <div class="listItemAction"><a href="{{ path('app_admin_user_new', {'id': user.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_style_delete', {'id': user.id}) }}" class="button">Effacer</a></div></li>
+            <div class="listItemAction">
+
+                {% if user.isBlocked %}
+                    <a href="{{ path('app_admin_user_unblock', {'id': user.id}) }}" class="button">Débloquer</a>
+                {% else %}
+                    <a href="{{ path('app_admin_user_block', {'id': user.id}) }}" class="button">Bloquer</a>
+                {% endif %}
+
+            <a href="{{ path('app_admin_user_delete', {'id': user.id}) }}" class="button needs-confirmation">Supprimer</a></div></li>
+
         {% endfor %}
     </ul>
 

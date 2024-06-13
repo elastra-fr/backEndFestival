@@ -44,6 +44,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $UserVerified = false;
 
+    #[ORM\Column]
+    private ?bool $IsBlocked = false;
+
+    #[ORM\Column]
+    private ?int $LoginAttempt = 0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -170,6 +176,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUserVerified(bool $UserVerified): static
     {
         $this->UserVerified = $UserVerified;
+
+        return $this;
+    }
+
+    public function isBlocked(): ?bool
+    {
+        return $this->IsBlocked;
+    }
+
+    public function setBlocked(bool $IsBlocked): static
+    {
+        $this->IsBlocked = $IsBlocked;
+
+        return $this;
+    }
+
+    public function getLoginAttempt(): ?int
+    {
+        return $this->LoginAttempt;
+    }
+
+    public function setLoginAttempt(int $LoginAttempt): static
+    {
+        $this->LoginAttempt = $LoginAttempt;
 
         return $this;
     }

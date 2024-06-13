@@ -100,10 +100,11 @@ gap: 25px;
 
 }
 
-.listItemIcon{
+.listItemIcon, .listBaseItem svg{
 
 width: 15px;
 }
+
 
 /*********************Bandeau flash**********************/
 

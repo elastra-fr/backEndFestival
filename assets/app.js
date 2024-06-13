@@ -33,6 +33,21 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
+// Event listener pour le bouton de suppression
+
+document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.needs-confirmation');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément ? Cette action est irréversible. Continuer ?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+
 // Fonction pour afficher l'image sélectionnée dans les formulaires groupes/artistes et partenaires
 function displayImage(e) {
   const fileInput = e.target;

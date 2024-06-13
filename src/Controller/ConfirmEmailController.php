@@ -56,81 +56,47 @@ class ConfirmEmailController extends AbstractController
      * @return JsonResponse : la réponse HTTP
      */
 
-    #[Route('/confirm-email/{token}', name: 'confirm_email', methods: ['GET'])]
-    public function confirmEmail(string $token): Response
-    {
-        $user = $this->userRepository->findOneBy(['email_verification_token' => $token]);
+#[Route('/confirm-editor/{token}', name: 'confirm_editor', methods: ['GET', 'POST'])]
+public function confirmEditor(string $token, Request $request): Response
+{
+    $user = $this->userRepository->findOneBy(['email_verification_token' => $token]);
 
-        if (!$user) {
-            return $this->respondInvalidToken();
-        }
-
-        $user->setUserVerified(true);
-        $user->setEmailVerificationToken(null);
-
-        $this->manager->persist($user);
-        $this->manager->flush();
-        return $this->respondConfirmedEmail();
+    if (!$user) {
+        return $this->respondInvalidToken();
     }
 
-//Méthode pour confirmer l'inscription des éditeurs et le demander de choir un mot de passe via un formulaire
-    #[Route('/confirm-editor/{token}', name: 'confirm_editor', methods: ['GET', 'POST'])]
-    public function confirmEditor(string $token, Request $request): Response
-    {
-        $user = $this->userRepository->findOneBy(['email_verification_token' => $token]);
+    $form = $this->createForm(ResetPasswordType::class);
 
-        if (!$user) {
-            return $this->respondInvalidToken();
-        }
+    $form->handleRequest($request);
 
-        $form = $this->createForm(ResetPasswordType::class);
+    if ($form->isSubmitted() && $form->isValid()) {
 
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
+        $data = $form->getData();
+        $plainPassword = $data['newPassword'];
 
-            $data=$form->getData();
+        $passwordErrors = $this->passwordValidatorService->isPasswordComplex($plainPassword);
 
-            $plainPassword = $data['newPassword'];
-
-            $passwordErrors = $this->passwordValidatorService->isPasswordComplex($plainPassword);
-
-            if(!empty($passwordErrors)){
-        $this->addFlash('error', 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial. Veuillez respecter les critères suivants : ' . implode(', ', $passwordErrors) . ' !');   
-            }
-
+        if (!empty($passwordErrors)) {
+            $this->addFlash('error', 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial. Veuillez respecter les critères suivants : ' . implode(', ', $passwordErrors) . ' !');
+        } else {
             $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
 
             $user->setPassword($hashedPassword);
             $user->setUserVerified(true);
             $user->setEmailVerificationToken(null);
 
-
             $this->manager->persist($user);
             $this->manager->flush();
-            
-            //Redirection vers la page de connexion
+
+            // Redirection vers la page de connexion
             return $this->redirectToRoute('app_admin_login');
         }
-        
-        
-        return $this->render('reset_password/reset-password.html.twig', [
-            'form' => $form->createView()
-        ]);
-        
-
-
-
-
     }
 
-
-
-
-
-
-
-
+    return $this->render('reset_password/reset-password.html.twig', [
+        'form' => $form->createView()
+    ]);
+}
 
 
 

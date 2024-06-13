@@ -63,6 +63,7 @@ public function index(Security $security, UserRepository $userRepository): Respo
             'firstName' => $user->getFirstName(),
             'lastName' => $user->getLastName(),
             'isVerified' => $user->isUserVerified(),
+            'isBlocked' => $user->isBlocked(),
         ];
     }
 
@@ -155,6 +156,75 @@ $mailerService->sendEmail($userToRegister->getEmail(), 'Confirmation de votre ad
         'role' => $CurrentUser['role'],
         'form' => $form->createView(),
     ]);
+}
+
+/**
+ * Route pour bloquer un utilisateur ayant le rôle ROLE_EDITOR dans la partie backend
+ * 
+ */
+
+#[Route(path: '/admin/user/block/{id}', name: 'app_admin_user_block')]
+
+public function block(Security $security, EntityManagerInterface $entityManagerInterface, UserRepository $userRepository, $id): Response
+{
+   // $CurrentUser = $this->getUserInfo($security);
+
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+    $user = $userRepository->find($id);
+
+    if ($user) {
+        $user->setBlocked(true);
+        $entityManagerInterface->flush();
+    }
+
+    return $this->redirectToRoute('app_admin_user');
+}
+
+/**
+ * Route pour débloquer un utilisateur ayant le rôle ROLE_EDITOR dans la partie backend
+ * 
+ */
+
+#[Route(path: '/admin/user/unblock/{id}', name: 'app_admin_user_unblock')]
+
+public function unblock(Security $security, EntityManagerInterface $entityManagerInterface, UserRepository $userRepository, $id): Response
+{
+    //$CurrentUser = $this->getUserInfo($security);
+
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+    $user = $userRepository->find($id);
+
+    if ($user) {
+        $user->setBlocked(false);
+        $entityManagerInterface->flush();
+    }
+
+    return $this->redirectToRoute('app_admin_user');
+}
+
+/**
+ * Route pour supprimer un utilisateur ayant le rôle ROLE_EDITOR dans la partie backend
+ * 
+ */
+
+#[Route(path: '/admin/user/delete/{id}', name: 'app_admin_user_delete')]
+
+public function delete(Security $security, EntityManagerInterface $entityManagerInterface, UserRepository $userRepository, $id): Response
+{
+    //$CurrentUser = $this->getUserInfo($security);
+
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+    $user = $userRepository->find($id);
+
+    if ($user) {
+        $entityManagerInterface->remove($user);
+        $entityManagerInterface->flush();
+    }
+
+    return $this->redirectToRoute('app_admin_user');
 }
 
 
