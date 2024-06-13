@@ -250,18 +250,18 @@ class ConcertController extends AbstractController
     $criteria = [];
 
     if ($filterJour !== 'Tout') {
-        $criteria['concertDate'] = new DateTime($filterJour);
+        $criteria['ConcertDate'] = new DateTime($filterJour);
     }
 
     if ($filterScene !== 'Tout') {
-        $criteria['stage'] = $filterScene;
+        $criteria['Stage'] = $filterScene;
     }
 
     if ($filterGenre !== 'Tout') {
-        $criteria['artist.genre'] = $filterGenre;
+        $criteria['Artist.music_style'] = $filterGenre;
     }
 
-
+var_dump($criteria);
         //obtenir tous les concerts triés par date de concert
 
         $concerts = $concertRepository->findBy($criteria, ['ConcertDate' => 'ASC']);
