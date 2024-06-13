@@ -20,7 +20,7 @@ public function findByCriteria(array $criteria): array
 {
     $qb = $this->createQueryBuilder('c');
 
-    if (isset($criteria['ConcertDate'])) && $criteria['ConcertDate'] instanceof \DateTime) {
+    if (isset($criteria['ConcertDate']) && $criteria['ConcertDate'] instanceof \DateTime) {
         $qb->andWhere('c.ConcertDate = :ConcertDate')
             ->setParameter('ConcertDate', $criteria['ConcertDate']);
     }
