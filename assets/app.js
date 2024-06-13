@@ -155,12 +155,29 @@ var userLocationMarker = null;
     let lat = parseFloat(point.latitude);
     let lng = parseFloat(point.longitude);
 
-    var marker = L.marker([lat, lng]).addTo(mymap);
+  let icon = point.img;
+  let iconUrl = "/images/icons/" + icon;
+  console.log(iconUrl);
+
+    var marker = L.marker([lat, lng], {icon: createSvgIcon(iconUrl)}).addTo(mymap);
     // Ajouter un popup au marqueur avec titre et description
     marker
       .bindPopup(`<b>${point.title}</b><br>${point.description}`)
       .openPopup();
   });
+
+
+        function createSvgIcon(iconUrl) {
+            return L.divIcon({
+                className: 'custom-svg-icon',
+                html: `<img src="${iconUrl}" width="32" height="32">`,
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            });
+        }
+
+
 
   mymap.on("contextmenu", function (e) {
     var lat = parseFloat(e.latlng.lat).toFixed(7);

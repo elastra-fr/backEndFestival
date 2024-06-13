@@ -48,6 +48,7 @@ class MapController extends AbstractController
                 'latitude' => $mapPoint->getLatitude(),
                 'longitude' => $mapPoint->getLongitude(),
                 'type' => $mapPoint->getType()->getPointCategory(),
+                'img'=>$mapPoint->getType()->getPointUrl(),
             ];
         }
 
