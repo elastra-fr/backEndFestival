@@ -7,8 +7,17 @@
             
                 <nav id="mainNav">
                     <ul>
+                                 <li >
+                                 
+                                 <a href="#" id="hamburger-button"><img src="{{ asset('images/icons/bars-solid.svg') }}" alt="Icon" class="listItemIcon" title="Menu"/>
+                                    </a>
+                                 </li>
+                                 
                                             {% if app.user %}
-                            <li><a href="/admin/logout"><img src="{{ asset('images/icons/logout-solid.svg') }}" alt="Icon" class="listItemIcon" title="Deconnexion"/></a></li>
+                            <li>
+                            <a href="/admin/logout"><img src="{{ asset('images/icons/logout-solid.svg') }}" alt="Icon" class="listItemIcon" title="Deconnexion"/>
+                            </a>
+                            </li>
                         {% else %}
                             <li><a href="/admin/login">Connexion</a></li>
                         {% endif %}

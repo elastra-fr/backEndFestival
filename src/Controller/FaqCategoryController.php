@@ -2,17 +2,16 @@
 
 namespace App\Controller;
 
-use App\Repository\FaqCategoryRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\SecurityBundle\Security;
-use App\Trait\UserInfoTrait;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use App\Entity\FaqCategory;
 use App\Form\FaqCategoryType;
+use App\Repository\FaqCategoryRepository;
+use App\Trait\UserInfoTrait;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class FaqCategoryController extends AbstractController
 {
@@ -68,7 +67,7 @@ class FaqCategoryController extends AbstractController
 
     #[Route('/admin/faq/category/delete/{id}', name: 'app_admin_faq_category_delete')]
 
-    public function delete(Security $security, EntityManagerInterface $entityManager, FaqCategory $faqCategory): Response
+    public function delete(EntityManagerInterface $entityManager, FaqCategory $faqCategory): Response
     {
 
         $entityManager->remove($faqCategory);

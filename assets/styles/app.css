@@ -56,10 +56,10 @@ gap: 10px;
     margin-top: 50px;
     display: flex;
     flex-direction: column;
-    max-width: 500px;
     gap: 15px;
     background-color: #f8f9fa;
     padding: 25px;
+    width: 95%;
     
 }
 
@@ -267,6 +267,7 @@ width: 100%;
 #mainNav{
     width: 100%;
     padding: 15px;
+
 }
 
 #mainNav ul
@@ -276,7 +277,7 @@ width: 100%;
 display: flex;
 align-items: center;
 justify-content: flex-end;
-gap:15px;
+gap: 20px;
 
 
 }
@@ -287,6 +288,11 @@ list-style: none;
 text-decoration: none;
 
 
+}
+
+#mainNav ul li a img{
+
+width: 30px;
 }
 
 /***Sidebar***/
@@ -306,9 +312,20 @@ font-size: 0.8rem;
 }
 
 #sidebarMenu {
-    width: 250px;
+    width: 95%;
+    margin: 0 auto;
     padding: 15px;
     background-color: #f8f9fa;
+    
+
+}
+
+.sideBarVisible {
+    display: block;
+}
+
+.sideBarHidden {
+    display: none;
 }
 
 #sidebarMenu nav ul {
@@ -365,6 +382,7 @@ font-size: 0.8rem;
 display: flex;
 min-height: 90vh;
 width: 100%;
+flex-direction: column;
 
 }
 
@@ -446,7 +464,7 @@ width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: 
+  
 
 }
 
@@ -464,3 +482,65 @@ width: 100%;
 .event-actions .button {
     margin-right: 5px;
 }
+
+@media screen and (min-width: 768px) {
+    
+    #hamburger-button{
+        display: none;
+    }
+
+
+    #appMain{
+        flex-direction: row;
+        
+    }
+
+    #sidebarMenu{
+     width: 250px;
+    display: block;
+    }
+    
+}
+
+
+    @media (max-width: 768px) {
+        .calendar-header,
+        .calendar-body {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr;
+        }
+
+        .calendar-hour,
+        .calendar-day, .listItemAction a {
+            font-size: 0.8rem;
+        }
+
+        .calendar-slot {
+            min-height: 30px;
+        }
+
+        .listItemTitle span{
+          font-size: 0.9rem;
+                }
+    }
+
+    @media (max-width: 480px) {
+        .calendar-header,
+        .calendar-body {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr;
+        }
+
+        .calendar-hour,
+        .calendar-day {
+            font-size: 0.6rem;
+            padding: 5px;
+        }
+
+        .calendar-slot {
+            min-height: 20px;
+        }
+
+
+
+    }

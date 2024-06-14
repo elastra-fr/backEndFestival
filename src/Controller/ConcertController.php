@@ -238,7 +238,7 @@ class ConcertController extends AbstractController
  */
 
 
-    #[Route('/api/public/concert', name: 'app_api_concert')]
+    #[Route('/api/public/concert', name: 'app_api_concert', methods: ['GET'])]
     public function concert(Request $request, ConcertRepository $concertRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
     {
 

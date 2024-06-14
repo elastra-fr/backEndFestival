@@ -2,6 +2,29 @@ import "./bootstrap.js";
 
 import "./styles/app.css";
 
+//Event Listener pour le bouton de menu avec l'id hamburger-button
+
+document.addEventListener("DOMContentLoaded", function () {
+  var hamburgerButton = document.getElementById("hamburger-button");
+  var sideBar = document.getElementById("sidebarMenu");
+
+  hamburgerButton.addEventListener("click", function () {
+    if (sideBar.classList.contains("sideBarVisible")) {
+      sideBar.classList.remove("sideBarVisible");
+      sideBar.classList.add("sideBarHidden");
+    }
+
+    else {
+      sideBar.classList.add("sideBarVisible");
+      sideBar.classList.remove("sideBarHidden");
+    }
+
+  });
+});
+
+
+
+
 //Fonction pour gérer l'affichage des sous-menus
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -162,8 +185,7 @@ var userLocationMarker = null;
     var marker = L.marker([lat, lng], {icon: createSvgIcon(iconUrl)}).addTo(mymap);
     // Ajouter un popup au marqueur avec titre et description
     marker
-      .bindPopup(`<b>${point.title}</b><br>${point.description}`)
-      .openPopup();
+      .bindPopup(`<b>${point.title}</b><br>${point.description}`);
   });
 
 
