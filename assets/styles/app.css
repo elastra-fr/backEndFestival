@@ -234,6 +234,7 @@ input:checked + .slider:before {
     font-size: 1rem;
     max-width: 200px;
     font-weight: bold;
+    height: 40px;
 
 }
 
@@ -393,7 +394,7 @@ padding: 15px;
 display: flex;
 flex-direction: column;
 gap: 15px;
-margin: 25px;
+
 }
 
 .contentContainer h1{
@@ -416,9 +417,7 @@ width: 100%;
 
 /***Planning concerts***/
 
-.contentContainer {
-    margin: 20px;
-}
+
 
 .calendar {
     display: grid;
@@ -532,7 +531,7 @@ width: 100%;
         }
 
         .calendar-hour,
-        .calendar-day {
+        .calendar-day, .listItemAction a {
             font-size: 0.6rem;
             padding: 5px;
         }
@@ -540,6 +539,10 @@ width: 100%;
         .calendar-slot {
             min-height: 20px;
         }
+
+        .listItemTitle span{
+          font-size: 0.7rem;
+                }
 
 
 
