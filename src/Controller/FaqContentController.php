@@ -21,20 +21,24 @@ class FaqContentController extends AbstractController
     use UserInfoTrait;
 
 
-/**
- * Affiche la liste des contenus de FAQ
- * Le contrôleur permet de gérer l'affichage de la liste des contenus de FAQ
- * 
- * @param Security $security
- * @param FaqContentRepository $faqContentRepository
- * @param FaqCategoryRepository $faqCategoryRepository
- * @param Request $request
- * @return Response
- */
+    /**
+     * Affiche la liste des contenus de FAQ
+     * Le contrôleur permet de gérer l'affichage de la liste des contenus de FAQ
+     * 
+     * @param Security $security
+     * @param FaqContentRepository $faqContentRepository
+     * @param FaqCategoryRepository $faqCategoryRepository
+     * @param Request $request
+     * @return Response
+     */
 
     #[Route('admin/faq/', name: 'app_admin_faq_content')]
-    public function index(Security $security, FaqContentRepository $faqContentRepository, FaqCategoryRepository $faqCategoryRepository, Request $request): Response
-    {
+    public function index(
+        Security $security,
+        FaqContentRepository $faqContentRepository,
+        FaqCategoryRepository $faqCategoryRepository,
+        Request $request
+    ): Response {
 
         $user = $this->getUserInfo($security);
 
@@ -61,21 +65,24 @@ class FaqContentController extends AbstractController
         ]);
     }
 
-/**
- * Route pour créer un nouveau contenu de FAQ
- * Le contrôleur permet de gérer l'ajout d'un contenu de FAQ via un formulaire
- * 
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param Request $request
- * @return Response
- * 
- */
+    /**
+     * Route pour créer un nouveau contenu de FAQ
+     * Le contrôleur permet de gérer l'ajout d'un contenu de FAQ via un formulaire
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
+     * 
+     */
 
     #[Route('admin/faq/content/new', name: 'app_admin_faq_content_new')]
 
-    public function add(Security $security, EntityManagerInterface $entityManager, Request $request): Response
-    {
+    public function add(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response {
         $faqContent = new FaqContent();
 
         $form = $this->createForm(FaqContentType::class, $faqContent);
@@ -102,42 +109,48 @@ class FaqContentController extends AbstractController
         ]);
     }
 
-/**
- * Route pour supprimer un contenu de FAQ
- * Le contrôleur permet de gérer la suppression d'un contenu de FAQ
- * 
- * @param EntityManagerInterface $entityManager
- * @param FaqContent $faqContent
- * @return Response
- * 
- */
+    /**
+     * Route pour supprimer un contenu de FAQ
+     * Le contrôleur permet de gérer la suppression d'un contenu de FAQ
+     * 
+     * @param EntityManagerInterface $entityManager
+     * @param FaqContent $faqContent
+     * @return Response
+     * 
+     */
 
     #[Route('admin/faq/content/delete/{id}', name: 'app_admin_faq_content_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, FaqContent $faqContent): Response
-    {
+    public function delete(
+        EntityManagerInterface $entityManager,
+        FaqContent $faqContent
+    ): Response {
         $entityManager->remove($faqContent);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_admin_faq_content');
     }
 
-/**
- * Route pour éditer un contenu de FAQ
- * Le contrôleur permet de gérer l'édition d'un contenu de FAQ via un formulaire
- * 
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param Request $request
- * @param FaqContent $faqContent
- * @return Response
- * 
- */
+    /**
+     * Route pour éditer un contenu de FAQ
+     * Le contrôleur permet de gérer l'édition d'un contenu de FAQ via un formulaire
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param FaqContent $faqContent
+     * @return Response
+     * 
+     */
 
     #[Route('admin/faq/content/edit/{id}', name: 'app_admin_faq_content_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, FaqContent $faqContent): Response
-    {
+    public function edit(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        FaqContent $faqContent
+    ): Response {
         $form = $this->createForm(FaqContentType::class, $faqContent);
 
         $form->handleRequest($request);
@@ -160,20 +173,21 @@ class FaqContentController extends AbstractController
         ]);
     }
 
-/**
- * Route pour retourner les contenus de FAQ en JSON
- * 
- * @param FaqCategoryRepository $faqCategoryRepository
- * @param JsonResponseNormalizer $jsonResponseNormalizer
- * @return JsonResponse
- * 
- */
+    /**
+     * Route pour retourner les contenus de FAQ en JSON
+     * 
+     * @param FaqCategoryRepository $faqCategoryRepository
+     * @param JsonResponseNormalizer $jsonResponseNormalizer
+     * @return JsonResponse
+     * 
+     */
 
     #[Route('/api/public/faq', name: 'app_faq_content', methods: ['GET'])]
 
-    public function faqContent(FaqCategoryRepository $faqCategoryRepository, JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
-
-    {
+    public function faqContent(
+        FaqCategoryRepository $faqCategoryRepository,
+        JsonResponseNormalizer $jsonResponseNormalizer
+    ): JsonResponse {
 
 
         $categories = $faqCategoryRepository->findAll();
@@ -204,14 +218,9 @@ class FaqContentController extends AbstractController
             if (count($categoryData['contents']) > 0) {
                 $response[] = $categoryData;
             }
-
-
         }
 
         $allFaqContentResponse = $jsonResponseNormalizer->respondSuccess(200, $response);
         return $allFaqContentResponse;
-
-
-
     }
 }

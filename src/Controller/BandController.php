@@ -32,7 +32,8 @@ class BandController extends AbstractController
      * @return Response
      */
     #[Route('/admin/band', name: 'app_admin_band')]
-    public function index(Security $security, BandRepository $bandRepository): Response
+    public function index(Security $security, 
+    BandRepository $bandRepository): Response
     {
         $user = $this->getUserInfo($security);
 
@@ -59,7 +60,10 @@ class BandController extends AbstractController
  * @return Response
  */
     #[Route('/admin/band/new', name: 'app_admin_band_new')]
-    public function add(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, FileUploaderService $fileUploaderService): Response
+    public function add(Security $security, 
+    EntityManagerInterface $entityManagerInterface, 
+    Request $request, 
+    FileUploaderService $fileUploaderService): Response
     {
 
         $band = new Band();
@@ -111,7 +115,9 @@ class BandController extends AbstractController
 
     #[Route('/admin/band/delete/{id}', name: 'app_admin_band_delete')]
 
-    public function delete( EntityManagerInterface $entityManagerInterface, Band $band, DeleteImagesService $deleteImagesService): Response
+    public function delete( EntityManagerInterface $entityManagerInterface, 
+    Band $band, 
+    DeleteImagesService $deleteImagesService): Response
     {
 
 
@@ -152,7 +158,11 @@ class BandController extends AbstractController
 
     #[Route('/admin/band/edit/{id}', name: 'app_admin_band_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, Band $band, fileUploaderService $fileUploaderService, deleteImagesService $deleteImagesService): Response
+    public function edit(Security $security, 
+    EntityManagerInterface $entityManagerInterface, 
+    Request $request, Band $band, 
+    fileUploaderService $fileUploaderService, 
+    deleteImagesService $deleteImagesService): Response
     {
 
         $form = $this->createForm(BandType::class, $band);

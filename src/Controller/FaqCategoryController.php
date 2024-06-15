@@ -16,8 +16,18 @@ use Symfony\Component\Routing\Attribute\Route;
 class FaqCategoryController extends AbstractController
 {
     use UserInfoTrait;
+
+/**
+ * Route pour afficher la liste des catégories de la FAQ via le template index.html.twig
+ * 
+ * @param Security $security
+ * @param FaqCategoryRepository $faqCategoryRepository
+ * @return Response
+ */
+
     #[Route('/admin/faq/category', name: 'app_admin_faq_category')]
-    public function index(Security $security, FaqCategoryRepository $faqCategoryRepository): Response
+    public function index(Security $security, 
+    FaqCategoryRepository $faqCategoryRepository): Response
     {
 
         $user = $this->getUserInfo($security);
@@ -33,10 +43,21 @@ class FaqCategoryController extends AbstractController
 
     }
 
+    /**
+     * Route pour ajouter une catégorie de la FAQ via le template add.html.twig
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
+     */
+
 
     #[Route('/admin/faq/category/new', name: 'app_admin_faq_category_new')] 
 
-    public function add(Security $security, EntityManagerInterface $entityManager, Request $request): Response
+    public function add(Security $security, 
+    EntityManagerInterface $entityManager, 
+    Request $request): Response
     {
 
             $faqCategory = new FaqCategory();
@@ -65,9 +86,18 @@ class FaqCategoryController extends AbstractController
     }
 
 
+/**
+ * Route pour supprimer une catégorie de la FAQ
+ * 
+ * @param EntityManagerInterface $entityManager
+ * @param FaqCategory $faqCategory
+ * @return Response
+ */
+
     #[Route('/admin/faq/category/delete/{id}', name: 'app_admin_faq_category_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, FaqCategory $faqCategory): Response
+    public function delete(EntityManagerInterface $entityManager, 
+    FaqCategory $faqCategory): Response
     {
 
         $entityManager->remove($faqCategory);
@@ -77,9 +107,23 @@ class FaqCategoryController extends AbstractController
 
     }
 
+    /**
+     * Route pour modifier une catégorie de la FAQ via le template edit.html.twig
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param FaqCategory $faqCategory
+     * @param Request $request
+     * @return Response
+     * 
+     */
+
     #[Route('/admin/faq/category/edit/{id}', name: 'app_admin_faq_category_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManager, FaqCategory $faqCategory, Request $request): Response
+    public function edit(Security $security, 
+    EntityManagerInterface $entityManager, 
+    FaqCategory $faqCategory, 
+    Request $request): Response
     {
 
         $form = $this->createForm(FaqCategoryType::class, $faqCategory);

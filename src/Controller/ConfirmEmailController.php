@@ -2,18 +2,18 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Service\JsonResponseNormalizer;
-use App\Trait\StandardResponsesTrait;
 use App\Form\ResetPasswordType;
+use App\Repository\UserRepository;
+use App\Service\JsonResponseNormalizer;
 use App\Service\PasswordValidatorService;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Trait\StandardResponsesTrait;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 
@@ -31,23 +31,23 @@ class ConfirmEmailController extends AbstractController
     private UserPasswordHasherInterface $passwordHasher;
 
 
-
-
-
     /**
      * ConfirmEmailController constructor.
      *
      * @param EntityManagerInterface $manager
      * @param UserRepository $userRepository
      */
-    public function __construct(EntityManagerInterface $manager, UserRepository $userRepository, JsonResponseNormalizer $jsonResponseNormalizer, PasswordValidatorService $passwordValidatorService, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(EntityManagerInterface $manager, 
+    UserRepository $userRepository, 
+    JsonResponseNormalizer $jsonResponseNormalizer, 
+    PasswordValidatorService $passwordValidatorService, 
+    UserPasswordHasherInterface $passwordHasher)
     {
         $this->manager = $manager;
         $this->userRepository = $userRepository;
         $this->jsonResponseNormalizer = $jsonResponseNormalizer;
         $this->passwordValidatorService = $passwordValidatorService;
         $this->passwordHasher = $passwordHasher;
-     
     }
 
     /**
@@ -56,48 +56,45 @@ class ConfirmEmailController extends AbstractController
      * @return JsonResponse : la réponse HTTP
      */
 
-#[Route('/confirm-editor/{token}', name: 'confirm_editor', methods: ['GET', 'POST'])]
-public function confirmEditor(string $token, Request $request): Response
-{
-    $user = $this->userRepository->findOneBy(['email_verification_token' => $token]);
+    #[Route('/confirm-editor/{token}', name: 'confirm_editor', methods: ['GET', 'POST'])]
+    public function confirmEditor(string $token, Request $request): Response
+    {
+        $user = $this->userRepository->findOneBy(['email_verification_token' => $token]);
 
-    if (!$user) {
-        return $this->respondInvalidToken();
-    }
-
-    $form = $this->createForm(ResetPasswordType::class);
-
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-
-        $data = $form->getData();
-        $plainPassword = $data['newPassword'];
-
-        $passwordErrors = $this->passwordValidatorService->isPasswordComplex($plainPassword);
-
-        if (!empty($passwordErrors)) {
-            $this->addFlash('error', 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial. Veuillez respecter les critères suivants : ' . implode(', ', $passwordErrors) . ' !');
-        } else {
-            $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
-
-            $user->setPassword($hashedPassword);
-            $user->setUserVerified(true);
-            $user->setEmailVerificationToken(null);
-
-            $this->manager->persist($user);
-            $this->manager->flush();
-
-            // Redirection vers la page de connexion
-            return $this->redirectToRoute('app_admin_login');
+        if (!$user) {
+            return $this->respondInvalidToken();
         }
+
+        $form = $this->createForm(ResetPasswordType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $data = $form->getData();
+            $plainPassword = $data['newPassword'];
+
+            $passwordErrors = $this->passwordValidatorService->isPasswordComplex($plainPassword);
+
+            if (!empty($passwordErrors)) {
+                $this->addFlash('error', 'Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial. Veuillez respecter les critères suivants : ' . implode(', ', $passwordErrors) . ' !');
+            } else {
+                $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
+
+                $user->setPassword($hashedPassword);
+                $user->setUserVerified(true);
+                $user->setEmailVerificationToken(null);
+
+                $this->manager->persist($user);
+                $this->manager->flush();
+
+                // Redirection vers la page de connexion
+                return $this->redirectToRoute('app_admin_login');
+            }
+        }
+
+        return $this->render('reset_password/reset-password.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
-
-    return $this->render('reset_password/reset-password.html.twig', [
-        'form' => $form->createView()
-    ]);
-}
-
-
-
 }

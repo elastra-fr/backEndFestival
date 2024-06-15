@@ -12,7 +12,6 @@ use App\Service\SlotCheckerService;
 use App\Trait\UserInfoTrait;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use SebastianBergmann\Timer\Duration;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,30 +24,33 @@ class ConcertController extends AbstractController
     use UserInfoTrait;
 
 
-/**
- * Affiche la liste des concerts
- * 
- * @param Security $security
- * @param ConcertRepository $concertRepository
- * @return Response
- * 
- */
+    /**
+     * Affiche la liste des concerts dans le template concert-index.html.twig
+     * 
+     * 
+     * @param Security $security
+     * @param ConcertRepository $concertRepository
+     * @return Response
+     * 
+     */
 
     #[Route('/admin/concert', name: 'app_admin_concert')]
-    public function index(Security $security, ConcertRepository $concertRepository, Request $request, StageRepository $stageRepository): Response
+    public function index(
+        Security $security,
+        ConcertRepository $concertRepository,
+        Request $request,
+        StageRepository $stageRepository
+    ): Response
     {
 
         $selectedStageId = $request->query->get('stage');
- 
+
 
         $stages = $stageRepository->findAll();
 
         if ($selectedStageId) {
             $concerts = $concertRepository->findBy(['Stage' => $selectedStageId]);
-            //Récupérer le nom de la scène
             $currentStageName = $stageRepository->find($selectedStageId)->getName();
-          
-
         } else {
             $concerts = $concertRepository->findBy(['Stage' => $stages[0]->getId()]);
             $currentStageName = $stages[0]->getName();
@@ -56,18 +58,11 @@ class ConcertController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        //$concerts = $concertRepository->findAll();
 
         $startDate = new DateTime($this->getParameter('festival_start_date'));
         $endDate = new DateTime($this->getParameter('festival_end_date'));
-        //var_dump($startDate);
-        //var_dump($endDate);
 
-        $festivalDuration = $endDate->diff($startDate)->days+1;
-        //var_dump($festivalDuration);
-
-
-
+        $festivalDuration = $endDate->diff($startDate)->days + 1;
 
         $concertsList = [];
 
@@ -79,8 +74,9 @@ class ConcertController extends AbstractController
                 'description' => $concert->getArtist()->getDescription(),
                 'artist' => $concert->getArtist()->getName(),
 
-                
-            
+
+
+
             ];
         }
 
@@ -101,7 +97,7 @@ class ConcertController extends AbstractController
 
     /**
      * Route pour créer un nouveau concert
-     * Le contrôleur permet de gérer l'ajout d'un concert via un formulaire
+     * Le contrôleur permet de gérer l'ajout d'un concert via un formulaire 
      * Le service SlotCheckerService permet de vérifier si le créneau est déjà pris et renvoie un message d'erreur
      * 
      * @param Security $security
@@ -113,7 +109,10 @@ class ConcertController extends AbstractController
 
     #[Route('/admin/concert/new', name: 'app_admin_concert_new')]
 
-    public function add(Security $security, EntityManagerInterface $entityManager, Request $request, SlotCheckerService $slotCheckerService): Response
+    public function add(Security $security, 
+    EntityManagerInterface $entityManager, 
+    Request $request, 
+    SlotCheckerService $slotCheckerService): Response
     {
 
         $concert = new Concert();
@@ -133,7 +132,7 @@ class ConcertController extends AbstractController
 
             if ($slotCheckerService->isSlotTaken($concertDateTime, $stageId)) {
 
-        
+
 
                 $this->addFlash('danger', 'Ce créneau est déjà pris. Consultez la programmation pour choisir un autre créneau.');
             } else {
@@ -167,7 +166,10 @@ class ConcertController extends AbstractController
 
     #[Route('/admin/concert/edit/{id}', name: 'app_admin_concert_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, Concert $concert, SlotCheckerService $slotCheckerService): Response
+    public function edit(Security $security, 
+    EntityManagerInterface $entityManager, 
+    Request $request, Concert $concert, 
+    SlotCheckerService $slotCheckerService): Response
     {
 
         $form = $this->createForm(ConcertType::class, $concert);
@@ -202,18 +204,19 @@ class ConcertController extends AbstractController
     }
 
 
-/**
- * Route pour supprimer un concert
- * 
- * @param EntityManagerInterface $entityManager
- * @param Concert $concert
- * @return Response
- * 
- */
+    /**
+     * Route pour supprimer un concert
+     * 
+     * @param EntityManagerInterface $entityManager
+     * @param Concert $concert
+     * @return Response
+     * 
+     */
 
     #[Route('/admin/concert/delete/{id}', name: 'app_admin_concert_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, Concert $concert): Response
+    public function delete(EntityManagerInterface $entityManager, 
+    Concert $concert): Response
     {
 
         $entityManager->remove($concert);
@@ -225,58 +228,55 @@ class ConcertController extends AbstractController
 
 
 
-/**
- * Route pour afficher la liste des concerts en version publique sous forme de JSON
- * avec un lien vers les images des artistes sous des formats différents (original, 600, 400, 200)
- * pour l'affichage sur le front avec un srcset
- * 
- * 
- * @param ConcertRepository $concertRepository
- * @param JsonResponseNormalizer $jsonResponseNormalizer
- * @return Response
- * 
- */
+    /**
+     * Route pour afficher la liste des concerts en version publique sous forme de JSON
+     * avec un lien vers les images des artistes sous des formats différents (original, 600, 400, 200)
+     * pour l'affichage sur le front avec un srcset
+     * 
+     * 
+     * @param ConcertRepository $concertRepository
+     * @param JsonResponseNormalizer $jsonResponseNormalizer
+     * @return Response
+     * 
+     */
 
 
     #[Route('/api/public/concert', name: 'app_api_concert', methods: ['GET'])]
-    public function concert(Request $request, ConcertRepository $concertRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
+    public function concert(Request $request, 
+    ConcertRepository $concertRepository, 
+    JsonResponseNormalizer $jsonResponseNormalizer): Response
     {
 
-    $filterJour = $request->query->get('jour', 'Tout');
-    $filterScene = $request->query->get('scene', 'Tout');
-    $filterHoraire = $request->query->get('horaire', 'Tout');
-    $filterGenre = $request->query->get('genre', 'Tout');
+        $filterJour = $request->query->get('jour', 'Tout');
+        $filterScene = $request->query->get('scene', 'Tout');
+        $filterHoraire = $request->query->get('horaire', 'Tout');
+        $filterGenre = $request->query->get('genre', 'Tout');
 
-    $criteria = [];
+        $criteria = [];
 
-    if ($filterJour !== 'Tout') {
+        if ($filterJour !== 'Tout') {
             $filterJour = DateTime::createFromFormat('Y-m-d', $filterJour)->format('Y-m-d');
-        $criteria['ConcertDate'] = new DateTime($filterJour);
-    }
+            $criteria['ConcertDate'] = new DateTime($filterJour);
+        }
 
-    if ($filterScene !== 'Tout') {
-        $criteria['Stage'] = $filterScene;
-    }
+        if ($filterScene !== 'Tout') {
+            $criteria['Stage'] = $filterScene;
+        }
 
-    if ($filterGenre !== 'Tout') {
-        $criteria['Artist.music_style'] = $filterGenre;
-    }
+        if ($filterGenre !== 'Tout') {
+            $criteria['Artist.music_style'] = $filterGenre;
+        }
 
-        //obtenir tous les concerts triés par date de concert
 
-     //   $concerts = $concertRepository->findBy($criteria, ['ConcertDate' => 'ASC']);
-         
-            $concerts = $concertRepository->findByCriteria($criteria);
-
-     //   $concertsList = [];
+        $concerts = $concertRepository->findByCriteria($criteria);
 
         $concertByDay = [];
 
         foreach ($concerts as $concert) {
 
             if ($filterJour !== 'Tout' && $concert->getConcertDate()->format('Y-m-d') !== $filterJour) {
-            continue;
-        }
+                continue;
+            }
 
 
             $imageName = $concert->getArtist()->getUrlImage();
@@ -291,32 +291,28 @@ class ConcertController extends AbstractController
                 '200' => file_exists($localPath . '200-' . $imageName) ? $commonPath . '200-' . $imageName : null,
             ];
 
-            //var_dump($localPath . $imageName);
 
-
-            
             $concertData = [
                 'id' => $concert->getId(),
                 'date' => $concert->getConcertDate()->format('Y-m-d H:i:s'),
                 'location' => $concert->getStage()->getName(),
                 'description' => $concert->getArtist()->getDescription(),
                 'artist' => $concert->getArtist()->getName(),
+                'musicStyle' => $concert->getArtist()->getMusicStyle()->getName(),
                 'images' => $imagesPath,
+                
             ];
 
-            $day=$concert->getConcertDate()->format('Y-m-d');
+            $day = $concert->getConcertDate()->format('Y-m-d');
 
 
             if (!isset($concertByDay[$day])) {
                 $concertByDay[$day] = [];
             }
 
-      if ($filterHoraire === 'Tout' || (int)$filterHoraire <= (int)$concert->getConcertDate()->format('H')) {
-            $concertByDay[$day][] = $concertData;
-        }
-
-
-
+            if ($filterHoraire === 'Tout' || (int)$filterHoraire <= (int)$concert->getConcertDate()->format('H')) {
+                $concertByDay[$day][] = $concertData;
+            }
         }
 
         $concerts = $jsonResponseNormalizer->respondSuccess(200, $concertByDay);
@@ -324,77 +320,78 @@ class ConcertController extends AbstractController
     }
 
 
-    //Route pour renvoyer les jours du festival  ainsi que les créneau horaires au format JSON
+    /**
+     * Route pour afficher les filtres de recherche des concerts en version publique sous forme de JSON
+     * 
+     * @param JsonResponseNormalizer $jsonResponseNormalizer
+     * @param StageRepository $stageRepository
+     * @param MusicStyleRepository $musicStyleRepository
+     * @return Response
+     */
 
-    #[Route('/api/public/concert/filters', name: 'app_api_concert_filters' , methods: ['GET'])]
+    #[Route('/api/public/concert/filters', name: 'app_api_concert_filters', methods: ['GET'])]
 
-    public function festivalFilters(JsonResponseNormalizer $jsonResponseNormalizer, StageRepository $stageRepository, MusicStyleRepository $musicStyleRepository): Response
-    {
+    public function festivalFilters(JsonResponseNormalizer $jsonResponseNormalizer, 
+    StageRepository $stageRepository, 
+    MusicStyleRepository $musicStyleRepository): Response
+    { {
+            $startDate = new DateTime($this->getParameter('festival_start_date'));
+            $endDate = new DateTime($this->getParameter('festival_end_date'));
 
-{
-    $startDate = new DateTime($this->getParameter('festival_start_date'));
-    $endDate = new DateTime($this->getParameter('festival_end_date'));
+            $festivalDuration = $endDate->diff($startDate)->days + 1;
 
-    $festivalDuration = $endDate->diff($startDate)->days + 1;
+            $days = [];
+            $openingTime = '14:00';
+            $closingTime = '00:00';
 
-    $days = [];
-    $openingTime = '14:00';
-    $closingTime = '00:00';
+            for ($i = 0; $i < $festivalDuration; $i++) {
+                $days[] = [
+                    'day' => $i + 1,
+                    'date' => $startDate->format('Y-m-d'),
+                    'openingTime' => $openingTime,
+                    'closingTime' => $closingTime,
+                ];
+                $startDate->modify('+1 day');
+            }
 
-    for ($i = 0; $i < $festivalDuration; $i++) {
-        $days[] = [
-            'day' => $i + 1,
-            'date' => $startDate->format('Y-m-d'),
-            'openingTime' => $openingTime,
-            'closingTime' => $closingTime,
-        ];
-        $startDate->modify('+1 day');
+
+
+
+            $musicStyles = $musicStyleRepository->findAll();
+
+            $musicStylesList = [];
+
+            foreach ($musicStyles as $musicStyle) {
+                $musicStylesList[] = [
+                    'id' => $musicStyle->getId(),
+                    'name' => $musicStyle->getName(),
+                ];
+            }
+
+            $stages = $stageRepository->findAll();
+
+            $stagesList = [];
+
+            foreach ($stages as $stage) {
+                $stagesList[] = [
+                    'id' => $stage->getId(),
+                    'name' => $stage->getName(),
+                ];
+            }
+
+
+            $response = [
+                'days' => $days,
+                'amplitudeHoraire' => [
+                    'min' => $openingTime,
+                    'max' => $closingTime,
+                ],
+                'musicStyles' => $musicStylesList,
+                'stages' => $stagesList,
+            ];
+
+            $response = $jsonResponseNormalizer->respondSuccess(200, $response);
+            return $response;
+        }
     }
-
-
-
-
-    $musicStyles = $musicStyleRepository->findAll();
-
-    $musicStylesList = [];
-
-    foreach ($musicStyles as $musicStyle) {
-        $musicStylesList[] = [
-            'id' => $musicStyle->getId(),
-            'name' => $musicStyle->getName(),
-        ];
-    }
-
-    $stages = $stageRepository->findAll();
-
-    $stagesList = [];
-
-    foreach ($stages as $stage) {
-        $stagesList[] = [
-            'id' => $stage->getId(),
-            'name' => $stage->getName(),
-        ];
-    }
-
-
-    $response = [
-        'days' => $days,
-        'amplitudeHoraire' => [
-            'min' => $openingTime,
-            'max' => $closingTime,
-        ],
-        'musicStyles' => $musicStylesList,
-        'stages' => $stagesList,
-    ];
-
-    $response = $jsonResponseNormalizer->respondSuccess(200, $response);
-    return $response;
-}
-    }
-
-
-
-
-
-
 }

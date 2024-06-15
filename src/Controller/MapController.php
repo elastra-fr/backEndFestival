@@ -2,25 +2,28 @@
 
 namespace App\Controller;
 
+use App\Entity\MapPoint;
+use App\Form\MapPointEntityType;
+use App\Repository\MapPointRepository;
+use App\Repository\MapPointsCategoryRepository;
+use App\Trait\UserInfoTrait;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Trait\UserInfoTrait;
-use App\Entity\MapPoint;
-use App\Repository\MapPointRepository;
-use Symfony\Bundle\SecurityBundle\Security;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use App\Form\MapPointEntityType;
-use App\Repository\MapPointsCategoryRepository;
 
 class MapController extends AbstractController
 {
 
     use UserInfoTrait;
     #[Route('/admin/map', name: 'app_admin_map')]
-    public function index(Security $security, MapPointRepository $mapPointRepository, Request $request, EntityManagerInterface $entityManagerInterface, MapPointsCategoryRepository $mapPointsCategoryRepository): Response
+    public function index(Security $security, 
+    MapPointRepository $mapPointRepository, 
+    Request $request, 
+    EntityManagerInterface $entityManagerInterface, 
+    MapPointsCategoryRepository $mapPointsCategoryRepository): Response
     {
         $categoryFilter = $request->query->get('categoryId');
 
@@ -28,9 +31,6 @@ class MapController extends AbstractController
 
         $mapPoints = $mapPointRepository->findAll();
 
-
-
-        //Récupération des catégories pour les filtres de recherche
         $categories = $mapPointsCategoryRepository->findAll();
 
         if ($categoryFilter) {
@@ -84,10 +84,21 @@ class MapController extends AbstractController
         
     }
 
+/**
+ * Ajoute un point sur la carte avec les informations saisies dans le formulaire
+ * 
+ * @param Security $security
+ * @param EntityManagerInterface $entityManagerInterface
+ * @param Request $request
+ * @return Response
+ * 
+ */
 
     #[Route('/admin/map/points/new', name: 'app_admin_map_points_new')]
 
-    public function add(Security $security, EntityManagerInterface $entityManagerInterface, Request $request): Response
+    public function add(Security $security, 
+    EntityManagerInterface $entityManagerInterface, 
+    Request $request): Response
     {
 
         $mapPoint = new MapPoint();
@@ -109,11 +120,19 @@ class MapController extends AbstractController
         ]);
     }
 
-//Route pour effacer 
+/**
+ * Supprime un point de la carte en fonction de son identifiant
+ * 
+ * @param Security $security
+ * @param EntityManagerInterface $entityManagerInterface
+ * @param MapPoint $mapPoint
+ * @return Response
+ */ 
 
     #[Route('/admin/map/points/delete/{id}', name: 'app_admin_map_points_delete')]
 
-    public function delete(Security $security, EntityManagerInterface $entityManagerInterface, MapPoint $mapPoint): Response
+    public function delete(EntityManagerInterface $entityManagerInterface, 
+    MapPoint $mapPoint): Response
     {
         $entityManagerInterface->remove($mapPoint);
         $entityManagerInterface->flush();
@@ -122,8 +141,12 @@ class MapController extends AbstractController
 
     }
 
-    #[Route('/admin/map/points/edit/{id}', name: 'app_admin_map_points_edit')]
+    /**
+     * Modifie un point de la carte en fonction de son identifiant
+     */
 
+    //#[Route('/admin/map/points/edit/{id}', name: 'app_admin_map_points_edit')]
+/*
     public function edit(Security $security, EntityManagerInterface $entityManagerInterface, Request $request, MapPoint $mapPoint): Response
     {
         $form = $this->createForm(MapPointEntityType::class, $mapPoint);
@@ -142,9 +165,35 @@ class MapController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+*/
 
+//Route publique pour retourner les points de la carte au format JSON
 
+    #[Route('api/public/map/points', name: 'app_map_points')]
 
+    public function getMapPoints(MapPointRepository $mapPointRepository): Response
+    {
+        $mapPoints = $mapPointRepository->findAll();
+
+        $mapPointsList=[];
+
+        foreach ($mapPoints as $mapPoint) {
+            $mapPointsList[] = [
+                'title' => $mapPoint->getTitle(),
+                'description' => $mapPoint->getDescription(),
+                'latitude' => $mapPoint->getLatitude(),
+                'longitude' => $mapPoint->getLongitude(),
+                'type' => $mapPoint->getType()->getPointCategory(),
+                'img'=>$mapPoint->getType()->getPointUrl(),
+            ];
+        }
+
+        $mapPointsJson = json_encode($mapPointsList);
+
+        return new Response($mapPointsJson, 200, [
+            'Content-Type' => 'application/json'
+        ]);
+    }
 
 }
 
