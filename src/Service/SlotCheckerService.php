@@ -2,7 +2,6 @@
 namespace App\Service;
 
 use App\Entity\Concert;
-use App\Repository\StageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -15,7 +14,15 @@ class SlotCheckerService
         $this->entityManager = $entityManager;
     }
 
-    public function isSlotTaken(\DateTime $concertDateTime, int $stageId): bool
+/**
+ * Methode qui permet de vérifier si un créneau est déjà pris sur une même scène
+ *
+ * @param \DateTime $concertDateTime
+ * @param integer $stageId
+ * @return boolean
+ */
+    public function isSlotTaken(\DateTime $concertDateTime, 
+    int $stageId): bool
     {
         $concertRepository = $this->entityManager->getRepository(Concert::class);
     

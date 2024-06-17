@@ -19,18 +19,20 @@ class StageController extends AbstractController
 
     use UserInfoTrait;
 
-/**
- * Affiche la liste des salles de concert
- * Le contrôleur permet de gérer l'affichage de la liste des salles de concert
- * 
- * @param Security $security
- * @param StageRepository $stageRepository
- * @return Response
- */
+    /**
+     * Affiche la liste des salles de concert
+     * Le contrôleur permet de gérer l'affichage de la liste des salles de concert
+     * 
+     * @param Security $security
+     * @param StageRepository $stageRepository
+     * @return Response
+     */
 
     #[Route('/admin/concert/stage', name: 'app_admin_stage')]
-    public function index(Security $security, StageRepository $stageRepository): Response
-    {
+    public function index(
+        Security $security,
+        StageRepository $stageRepository
+    ): Response {
 
         $user = $this->getUserInfo($security);
 
@@ -46,20 +48,23 @@ class StageController extends AbstractController
         ]);
     }
 
-/**
- * Route pour créer une nouvelle salle de concert
- * Le contrôleur permet de gérer l'ajout d'une salle de concert via un formulaire
- * 
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param Request $request
- * @return Response
- */
+    /**
+     * Route pour créer une nouvelle salle de concert
+     * Le contrôleur permet de gérer l'ajout d'une salle de concert via un formulaire
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
+     */
 
     #[Route('/admin/concert/stage/new', name: 'app_admin_stage_new')]
 
-    public function add(Security $security, EntityManagerInterface $entityManager,  Request $request): Response
-    {
+    public function add(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response {
 
         $stage = new Stage();
         $form = $this->createForm(StageType::class, $stage);
@@ -83,22 +88,26 @@ class StageController extends AbstractController
         ]);
     }
 
-/**
- * Route pour éditer une salle de concert
- * Le contrôleur permet de gérer l'édition d'une salle de concert via un formulaire
- * 
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param Stage $stage
- * @param Request $request
- * @return Response 
- * 
-*/
+    /**
+     * Route pour éditer une salle de concert
+     * Le contrôleur permet de gérer l'édition d'une salle de concert via un formulaire
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Stage $stage
+     * @param Request $request
+     * @return Response 
+     * 
+     */
 
     #[Route('/admin/concert/stage/edit/{id}', name: 'app_admin_stage_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManager, Stage $stage, Request $request): Response
-    {
+    public function edit(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        Stage $stage,
+        Request $request
+    ): Response {
 
         $form = $this->createForm(StageType::class, $stage);
         $form->handleRequest($request);
@@ -133,13 +142,14 @@ class StageController extends AbstractController
 
     #[Route('/admin/concert/stage/delete/{id}', name: 'app_admin_stage_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, Stage $stage): Response
-    {
+    public function delete(
+        EntityManagerInterface $entityManager,
+        Stage $stage
+    ): Response {
 
-try     {
+        try {
             $entityManager->remove($stage);
             $entityManager->flush();
-        
         } catch (Exception $exception) {
 
             $this->addFlash('Erreur', 'Impossible de supprimer cette scène, elle est utilisée pour un ou plusieurs concerts.');

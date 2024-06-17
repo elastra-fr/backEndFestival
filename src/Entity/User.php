@@ -50,6 +50,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $LoginAttempt = 0;
 
+    #[ORM\Column]
+    private ?bool $NewsletterConsent = false;
+
+    #[ORM\Column]
+    private ?bool $EventAlertConsent = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -200,6 +206,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLoginAttempt(int $LoginAttempt): static
     {
         $this->LoginAttempt = $LoginAttempt;
+
+        return $this;
+    }
+
+    public function isNewsletterConsent(): ?bool
+    {
+        return $this->NewsletterConsent;
+    }
+
+    public function setNewsletterConsent(bool $NewsletterConsent): static
+    {
+        $this->NewsletterConsent = $NewsletterConsent;
+
+        return $this;
+    }
+
+    public function isEventAlertConsent(): ?bool
+    {
+        return $this->EventAlertConsent;
+    }
+
+    public function setEventAlertConsent(bool $EventAlertConsent): static
+    {
+        $this->EventAlertConsent = $EventAlertConsent;
 
         return $this;
     }

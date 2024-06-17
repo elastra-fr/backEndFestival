@@ -27,7 +27,9 @@ class MailerService
      * @param string $htmlContent
      * @return void
      */
-    public function sendEmail(string $to, string $subject, string $htmlContent): void
+    public function sendEmail(string $to, 
+    string $subject, 
+    string $htmlContent): void
     {
         $email = (new Email())
             ->from('eldn.dev@gmail.com')

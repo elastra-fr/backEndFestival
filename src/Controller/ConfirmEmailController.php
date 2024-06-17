@@ -8,6 +8,7 @@ use App\Service\JsonResponseNormalizer;
 use App\Service\PasswordValidatorService;
 use App\Trait\StandardResponsesTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,4 +98,34 @@ class ConfirmEmailController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+
+    /**
+     * Cette méthode permet de confirmer l'adresse email d'un utilisateur
+     * @param string $token 
+     * @return JsonResponse 
+     */
+
+    #[Route('/confirm-user/{token}', name: 'confirm_user')]
+
+    public function confirmUser(string $token, JsonResponseNormalizer $jsonResponseNormalizer): Response
+    {
+        $user = $this->userRepository->findOneBy(['email_verification_token' => $token]);
+
+        if (!$user) {
+            return $this->respondInvalidToken();
+        }
+
+        $user->setUserVerified(true);
+        $user->setEmailVerificationToken(null);
+
+        $this->manager->persist($user);
+        $this->manager->flush();
+
+        return $jsonResponseNormalizer->respondSuccess(200, 'Votre adresse email a été vérifiée avec succès !');
+    }
+
+
+
+
 }

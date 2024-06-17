@@ -49,13 +49,26 @@ security:
         admin :
             pattern: ^/admin
             provider: app_user_provider
-            #form_login:
-               # login_path: app_admin_login
-                #check_path: app_admin_login  
+            form_login:
+                login_path: app_admin_login
+                check_path: app_admin_login
+                default_target_path: app_admin_home
+                always_use_default_target_path: true
+                failure_path: app_admin_login
+                failure_forward: false
+                username_parameter: email
+                password_parameter: password
+                csrf_token_id: authenticate
+                
+
+       
             logout:
                 path: app_admin_logout
                 target: app_admin_login
             custom_authenticator: App\Security\LoginFormAuthenticator
+
+            entry_point: form_login
+
 
             remember_me:
                 secret: '%kernel.secret%'

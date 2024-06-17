@@ -29,7 +29,8 @@ class NewsCategoryController extends AbstractController
      * @return Response
      */
     #[Route('admin/news/category', name: 'app_admin_news_category')]
-    public function index(Security $security, NewsCategoryRepository $newsCategoryRepository): Response
+    public function index(Security $security, 
+    NewsCategoryRepository $newsCategoryRepository): Response
     {
 
         $user = $this->getUserInfo($security);
@@ -56,7 +57,9 @@ class NewsCategoryController extends AbstractController
 
     #[Route('admin/news/category/new', name: 'app_admin_news_category_new')]
 
-    public function add(Security $security, EntityManagerInterface $entityManager, Request $request): Response
+    public function add(Security $security, 
+    EntityManagerInterface $entityManager, 
+    Request $request): Response
     {
 
         $newsCategory = new NewsCategory();
@@ -97,7 +100,8 @@ class NewsCategoryController extends AbstractController
 
     #[Route('admin/news/category/delete/{id}', name: 'app_admin_news_category_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, NewsCategory $newsCategory): Response
+    public function delete(EntityManagerInterface $entityManager, 
+    NewsCategory $newsCategory): Response
     {
        
        try {
@@ -126,7 +130,10 @@ class NewsCategoryController extends AbstractController
 
     #[Route('admin/news/category/edit/{id}', name: 'app_admin_news_category_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, NewsCategory $newsCategory): Response
+    public function edit(Security $security, 
+    EntityManagerInterface $entityManager, 
+    Request $request, 
+    NewsCategory $newsCategory): Response
     {
         $form = $this->createForm(NewsCategoryType::class, $newsCategory);
 

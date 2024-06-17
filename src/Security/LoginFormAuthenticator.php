@@ -23,7 +23,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_admin_login';
-    public const REDIRECT_AFTER_LOGIN = 'app_admin_dashboard';
+    public const REDIRECT_AFTER_LOGIN = '/home';
 
     public function __construct(private UrlGeneratorInterface $urlGenerator, private UserRepository $userRepository)
     {

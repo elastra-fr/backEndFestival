@@ -15,7 +15,9 @@ class JsonResponseNormalizer
      * @param integer $HttpStatus
      * @return JsonResponse
      */
-        public function respondError(string $errorCode, string $errorMessage, int $HttpStatus): JsonResponse
+        public function respondError(string $errorCode, 
+        string $errorMessage, 
+        int $HttpStatus): JsonResponse
     {
         $response = [
             'status' => 'error',

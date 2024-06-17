@@ -18,10 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 
-
-
-
-
 class PartnerController extends AbstractController
 {
     use UserInfoTrait;
@@ -37,7 +33,8 @@ class PartnerController extends AbstractController
      */
 
     #[Route('/admin/partner', name: 'app_admin_partner')]
-    public function index(Security $security, PartnerRepository $partnerRepository): Response
+    public function index(Security $security, 
+    PartnerRepository $partnerRepository): Response
     {
 
         $user = $this->getUserInfo($security);
@@ -53,19 +50,22 @@ class PartnerController extends AbstractController
     }
 
 
-/**
- * Route pour créer un nouveau partenaire
- * Le contrôleur permet de gérer l'ajout d'un partenaire via un formulaire
- *
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param Request $request
- * @param FileUploaderService $fileUploaderService
- * @return Response
- */
+    /**
+     * Route pour créer un nouveau partenaire
+     * Le contrôleur permet de gérer l'ajout d'un partenaire via un formulaire
+     *
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param FileUploaderService $fileUploaderService
+     * @return Response
+     */
     #[Route('/admin/partner/new', name: 'app_admin_partner_new')]
 
-    public function add(Security $security, EntityManagerInterface $entityManager, Request $request, FileUploaderService $fileUploaderService): Response
+    public function add(Security $security, 
+    EntityManagerInterface $entityManager, 
+    Request $request, 
+    FileUploaderService $fileUploaderService): Response
     {
 
         $partner = new Partner();
@@ -107,22 +107,27 @@ class PartnerController extends AbstractController
         ]);
     }
 
-/**
- * Route pour éditer un partenaire
- * Le contrôleur permet de gérer l'édition d'un partenaire via un formulaire
- * 
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param Request $request
- * @param Partner $partner
- * @param FileUploaderService $fileUploaderService
- * @param DeleteImagesService $deleteImagesService
- * @return Response
- * 
- */
+    /**
+     * Route pour éditer un partenaire
+     * Le contrôleur permet de gérer l'édition d'un partenaire via un formulaire
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param Partner $partner
+     * @param FileUploaderService $fileUploaderService
+     * @param DeleteImagesService $deleteImagesService
+     * @return Response
+     * 
+     */
     #[Route('/admin/partner/edit/{id}', name: 'app_admin_partner_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, Partner $partner, FileUploaderService $fileUploaderService, DeleteImagesService $deleteImagesService): Response
+    public function edit(Security $security, 
+    EntityManagerInterface $entityManager, 
+    Request $request, 
+    Partner $partner, 
+    FileUploaderService $fileUploaderService, 
+    DeleteImagesService $deleteImagesService): Response
     {
 
         $form = $this->createForm(PartnerType::class, $partner);
@@ -169,7 +174,7 @@ class PartnerController extends AbstractController
         } else {
             $currentLogoPath = null;
         }
-        //$currentLogoPath='./images/logos/'.$currentLogoName;
+
 
 
         return $this->render('partner/edit.html.twig', [
@@ -181,19 +186,21 @@ class PartnerController extends AbstractController
         ]);
     }
 
-/**
- * Route pour supprimer un partenaire
- * Le contrôleur permet de gérer la suppression d'un partenaire
- * 
- * @param EntityManagerInterface $entityManager
- * @param Partner $partner
- * @param DeleteImagesService $deleteImagesService
- * @return Response
- */
+    /**
+     * Route pour supprimer un partenaire
+     * Le contrôleur permet de gérer la suppression d'un partenaire
+     * 
+     * @param EntityManagerInterface $entityManager
+     * @param Partner $partner
+     * @param DeleteImagesService $deleteImagesService
+     * @return Response
+     */
 
     #[Route('/admin/partner/delete/{id}', name: 'app_admin_partner_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, Partner $partner, DeleteImagesService $deleteImagesService): Response
+    public function delete(EntityManagerInterface $entityManager, 
+    Partner $partner, 
+    DeleteImagesService $deleteImagesService): Response
     {
 
         try {
@@ -212,26 +219,25 @@ class PartnerController extends AbstractController
     }
 
 
-/**
- * Route publique pour l'API pour afficher la liste des partenaires
- * réponses en JSON
- * 
- * @param PartnerRepository $partnerRepository
- * @param JsonResponseNormalizer $jsonResponseNormalizer
- * @return JsonResponse
- * 
- */
+    /**
+     * Route publique pour l'API pour afficher la liste des partenaires
+     * réponses en JSON
+     * 
+     * @param PartnerRepository $partnerRepository
+     * @param JsonResponseNormalizer $jsonResponseNormalizer
+     * @return JsonResponse
+     * 
+     */
 
     #[Route('/api/public/partner', name: 'app_public_partner', methods: ['GET'])]
 
-    public function public(PartnerRepository $partnerRepository, JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
+    public function public(PartnerRepository $partnerRepository, 
+    JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
     {
 
 
 
         $partners = $partnerRepository->findAll();
-
-        //$publicUrlImage = $urlGeneratorInterface->generate('/public/images/logos', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $partnersArray = [];
 
@@ -273,7 +279,9 @@ class PartnerController extends AbstractController
 
     #[Route('/api/public/partner/category/{id}', name: 'app_public_partnerbycategory', methods: ['GET'])]
 
-    public function publicByCategory(PartnerRepository $partnerRepository, int $id, JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
+    public function publicByCategory(PartnerRepository $partnerRepository, 
+    int $id, 
+    JsonResponseNormalizer $jsonResponseNormalizer): JsonResponse
     {
 
 
@@ -282,7 +290,7 @@ class PartnerController extends AbstractController
         $partnersArray = [];
 
 
-        //$publicUrlImage = $urlGeneratorInterface->generate('/public/images/logos', [], UrlGeneratorInterface::ABSOLUTE_URL);
+   
 
         foreach ($partners as $partner) {
             //verifie si l'url du logo est null ou non

@@ -1,12 +1,12 @@
 <?php
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 class FileUploaderService
@@ -20,7 +20,15 @@ class FileUploaderService
         $this->slugger = $slugger;
     }
 
-    public function upload(UploadedFile $file, ?string $targetDirectory = null): string
+/**
+ * Fonction pour uploader un fichier image et le redimensionner
+ *
+ * @param UploadedFile $file
+ * @param string|null $targetDirectory
+ * @return string
+ */
+    public function upload(UploadedFile $file, 
+    ?string $targetDirectory = null): string
     {
     
         $extension = $this->getExtension($file->getClientMimeType());
@@ -75,7 +83,17 @@ class FileUploaderService
         }
     }
 
-    private function resizeImage(string $filePath, string $resizedFilePath, int $targetWidth): void
+/**
+ * Fonction pour redimensionner une image
+ *
+ * @param string $filePath
+ * @param string $resizedFilePath
+ * @param integer $targetWidth
+ * @return void
+ */
+    private function resizeImage(string $filePath, 
+    string $resizedFilePath, 
+    int $targetWidth): void
     {
         $imagine = new Imagine();
         $image = $imagine->open($filePath);

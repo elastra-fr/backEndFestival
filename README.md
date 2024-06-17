@@ -356,12 +356,58 @@ Résultat :
 
 ##### Routes Actualités
 
+Routes pour récupérer les actualités du festival sauf les évènement de sécurité et météo
+
+https://backend.nationsound2024-festival.fr/api/public/news
+
+Avec paramètre : https://backend.nationsound2024-festival.fr/api/public/news?limit=10
+
+Par défaut limit = 5
+
+Méthode GET
+
+Réponse :
+
+{
+	"status": "success",
+	"data": [
+		{
+			"id": 2,
+			"title": "Parking supplémentaire",
+			"content": "En raison de nombre important de réservations, nous avons ajouté un parking P2, à consulter sur la carte interactive.",
+			"newsDate": {
+				"date": "2024-06-09 22:18:21.000000",
+				"timezone_type": 3,
+				"timezone": "Europe\/Paris"
+			}
+		},
+		{
+			"id": 1,
+			"title": "Concert d'ouverture",
+			"content": "C'est confirmé, Starlight Avenue assurera le concert d'ouverture du Festival à 21H sur la scène principale. Il sera suivi de Sonic Storm à 23H, toujours sur la scène principale.",
+			"newsDate": {
+				"date": "2024-06-09 22:17:56.000000",
+				"timezone_type": 3,
+				"timezone": "Europe\/Paris"
+			}
+		}
+	],
+	"error": null
+}
+
+
+Route qui permet de récupérer les évènement de securité et météo qui donneront lieu à alerte sur le front end.
+
+https://backend.nationsound2024-festival.fr/api/public/news/alert
+
+Méthode GET
+
+
+
+
 
 
 ##### Routes FAQ Informations 
-
-Route pour récupérer 
-
 
 
 Route pour récupérer le contenu de la FAQ
@@ -423,23 +469,51 @@ Méthode GET
 	"error": null
 }
 
+##### Routes Map
+
+Route pour récupérer les catégories de points pour mettre en place un filtre
+
+https://backend.nationsound2024-festival.fr/api/public/map/points/category
+Méthode Get 
+
+Réponse :
+
+{
+	"status": "success",
+	"data": [
+		{
+			"id": 5,
+			"PointCategory": "Test"
+		}
+	],
+	"error": null
+}
+
+Route pour récupérer les points 
+
+https://backend.nationsound2024-festival.fr/api/public/map/marker/{id}
+
+Par défaut le paramètre id est nulle et la route retourner la liste de tous les points.
+
+Méthode GET
 
 
+Réponse :
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+{
+	"status": "success",
+	"data": [
+		{
+			"title": "Test1",
+			"description": "Test1",
+			"latitude": "48.7644118",
+			"longitude": "2.1016334",
+			"type": "Test",
+			"img": "https:\/\/backend.nationsound2024-festival.fr\/images\/bands\/triangle-exclamation-solid-666b41036321e.svg"
+		}
+	],
+	"error": null
+}
 
 
 
@@ -454,6 +528,156 @@ Les routes api utilisateurs derrière /api/user ne peuvent être utilisées que 
 
 Le système d'authentification JWT mis en place avec lexik/jwt-authentication-bundle et extension open SSL pour création des clés publique et privée.
 Durée de validité du token 3600 secondes (1h). Cette durée peut être modifiée dans \config\packages\lexik_jwt_authentication.yaml.
+
+##### Register 
+
+https://backend.nationsound2024-festival.fr/api/user/register
+
+Méthode POST
+
+body :
+
+{
+
+	"email":"test@test.com",
+	"password":"password",
+	"firstName":"Jules",
+	"lastName":"Cesars"
+
+}
+
+Le controlleur va vérifier si l'emai n'existe pas et si le mot de passe est conforme.
+
+En cas d'email Existant :
+
+{
+	"status": "error",
+	"data": null,
+	"error": {
+		"code": "email_already_exists",
+		"message": "Cet email existe déjà !"
+	}
+}
+
+En cas de mot de passe non conforme :
+
+{
+	"status": "error",
+	"data": null,
+	"error": {
+		"code": "bad_password",
+		"message": "Le mot de passe doit contenir au moins 8 caractères !"
+	}
+}
+
+En cas d'email invalide :
+
+{
+	"status": "error",
+	"data": null,
+	"error": {
+		"code": "invalid_email",
+		"message": "Email invalide !"
+	}
+}
+
+En cas de succès {
+	"status": "success",
+	"data": {
+		"message": "Utilisateur enregistré avec succès!"
+	},
+	"error": null
+}
+
+Un email est envoyé  à l'utilisateur avec un lien pour vérifier son adresse email avec un token. Si le token est valide, l'utilisateur est considéré comme vérifié.
+
+
+##### Login
+
+https://backend.nationsound2024-festival.fr/api/user/login_check
+
+Méthode POST
+
+Body :
+
+{
+	"email" : "test@test.com",
+	"password" : password"
+}
+
+En cas de succès un token est JWT est retourné :
+
+{
+	"token": "Token"
+}
+
+En cas d'erreurs de mot de passe ou d'email :
+
+{
+	"code": 401,
+	"message": "Identifiants invalides."
+}
+
+##### Obtenir le profil utilisateur 
+
+https://backend.nationsound2024-festival.fr/api/user/profil
+Méthode Get
+Header "Bearer Texte_du_token_jwt"
+
+{
+	"status": "success",
+	"data": {
+		"email": "test@test.com",
+		"firstName": "Marc",
+		"lastName": "Antoine",
+		"newsletter": false,
+		"eventNotification": false
+	},
+	"error": null
+}
+
+En cas de token invalide :
+
+{
+	"code": 401,
+	"message": "Invalid JWT Token"
+}
+
+
+##### Modifier le profil utilisateur 
+
+
+
+##### Effacer le profil utilisateur
+
+Cette procédure ne peut être utilisée que pour les rôles USER
+
+https://backend.nationsound2024-festival.fr/api/user/profil/delete
+Méthode DELETE
+Header "Bearer Texte_du_token_jwt"
+
+{
+	"status": "success",
+	"data": {
+		"message": "Profil supprimé avec succès !"
+	},
+	"error": null
+}
+
+Si l'utilisateur à un rôle EDITOR ou ADMIN :
+
+{
+	"status": "error",
+	"data": null,
+	"error": {
+		"code": "not_authorized",
+		"message": "Vous n'êtes pas autorisé à effectuer cette action !"
+	}
+}
+
+
+
+
 
 
 

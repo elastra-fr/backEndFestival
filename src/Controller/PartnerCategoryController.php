@@ -30,8 +30,10 @@ class PartnerCategoryController extends AbstractController
      */
 
     #[Route('admin/partner/category', name: 'app_admin_partner_category')]
-    public function index(Security $security, PartnerCategoryRepository $partnerCategoryRepository): Response
-    {
+    public function index(
+        Security $security,
+        PartnerCategoryRepository $partnerCategoryRepository
+    ): Response {
 
         $user = $this->getUserInfo($security);
 
@@ -59,8 +61,11 @@ class PartnerCategoryController extends AbstractController
 
     #[Route('admin/partner/category/new', name: 'app_admin_partner_category_new')]
 
-    public function add(Security $security, EntityManagerInterface $entityManager, Request $request): Response
-    {
+    public function add(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response {
 
         $category = new PartnerCategory();
 
@@ -97,37 +102,42 @@ class PartnerCategoryController extends AbstractController
 
     #[Route('admin/partner/category/delete/{id}', name: 'app_admin_partner_category_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, PartnerCategory $partnerCategory): Response
-    {
+    public function delete(
+        EntityManagerInterface $entityManager,
+        PartnerCategory $partnerCategory
+    ): Response {
 
         try {
             $entityManager->remove($partnerCategory);
             $entityManager->flush();
         } catch (\Exception $e) {
 
-                $this->addFlash('danger', 'Impossible de supprimer cette catégorie de partenaires, elle est utilisée dans un ou plusieurs partenaires.');
-
+            $this->addFlash('danger', 'Impossible de supprimer cette catégorie de partenaires, elle est utilisée dans un ou plusieurs partenaires.');
         }
 
         return $this->redirectToRoute('app_admin_partner_category');
     }
 
 
-/**
- * Route pour éditer une catégorie de partenaires
- * Le contrôleur permet de gérer l'édition d'une catégorie de partenaires via un formulaire
- * 
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param Request $request
- * @param PartnerCategory $partnerCategory
- * @return Response
- * 
- */
+    /**
+     * Route pour éditer une catégorie de partenaires
+     * Le contrôleur permet de gérer l'édition d'une catégorie de partenaires via un formulaire
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param PartnerCategory $partnerCategory
+     * @return Response
+     * 
+     */
     #[Route('admin/partner/category/edit/{id}', name: 'app_admin_partner_category_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, PartnerCategory $partnerCategory): Response
-    {
+    public function edit(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        PartnerCategory $partnerCategory
+    ): Response {
 
         $form = $this->createForm(PartnerCategoryType::class, $partnerCategory);
 
@@ -151,20 +161,22 @@ class PartnerCategoryController extends AbstractController
     }
 
 
-/**
- * Route publique pour retourner la liste des catégories de partenaires
- * au format JSON
- * 
- * @param PartnerCategoryRepository $partnerCategoryRepository
- * @param JsonResponseNormalizer $jsonResponseNormalizer
- * @return Response
- *  
- */
+    /**
+     * Route publique pour retourner la liste des catégories de partenaires
+     * au format JSON
+     * 
+     * @param PartnerCategoryRepository $partnerCategoryRepository
+     * @param JsonResponseNormalizer $jsonResponseNormalizer
+     * @return Response
+     *  
+     */
 
     #[Route('api/public/partner/category', name: 'app_public_partner_category')]
 
-    public function publicIndex(PartnerCategoryRepository $partnerCategoryRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
-    {
+    public function publicIndex(
+        PartnerCategoryRepository $partnerCategoryRepository,
+        JsonResponseNormalizer $jsonResponseNormalizer
+    ): Response {
 
         $categories = $partnerCategoryRepository->findBy([], ['category' => 'ASC']);
 

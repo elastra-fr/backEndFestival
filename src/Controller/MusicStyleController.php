@@ -27,7 +27,8 @@ class MusicStyleController extends AbstractController
      */
 
     #[Route('/admin/band/style', name: 'app_admin_style')]
-    public function index(Security $security, MusicStyleRepository $musicStyleRepository): Response
+    public function index(Security $security, 
+    MusicStyleRepository $musicStyleRepository): Response
     {
 
         $user = $this->getUserInfo($security);
@@ -56,7 +57,9 @@ class MusicStyleController extends AbstractController
 
 
     #[Route('/admin/band/style/new', name: 'app_admin_style_new')]
-    public function add(Security $security, EntityManagerInterface $entityManager, Request $request): Response
+    public function add(Security $security, 
+    EntityManagerInterface $entityManager, 
+    Request $request): Response
     {
 
 
@@ -91,7 +94,8 @@ class MusicStyleController extends AbstractController
      */
     #[Route('/admin/band/style/delete/{id}', name: 'app_admin_style_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, MusicStyle $musicStyle): Response
+    public function delete(EntityManagerInterface $entityManager, 
+    MusicStyle $musicStyle): Response
     {
 
         try {
@@ -99,7 +103,7 @@ class MusicStyleController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_admin_style');
         } catch (\Exception $e) {
-            //Message flash
+           
             $this->addFlash('danger', 'Impossible de supprimer ce style de musique car il est utilisé par un ou plusieurs groupes');
             return $this->redirectToRoute('app_admin_style');
         }
@@ -115,7 +119,10 @@ class MusicStyleController extends AbstractController
 
     #[Route('/admin/band/style/edit/{id}', name: 'app_admin_style_edit')]
 
-    public function edit(Security $security, EntityManagerInterface $entityManager, Request $request, MusicStyle $musicStyle): Response
+    public function edit(Security $security, 
+    EntityManagerInterface $entityManager, 
+    Request $request, 
+    MusicStyle $musicStyle): Response
     {
 
         $form = $this->createForm(MusicStyleType::class, $musicStyle);
