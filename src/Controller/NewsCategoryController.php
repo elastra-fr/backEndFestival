@@ -29,13 +29,14 @@ class NewsCategoryController extends AbstractController
      * @return Response
      */
     #[Route('admin/news/category', name: 'app_admin_news_category')]
-    public function index(Security $security, 
-    NewsCategoryRepository $newsCategoryRepository): Response
-    {
+    public function index(
+        Security $security,
+        NewsCategoryRepository $newsCategoryRepository
+    ): Response {
 
         $user = $this->getUserInfo($security);
 
-        $categories = $newsCategoryRepository->findAll();
+        $categories = $newsCategoryRepository->findBy([], ['Category' => 'ASC']);
 
         return $this->render('news_category/news-category-index.html.twig', [
             'controller_name' => 'NewsCategoryController',
@@ -45,22 +46,23 @@ class NewsCategoryController extends AbstractController
         ]);
     }
 
-/**
- * Route pour créer une nouvelle catégorie de news
- * Le contrôleur permet de gérer l'ajout d'une catégorie de news via un formulaire
- * 
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param Request $request
- * @return Response
- */
+    /**
+     * Route pour créer une nouvelle catégorie de news
+     * Le contrôleur permet de gérer l'ajout d'une catégorie de news via un formulaire
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @return Response
+     */
 
     #[Route('admin/news/category/new', name: 'app_admin_news_category_new')]
 
-    public function add(Security $security, 
-    EntityManagerInterface $entityManager, 
-    Request $request): Response
-    {
+    public function add(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response {
 
         $newsCategory = new NewsCategory();
 
@@ -88,53 +90,54 @@ class NewsCategoryController extends AbstractController
     }
 
 
-/**
- * Route pour supprimer une catégorie de news
- * Le contrôleur permet de gérer la suppression d'une catégorie de news via un formulaire
- * 
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param NewsCategory $newsCategory
- * @return Response
- */
+    /**
+     * Route pour supprimer une catégorie de news
+     * Le contrôleur permet de gérer la suppression d'une catégorie de news via un formulaire
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param NewsCategory $newsCategory
+     * @return Response
+     */
 
     #[Route('admin/news/category/delete/{id}', name: 'app_admin_news_category_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, 
-    NewsCategory $newsCategory): Response
-    {
-       
-       try {
+    public function delete(
+        EntityManagerInterface $entityManager,
+        NewsCategory $newsCategory
+    ): Response {
+
+        try {
             $entityManager->remove($newsCategory);
             $entityManager->flush();
         } catch (\Exception $e) {
-            
-            $this->addFlash('danger', 'Impossible de supprimer cette catégorie de news, elle est utilisée dans une ou plusieurs news.');
 
+            $this->addFlash('danger', 'Impossible de supprimer cette catégorie de news, elle est utilisée dans une ou plusieurs news.');
         }
-       
-        
+
+
         return $this->redirectToRoute('app_admin_news_category');
     }
 
-/**
- * Route pour éditer une catégorie de news
- * Le contrôleur permet de gérer l'édition d'une catégorie de news via un formulaire
- * 
- * @param Security $security
- * @param EntityManagerInterface $entityManager
- * @param Request $request
- * @param NewsCategory $newsCategory
- * @return Response
- */
+    /**
+     * Route pour éditer une catégorie de news
+     * Le contrôleur permet de gérer l'édition d'une catégorie de news via un formulaire
+     * 
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
+     * @param NewsCategory $newsCategory
+     * @return Response
+     */
 
     #[Route('admin/news/category/edit/{id}', name: 'app_admin_news_category_edit')]
 
-    public function edit(Security $security, 
-    EntityManagerInterface $entityManager, 
-    Request $request, 
-    NewsCategory $newsCategory): Response
-    {
+    public function edit(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        NewsCategory $newsCategory
+    ): Response {
         $form = $this->createForm(NewsCategoryType::class, $newsCategory);
 
         $form->handleRequest($request);

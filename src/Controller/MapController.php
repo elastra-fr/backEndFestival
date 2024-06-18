@@ -33,10 +33,10 @@ class MapController extends AbstractController
 
         $mapPoints = $mapPointRepository->findAll();
 
-        $categories = $mapPointsCategoryRepository->findAll();
+        $categories = $mapPointsCategoryRepository->findBy([], ['PointCategory' => 'ASC']);
 
         if ($categoryFilter) {
-            $mapPoints = $mapPointRepository->findBy(['type' => $categoryFilter]);
+            $mapPoints = $mapPointRepository->findBy(['type' => $categoryFilter], );
         } else {
             $mapPoints = $mapPointRepository->findAll();
         }
@@ -72,7 +72,7 @@ class MapController extends AbstractController
 
         $mapPointsJson = json_encode($mapPointsList);
 
-        return $this->render('map/index.html.twig', [
+        return $this->render('map/map-index.html.twig', [
             'controller_name' => 'MapController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -179,10 +179,6 @@ class MapController extends AbstractController
 
 
         $mapPointsList = [];
-
-
-
-
 
         foreach ($mapPoints as $mapPoint) {
 

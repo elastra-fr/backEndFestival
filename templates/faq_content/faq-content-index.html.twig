@@ -22,10 +22,24 @@
         </form>
     </div>
 
+{% if contents|length == 0 %}
+        <p>Aucun contenu trouvé</p>
+    {% endif %}
+
    <ul class="listBase">
         {% for content in contents %}
             
-            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/info-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ content.title }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_faq_content_edit', {'id': content.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_faq_content_delete', {'id': content.id}) }}" class="button">Effacer</a></div></li>
+            <li class="listBaseItem">
+                <div class="listItemTitle">
+                    <img src="{{ asset('images/icons/info-solid.svg') }}" alt="Icon" class="listItemIcon" />
+                    <span>{{ content.title }} </span>
+                </div>
+                
+                <div class="listItemAction">
+                    <a href="{{ path('app_admin_faq_content_edit', {'id': content.id}) }}" class="button">Editer</a>
+                    <a href="{{ path('app_admin_faq_content_delete', {'id': content.id}) }}" class="button needs-confirmation">Effacer</a>
+                </div>
+        </li>
         {% endfor %}
     </ul>
 

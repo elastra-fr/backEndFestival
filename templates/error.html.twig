@@ -1,4 +1,0 @@
-{% set error = json_decode(app.request.query.get('error')) %}
-<div class="alert alert-danger">
-    <strong>{{ error.error.code }}</strong>: {{ error.error.message }}
-</div>

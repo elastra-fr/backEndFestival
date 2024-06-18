@@ -30,6 +30,8 @@ class ConcertController extends AbstractController
      * 
      * @param Security $security
      * @param ConcertRepository $concertRepository
+     * @param Request $request
+     * @param StageRepository $stageRepository
      * @return Response
      * 
      */

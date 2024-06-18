@@ -10,18 +10,32 @@
 <h2>Gestion des actualités</h2>
     <a href="{{ path('app_admin_news_new') }}" class="button">Créer actualité</a>
 
+    <div class="filterOptions">
+        <h4>Filtrer par catégorie</h4>
+        <form method="get" action="{{ path('app_admin_news') }}">
+            <select name="categoryId" onchange="this.form.submit()">
+                <option value="">Toutes les catégories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id == categoryFilter %}selected{% endif %}>{{ category.category }}</option>
+                {% endfor %}
+            </select>
+        </form>
+
 <h3>Liste des actualités</h3>
 
+{% if news|length == 0 %}
+        <p>Aucune évènement/actualité trouvé</p>
+    {% endif %}
  
    <ul class="listBase">
         {% for content in news %}
             
             <li class="listBaseItem">
             <div class="listItemTitle"><img src="{{ asset('images/icons/newspaper-solid.svg') }}" alt="Icon" class="listItemIcon" />
-            <span>{{ content.title }} </span></div>
+            <span>{{ content.title}} </span></div>
             <div class="listItemAction">
             <a href="{{ path('app_admin_news_edit', {'id': content.id}) }}" class="button">Editer</a>
-            <a href="{{ path('app_admin_news_delete', {'id': content.id}) }}" class="button">Effacer</a>
+            <a href="{{ path('app_admin_news_delete', {'id': content.id}) }}" class="button needs-confirmation">Effacer</a>
             </div>
             </li>
         {% endfor %}

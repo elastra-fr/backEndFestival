@@ -41,7 +41,7 @@
                 <span>{{ point.title }} </span>
             </div>
             <div class="listItemAction">
-                <a href="{{ path('app_admin_map_points_delete', {'id': point.id}) }}" class="button">Effacer</a>
+                <a href="{{ path('app_admin_map_points_delete', {'id': point.id}) }}" class="button needs-confirmation">Effacer</a>
             </div>
         </li>
     {% endfor %}

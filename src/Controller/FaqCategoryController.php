@@ -17,30 +17,31 @@ class FaqCategoryController extends AbstractController
 {
     use UserInfoTrait;
 
-/**
- * Route pour afficher la liste des catégories de la FAQ via le template index.html.twig
- * 
- * @param Security $security
- * @param FaqCategoryRepository $faqCategoryRepository
- * @return Response
- */
+    /**
+     * Route pour afficher la liste des catégories de la FAQ via le template index.html.twig
+     * 
+     * @param Security $security
+     * @param FaqCategoryRepository $faqCategoryRepository
+     * @return Response
+     */
 
     #[Route('/admin/faq/category', name: 'app_admin_faq_category')]
-    public function index(Security $security, 
-    FaqCategoryRepository $faqCategoryRepository): Response
-    {
+    public function index(
+        Security $security,
+        FaqCategoryRepository $faqCategoryRepository
+    ): Response {
 
         $user = $this->getUserInfo($security);
 
-        $categories= $faqCategoryRepository->findAll();
+        $categories = $faqCategoryRepository->findBy([], ['category' => 'ASC']);
 
-        return $this->render('faq_category/index.html.twig', [
+
+        return $this->render('faq_category/faq-category-index.html.twig', [
             'controller_name' => 'FaqCategoryController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
             'categories' => $categories,
         ]);
-
     }
 
     /**
@@ -53,58 +54,57 @@ class FaqCategoryController extends AbstractController
      */
 
 
-    #[Route('/admin/faq/category/new', name: 'app_admin_faq_category_new')] 
+    #[Route('/admin/faq/category/new', name: 'app_admin_faq_category_new')]
 
-    public function add(Security $security, 
-    EntityManagerInterface $entityManager, 
-    Request $request): Response
-    {
+    public function add(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        Request $request
+    ): Response {
 
-            $faqCategory = new FaqCategory();
+        $faqCategory = new FaqCategory();
 
-            $form = $this->createForm(FaqCategoryType::class, $faqCategory);
+        $form = $this->createForm(FaqCategoryType::class, $faqCategory);
 
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) { 
-                $entityManager->persist($faqCategory);
-                $entityManager->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($faqCategory);
+            $entityManager->flush();
 
-                return $this->redirectToRoute('app_admin_faq_category');
-            }
+            return $this->redirectToRoute('app_admin_faq_category');
+        }
 
-            $user = $this->getUserInfo($security);
+        $user = $this->getUserInfo($security);
 
-            return $this->render('faq_category/add.html.twig', [
-                'controller_name' => 'FaqCategoryController',
-                'firstName' => $user['firstName'],
-                'role' => $user['role'],
-                'form' => $form->createView(),
-            ]);
-
-     
+        return $this->render('faq_category/faq-category-add.html.twig', [
+            'controller_name' => 'FaqCategoryController',
+            'firstName' => $user['firstName'],
+            'role' => $user['role'],
+            'form' => $form->createView(),
+        ]);
     }
 
 
-/**
- * Route pour supprimer une catégorie de la FAQ
- * 
- * @param EntityManagerInterface $entityManager
- * @param FaqCategory $faqCategory
- * @return Response
- */
+    /**
+     * Route pour supprimer une catégorie de la FAQ
+     * 
+     * @param EntityManagerInterface $entityManager
+     * @param FaqCategory $faqCategory
+     * @return Response
+     */
 
     #[Route('/admin/faq/category/delete/{id}', name: 'app_admin_faq_category_delete')]
 
-    public function delete(EntityManagerInterface $entityManager, 
-    FaqCategory $faqCategory): Response
-    {
+    public function delete(
+        EntityManagerInterface $entityManager,
+        FaqCategory $faqCategory
+    ): Response {
 
         $entityManager->remove($faqCategory);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_admin_faq_category');
-
     }
 
     /**
@@ -120,17 +120,18 @@ class FaqCategoryController extends AbstractController
 
     #[Route('/admin/faq/category/edit/{id}', name: 'app_admin_faq_category_edit')]
 
-    public function edit(Security $security, 
-    EntityManagerInterface $entityManager, 
-    FaqCategory $faqCategory, 
-    Request $request): Response
-    {
+    public function edit(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        FaqCategory $faqCategory,
+        Request $request
+    ): Response {
 
         $form = $this->createForm(FaqCategoryType::class, $faqCategory);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) { 
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($faqCategory);
             $entityManager->flush();
 
@@ -139,16 +140,11 @@ class FaqCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        return $this->render('faq_category/edit.html.twig', [
+        return $this->render('faq_category/faq-category-edit.html.twig', [
             'controller_name' => 'FaqCategoryController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
             'form' => $form->createView(),
         ]);
-
     }
-
-
-
-
 }

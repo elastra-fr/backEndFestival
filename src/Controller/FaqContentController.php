@@ -45,7 +45,8 @@ class FaqContentController extends AbstractController
 
         $sectionFilter = $request->query->get('sectionId');
 
-        $sections = $faqCategoryRepository->findAll();
+        $sections = $faqCategoryRepository->findBy([], ['category' => 'ASC']);
+
 
         if ($sectionFilter) {
 
@@ -55,7 +56,7 @@ class FaqContentController extends AbstractController
         }
 
 
-        return $this->render('faq_content/index.html.twig', [
+        return $this->render('faq_content/faq-content-index.html.twig', [
             'controller_name' => 'FaqContentController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -101,7 +102,7 @@ class FaqContentController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        return $this->render('faq_content/add.html.twig', [
+        return $this->render('faq_content/faq-content-add.html.twig', [
             'controller_name' => 'FaqContentController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -165,7 +166,7 @@ class FaqContentController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        return $this->render('faq_content/add.html.twig', [
+        return $this->render('faq_content/faq-content-add.html.twig', [
             'controller_name' => 'FaqContentController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],

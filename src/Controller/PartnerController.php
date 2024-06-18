@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Partner;
 use App\Form\PartnerType;
+use App\Repository\PartnerCategoryRepository;
 use App\Repository\PartnerRepository;
 use App\Service\DeleteImagesService;
 use App\Service\FileUploaderService;
@@ -28,24 +29,41 @@ class PartnerController extends AbstractController
      * 
      * @param Security $security
      * @param PartnerRepository $partnerRepository
+     * @param PartnerCategoryRepository $partnerCategoryRepository
+     * @param Request $request
      * @return Response
      * 
      */
 
     #[Route('/admin/partner', name: 'app_admin_partner')]
     public function index(Security $security, 
-    PartnerRepository $partnerRepository): Response
+    PartnerRepository $partnerRepository,
+    PartnerCategoryRepository $partnerCategoryRepository,
+    Request $request
+    ): Response
     {
 
         $user = $this->getUserInfo($security);
 
-        $partners = $partnerRepository->findAll();
+        $categoryFilter = $request->query->get('categoryId');
 
-        return $this->render('partner/index.html.twig', [
+        $categories = $partnerCategoryRepository->findBy([], ['category' => 'ASC']);
+
+        if ($categoryFilter) {
+
+            $partners = $partnerRepository->findBy(['category' => $categoryFilter], ['name' => 'ASC']);
+        } else {
+            $partners = $partnerRepository->findBy([], ['name' => 'ASC']);
+        }
+    
+
+        return $this->render('partner/partner-index.html.twig', [
             'controller_name' => 'PartnerController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
             'partners' => $partners,
+            'categories' => $categories,
+            'categoryFilter' => $categoryFilter,
         ]);
     }
 
@@ -99,7 +117,7 @@ class PartnerController extends AbstractController
             return $this->redirectToRoute('app_admin_partner');
         }
 
-        return $this->render('partner/add.html.twig', [
+        return $this->render('partner/partner-add.html.twig', [
             'controller_name' => 'PartnerController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -177,7 +195,7 @@ class PartnerController extends AbstractController
 
 
 
-        return $this->render('partner/edit.html.twig', [
+        return $this->render('partner/partner-edit.html.twig', [
             'controller_name' => 'PartnerController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],

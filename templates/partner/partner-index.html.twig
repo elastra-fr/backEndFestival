@@ -1,0 +1,45 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Partenaires{% endblock %}
+
+{% block content %}
+<div class="contentContainer">
+<h2>Gestion des Partenaires</h2>
+    <a href="{{ path('app_admin_partner_new') }}" class="button">Créer partenaire</a>
+
+<h3>Liste des Partenaires</h3>
+
+    <div class="filterOptions">
+        <h4>Filtrer par section</h4>
+        <form method="get" action="{{ path('app_admin_partner') }}">
+            <select name="categoryId" onchange="this.form.submit()">
+                <option value="">Toutes les sections</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id == categoryFilter %}selected{% endif %}>{{ category.category }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+{% if partners|length == 0 %}
+        <p>Aucun partenaire trouvé</p>
+    {% endif %}
+ 
+   <ul class="listBase">
+        {% for partner in partners %}
+            
+            <li class="listBaseItem">
+                <div class="listItemTitle">
+                    <img src="{{ asset('images/icons/handshake-solid.svg') }}" alt="Icon" class="listItemIcon" />
+                    <span>{{ partner.name }} </span>
+                </div>
+                <div class="listItemAction">
+                    <a href="{{ path('app_admin_partner_edit', {'id': partner.id}) }}" class="button">Editer</a>
+                    <a href="{{ path('app_admin_partner_delete', {'id': partner.id}) }}" class="button needs-confirmation">Effacer</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}

@@ -37,9 +37,9 @@ class MapPointsCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        $categories = $mapPointsCategoryRepository->findAll();
+        $categories = $mapPointsCategoryRepository->findBy([], ['PointCategory' => 'ASC']);
 
-        return $this->render('map_points_category/index.html.twig', [
+        return $this->render('map_points_category/points-category-index.html.twig', [
             'controller_name' => 'MapPointsCategoryController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -103,7 +103,7 @@ class MapPointsCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        return $this->render('map_points_category/add.html.twig', [
+        return $this->render('map_points_category/points-category-add.html.twig', [
             'controller_name' => 'MapPointsCategoryController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -171,7 +171,7 @@ class MapPointsCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        return $this->render('map_points_category/add.html.twig', [
+        return $this->render('map_points_category/points-category-add.html.twig', [
             'controller_name' => 'MapPointsCategoryController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -201,19 +201,20 @@ class MapPointsCategoryController extends AbstractController
     }
 
 
-/**
- * Route publique pour retourner les catégories de points sur la carte triées par ordre alphabétique au format JSON
- * 
- * @param MapPointsCategoryRepository $mapPointsCategoryRepository
- * @param JsonResponseNormalizer $jsonResponseNormalizer
- * @return Response
- * 
- */
+    /**
+     * Route publique pour retourner les catégories de points sur la carte triées par ordre alphabétique au format JSON
+     * 
+     * @param MapPointsCategoryRepository $mapPointsCategoryRepository
+     * @param JsonResponseNormalizer $jsonResponseNormalizer
+     * @return Response
+     * 
+     */
 
     #[Route('api/public/map/points/category', name: 'app_api_map_points_category')]
-    public function publicIndex(MapPointsCategoryRepository $mapPointsCategoryRepository, 
-    JsonResponseNormalizer $jsonResponseNormalizer): Response
-    {
+    public function publicIndex(
+        MapPointsCategoryRepository $mapPointsCategoryRepository,
+        JsonResponseNormalizer $jsonResponseNormalizer
+    ): Response {
         $categories = $mapPointsCategoryRepository->findBy([], ['PointCategory' => 'ASC']);
 
         $categoriesData = [];
@@ -229,5 +230,4 @@ class MapPointsCategoryController extends AbstractController
 
         return $response;
     }
-
 }

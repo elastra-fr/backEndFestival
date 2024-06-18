@@ -1,6 +1,6 @@
 {% extends 'home/index.html.twig' %}
 
-{% block title %}Style de musique{% endblock %}
+{% block title %}Groupes - Artistes{% endblock %}
 
 {% block content %}
 <div class="contentContainer">
@@ -13,12 +13,40 @@
 
 <h3>Liste des Groupes</h3>
 
- 
+<div class="filterOptions">
+        <h4>Filtrer par style</h4>
+        <form method="get" action="{{ path('app_admin_band') }}">
+            <select name="styleId" onchange="this.form.submit()">
+                <option value="">Tous les styles</option>
+                {% for style in styles %}
+                    <option value="{{ style.id }}" {% if style.id == styleFilter %}selected{% endif %}>{{ style.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+ {% if bands|length == 0 %}
+        <p>Aucun groupe trouvé</p>
+    {% endif %}
+
    <ul class="listBase">
+
         {% for band in bands %}
             
-            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/guitar-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ band.name }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_band_edit', {'id': band.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_band_delete', {'id': band.id}) }}" class="button">Effacer</a></div></li>
+            <li class="listBaseItem">
+                <div class="listItemTitle">
+                    <img src="{{ asset('images/icons/guitar-solid.svg') }}" alt="Icon" class="listItemIcon" />
+                    <span>{{ band.name }} </span>
+                </div>
+                
+                <div class="listItemAction">
+                    <a href="{{ path('app_admin_band_edit', {'id': band.id}) }}" class="button">Editer</a>
+                     <a href="{{ path('app_admin_band_delete', {'id': band.id}) }}" class="button needs-confirmation">Effacer</a>
+                     </div>
+        </li>
         {% endfor %}
+   
+   
     </ul>
 
 </div>

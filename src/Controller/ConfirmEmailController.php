@@ -8,7 +8,6 @@ use App\Service\JsonResponseNormalizer;
 use App\Service\PasswordValidatorService;
 use App\Trait\StandardResponsesTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,12 +38,13 @@ class ConfirmEmailController extends AbstractController
      * @param EntityManagerInterface $manager
      * @param UserRepository $userRepository
      */
-    public function __construct(EntityManagerInterface $manager, 
-    UserRepository $userRepository, 
-    JsonResponseNormalizer $jsonResponseNormalizer, 
-    PasswordValidatorService $passwordValidatorService, 
-    UserPasswordHasherInterface $passwordHasher)
-    {
+    public function __construct(
+        EntityManagerInterface $manager,
+        UserRepository $userRepository,
+        JsonResponseNormalizer $jsonResponseNormalizer,
+        PasswordValidatorService $passwordValidatorService,
+        UserPasswordHasherInterface $passwordHasher
+    ) {
         $this->manager = $manager;
         $this->userRepository = $userRepository;
         $this->jsonResponseNormalizer = $jsonResponseNormalizer;
@@ -138,7 +138,7 @@ class ConfirmEmailController extends AbstractController
             return $this->respondInvalidToken();
         }
 
-        
+
 
         $form = $this->createForm(ResetPasswordType::class);
 
@@ -166,8 +166,6 @@ class ConfirmEmailController extends AbstractController
 
                 $response = $this->jsonResponseNormalizer->respondSuccess(200, 'Votre mot de passe a été réinitialisé avec succès !');
                 return $response;
-
-
             }
         }
 
@@ -185,17 +183,15 @@ class ConfirmEmailController extends AbstractController
 
     #[Route('/email/change/confirm/{token}', name: 'app_confirm_email_change')]
 
-    public function confirmEmailChange(string $token,
-    MailerService $mailerService,
-    JsonResponseNormalizer $jsonResponseNormalizer,
-    UserRepository $userRepository
-    ): Response
-    {
+    public function confirmEmailChange(
+        string $token,
+        MailerService $mailerService,
+    ): Response {
 
         $user = $this->userRepository->findOneBy(['emailChangeToken' => $token]);
 
         if (!$user) {
-       return $this->respondInvalidToken();
+            return $this->respondInvalidToken();
         }
 
         $user->setEmail($user->getNewEmail());
@@ -220,7 +216,7 @@ class ConfirmEmailController extends AbstractController
 
         );
 
-     return $this->respondEmailChangeSuccess();
+        return $this->respondEmailChangeSuccess();
     }
 
 
@@ -233,12 +229,11 @@ class ConfirmEmailController extends AbstractController
 
     #[Route('/email/change/cancel/{token}', name: 'app_cancel_email_change')]
 
-    public function cancelEmailChange(string $token,
-    MailerService $mailerService,
-    JsonResponseNormalizer $jsonResponseNormalizer,
-    UserRepository $userRepository
-    ): Response
-    {
+    public function cancelEmailChange(
+        string $token,
+        MailerService $mailerService,
+        JsonResponseNormalizer $jsonResponseNormalizer,
+    ): Response {
 
         $user = $this->userRepository->findOneBy(['emailChangeToken' => $token]);
 
@@ -269,7 +264,4 @@ class ConfirmEmailController extends AbstractController
         $cancelResponse = $jsonResponseNormalizer->respondSuccess(200, ['message' => 'Changement d\'email annulé. Par mesure de sécurité nous vous demandons de reinitialiser votre mot de passe. Veuillez consulter vos emails et suivre la procédure']);
         return $cancelResponse;
     }
-
-
-
 }

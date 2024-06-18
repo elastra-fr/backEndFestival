@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\News;
 use App\Form\NewsType;
+use App\Repository\NewsCategoryRepository;
 use App\Repository\NewsRepository;
 use App\Service\JsonResponseNormalizer;
 use App\Trait\UserInfoTrait;
@@ -28,18 +29,32 @@ class NewsController extends AbstractController
     #[Route('/admin/news', name: 'app_admin_news')]
     public function index(
         Security $security,
-        NewsRepository $newsRepository
+        NewsRepository $newsRepository,
+        NewsCategoryRepository $newsCategoryRepository,
+        Request $request
     ): Response {
 
         $user = $this->getUserInfo($security);
 
-        $news = $newsRepository->findAll();
+    $newsCategoryFilter = $request->query->get('categoryId');
+
+        $categories = $newsCategoryRepository->findBy([], ['Category' => 'ASC']);
+
+        if ($newsCategoryFilter) {
+
+            $news = $newsRepository->findBy(['NewsCategory' => $newsCategoryFilter], ['news_date' => 'DESC']);
+        } else {
+            
+        $news = $newsRepository->findBy([], ['news_date' => 'DESC']);
+        }
 
         return $this->render('news/index.html.twig', [
             'controller_name' => 'NewsController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
             'news' => $news,
+            'categories' => $categories,
+            'categoryFilter' => $newsCategoryFilter,
         ]);
     }
 

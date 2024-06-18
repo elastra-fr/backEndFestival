@@ -37,7 +37,7 @@ class PartnerCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        $categories = $partnerCategoryRepository->findAll();
+        $categories = $partnerCategoryRepository->findBy([], ['category' => 'ASC']);
 
         return $this->render('partner_category/partner-category-index.html.twig', [
             'controller_name' => 'PartnerCategoryController',

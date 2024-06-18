@@ -66,7 +66,7 @@
                                 <div class="calendar-event">
                                     <div class="event-title">{{ concert.artist }}</div>
                                     <div class="event-actions">
-                                        <a href="{{ path('app_admin_concert_edit', {'id': concert.id}) }}"  class="needs-confirmation"><img src="{{ asset('images/icons/pen-solid.svg') }}" alt="Icon" class="listItemIcon" title="Editer"/></a>
+                                        <a href="{{ path('app_admin_concert_edit', {'id': concert.id}) }}"><img src="{{ asset('images/icons/pen-solid.svg') }}" alt="Icon" class="listItemIcon" title="Editer"/></a>
                                         <a href="{{ path('app_admin_concert_delete', {'id': concert.id}) }}"  class="needs-confirmation"><img src="{{ asset('images/icons/trash-solid.svg') }}" alt="Icon" class="listItemIcon" title="Supprimer"/></a>
                                     </div>
                                 </div>
@@ -85,7 +85,7 @@
                             <div class="calendar-event">
                                 <div class="event-title">{{ concert.artist }}</div>
                                 <div class="event-actions">
-                                    <a href="{{ path('app_admin_concert_edit', {'id': concert.id}) }}" class="needs-confirmation"><img src="{{ asset('images/icons/pen-solid.svg') }}" alt="Icon" class="listItemIcon" title="Editer"/></a>
+                                    <a href="{{ path('app_admin_concert_edit', {'id': concert.id}) }}"><img src="{{ asset('images/icons/pen-solid.svg') }}" alt="Icon" class="listItemIcon" title="Editer"/></a>
                                     <a href="{{ path('app_admin_concert_delete', {'id': concert.id}) }}" class="needs-confirmation"><img src="{{ asset('images/icons/trash-solid.svg') }}" alt="Icon" class="listItemIcon" title="Supprimer"/></a>
                                 </div>
                             </div>
@@ -102,15 +102,6 @@
 {% endblock %}
 
 
-
-
-
- {#   <ul class="listBase">
-        {% for concert in concerts %}
-            
-            <li class="listBaseItem"><div class="listItemTitle"><img src="{{ asset('images/icons/guitar-solid.svg') }}" alt="Icon" class="listItemIcon" /><span>{{ concert.artist }} </span></div><div class="listItemAction"><a href="{{ path('app_admin_concert_edit', {'id': concert.id}) }}" class="button">Editer</a><a href="{{ path('app_admin_concert_delete', {'id': concert.id}) }}" class="button">Effacer</a></div></li>
-        {% endfor %}
-    </ul>#}
 
 
 
