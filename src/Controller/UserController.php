@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use App\Trait\StandardResponsesTrait;
+
 
 
 class UserController extends AbstractController
@@ -39,52 +39,6 @@ class UserController extends AbstractController
     {
         return new RedirectResponse('https://www.nationsound2024-festival.fr/home');
     }
-
-/**
- * Route pour reinitaliser le mot de passe de l'utilisateur
- * 
- * @param Request $request
- * @param UserRepository $userRepository
- * @param UserPasswordHasherInterface $userPasswordHasherInterface
- * @param EntityManagerInterface $entityManagerInterface
- * @param JsonResponseNormalizer $jsonResponseNormalizer
- * @return Response
- * 
- */
-
-    #[Route(path: '/reset-password', name: 'app_reset_password', methods: ['POST'])]
-
-    public function resetPassword(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasherInterface, EntityManagerInterface $entityManagerInterface, JsonResponseNormalizer $jsonResponseNormalizer): Response
-    {
-       /* $data = json_decode($request->getContent(), true);
-
-        $user = $userRepository->findOneBy(['email' => $data['email']]);
-
-        if (!$user) {
-            $userNotFoundResponse = $jsonResponseNormalizer->respondError('user_not_found', 'Utilisateur non trouvé !', Response::HTTP_NOT_FOUND);
-            return $userNotFoundResponse;
-        }
-
-        $temporalPassword = bin2hex(random_bytes(8));
-
-        $user->setPassword($userPasswordHasherInterface->hashPassword($user, $temporalPassword));
-
-        $entityManagerInterface->flush();
-
-        $emailBody = sprintf(
-            '       Bonjour %s,<br><p>Votre mot de passe a été réinitialisé avec succès. Voici votre nouveau mot de passe : %s. Vous pouvez le changer à tout moment dans votre profil.</p><br><p>A bientôt sur le festival ! </p><br>      <p>L\'équipe du festival NationSound2024</p>',
-            $user->getFirstName(),
-            $temporalPassword
-        );
-
-        $this->mailerService->sendEmail($user->getEmail(), 'Réinitialisation de votre mot de passe', $emailBody);
-
-        $resetSuccessResponse = $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, ['message' => 'Mot de passe réinitialisé avec succès !']);
-        return $resetSuccessResponse;*/
-    }
-
-
-
 
 
 
@@ -240,9 +194,11 @@ class UserController extends AbstractController
 
     #[Route(path: '/admin/user/block/{id}', name: 'app_admin_user_block')]
 
-    public function block(EntityManagerInterface $entityManagerInterface, 
-    UserRepository $userRepository, $id): Response
-    {
+    public function block(
+        EntityManagerInterface $entityManagerInterface,
+        UserRepository $userRepository,
+        $id
+    ): Response {
         // $CurrentUser = $this->getUserInfo($security);
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -269,10 +225,12 @@ class UserController extends AbstractController
 
     #[Route(path: '/admin/user/unblock/{id}', name: 'app_admin_user_unblock')]
 
-    public function unblock(EntityManagerInterface $entityManagerInterface, 
-    UserRepository $userRepository, $id): Response
-    {
-      
+    public function unblock(
+        EntityManagerInterface $entityManagerInterface,
+        UserRepository $userRepository,
+        $id
+    ): Response {
+
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -335,13 +293,14 @@ class UserController extends AbstractController
 
     #[Route(path: '/api/user/register', name: 'app_user_register', methods: ['POST'])]
 
-    public function register(Request $request, 
-    EntityManagerInterface $entityManager, 
-    PasswordValidatorService $passwordValidatorService, 
-    UserPasswordHasherInterface $passwordHasher, 
-    JsonResponseNormalizer $jsonResponseNormalizer, 
-    MailerService $mailerService): Response
-    {
+    public function register(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        PasswordValidatorService $passwordValidatorService,
+        UserPasswordHasherInterface $passwordHasher,
+        JsonResponseNormalizer $jsonResponseNormalizer,
+        MailerService $mailerService
+    ): Response {
 
         $data = json_decode($request->getContent(), true);
 
@@ -421,9 +380,10 @@ class UserController extends AbstractController
 
     #[Route(path: '/api/user/profil', name: 'app_user_profil', methods: ['GET'])]
 
-    function profil(Security $security, 
-    JsonResponseNormalizer $jsonResponseNormalizer): Response
-    {
+    function profil(
+        Security $security,
+        JsonResponseNormalizer $jsonResponseNormalizer
+    ): Response {
 
         $user = $security->getUser();
 
@@ -448,7 +408,7 @@ class UserController extends AbstractController
     }
 
 
-//Route pour modifier le profil de l'utilisateur connecté via api REST avec token JWT
+    //Route pour modifier le profil de l'utilisateur connecté via api REST avec token JWT
 
     /**
      * Route pour modifier le profil de l'utilisateur connecté via api REST avec token JWT
@@ -464,20 +424,22 @@ class UserController extends AbstractController
 
     #[Route(path: '/api/user/profil/edit', name: 'app_user_profil_edit', methods: ['PUT'])]
 
-    public function updateProfilUser(Request $request, 
-    JsonResponseNormalizer $jsonResponseNormalizer,
-    UserRepository $userRepository): Response
-{
-    $data = json_decode($request->getContent(), true);
+    public function updateProfilUser(
+        Request $request,
+        JsonResponseNormalizer $jsonResponseNormalizer,
+        UserRepository $userRepository,
+        MailerService $mailerService,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $data = json_decode($request->getContent(), true);
 
-    
-    $user = $this->getUser();
 
-    if (!$user) {
+        $user = $this->getUser();
 
-return $jsonResponseNormalizer->respondError('not_authenticated', 'Vous n\'êtes pas authentifié !', 401);
-       
-    }
+        if (!$user) {
+
+            return $jsonResponseNormalizer->respondError('not_authenticated', 'Vous n\'êtes pas authentifié !', 401);
+        }
 
         //Analyser les données reçues et vérifier que seuls les champs autorisés sont modifiés sinon retourner une erreur
 
@@ -485,71 +447,75 @@ return $jsonResponseNormalizer->respondError('not_authenticated', 'Vous n\'êtes
 
         if (!empty($invalidFields)) {
 
-            $invalidFieldsResponse= $jsonResponseNormalizer->respondError('BAD_REQUEST', 'Les champs suivants ne peuvent pas être modifiés : ' . implode(', ', $invalidFields), 400);
+            $invalidFieldsResponse = $jsonResponseNormalizer->respondError('BAD_REQUEST', 'Les champs suivants ne peuvent pas être modifiés : ' . implode(', ', $invalidFields), 400);
             return $invalidFieldsResponse;
-            
         }
 
-    if (isset($data['firstName'])) {
-        $user->setFirstName($data['firstName']);
+        if (isset($data['firstName'])) {
+            $user->setFirstName($data['firstName']);
+        }
+
+        if (isset($data['lastName'])) {
+            $user->setLastName($data['lastName']);
+        }
+
+        if (isset($data['newsletter'])) {
+            $user->setNewsletterConsent($data['newsletter']);
+        }
+
+        if (isset($data['eventNotification'])) {
+            $user->setEventAlertConsent($data['eventNotification']);
+        }
+
+        //Procédure spéciale pour la modification de l'email
+
+        if (isset($data['email'])) {
+
+            // Vérification si l'email existe
+            $emailExist = $userRepository->findOneBy(['email' => $data['email']]);
+
+
+            if ($emailExist) {
+
+                $emailExistResponse = $jsonResponseNormalizer->respondError('BAD_REQUEST', 'Cet email est déjà utilisé par un autre utilisateur', 400);
+                return $emailExistResponse;
+            }
+            //Génération d'un token de vérification d'email
+
+            $user->setNewEmail($data['email']);
+            $user->generateEmailChangeToken();
+
+
+
+            //Envoi d'un email à l'utilisateur à son ancienne adresse pour confirmer si il est bien à l'origine de la demande de modification de l'email avec deux liens : un pour confirmer et un pour annuler
+
+            $emailBody = sprintf(
+                'Bonjour %s,<br><p>Vous avez demandé à modifier votre adresse email pour la nouvelle adresse %s. Veuillez cliquer sur le lien suivant pour confirmer votre nouvelle adresse email : <a href="%s">Confirmer votre adresse email</a></p><p>Si vous n\'êtes pas à l\'origine de cette demande, veuillez cliquer sur le lien suivant pour annuler la modification : <a href="%s">Annuler la modification</a></p>',
+                $user->getFirstName(),
+                $user->getNewEmail(),
+                $this->generateUrl('app_confirm_email_change', ['token' => $user->getEmailChangeToken()], UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->generateUrl('app_cancel_email_change', ['token' => $user->getEmailChangeToken()], UrlGeneratorInterface::ABSOLUTE_URL)
+            );
+
+            $mailerService->sendEmail(
+                $user->getEmail(),
+                'Modification de votre adresse email',
+                $emailBody
+            );
+
+            $emailChangeMessage = "Un email de confirmation a été envoyé à votre ancienne adresse email. Veuillez cliquer sur le lien qu'il contient pour confirmer la procédure de changement.";
+
+
+            //  $confirmationLink = $this->generateUrl('confirm_email', ['token' => $user->getEmailVerificationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        }
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $updateSuccessResponse = $jsonResponseNormalizer->respondSuccess(200, ['message' => "Utilisateur modifié avec succès", 'emailChangeMessage' => $emailChangeMessage ?? null]);
+        return $updateSuccessResponse;
     }
-
-    if (isset($data['lastName'])) {
-        $user->setLastName($data['lastName']);
-    }
-
-    if (isset($data['newsletter'])) {
-        $user->setNewsletterConsent($data['newsletter']);
-    }
-
-    if (isset($data['eventNotification'])) {
-        $user->setEventAlertConsent($data['eventNotification']);
-    }
-
-//Procédure spéciale pour la modification de l'email
-
-    if (isset($data['email'])) {
-        
-        // Vérification si l'email existe
-        $emailExist = $userRepository->findOneBy(['email' => $data['email']]);
-
-      
-         if ($emailExist) {
-
-            $emailExistResponse= $jsonResponseNormalizer->respondError('BAD_REQUEST', 'Cet email est déjà utilisé par un autre utilisateur', 400);
-            return $emailExistResponse;}
-        //Génération d'un token de vérification d'email
-
-        $user->setNewEmail($data['email']);
-        $user->generateEmailChangeToken();
-
-             
-
-        //Envoi d'un email à l'utilisateur à son ancienne adresse pour confirmer si il est bien à l'origine de la demande de modification de l'email avec deux liens : un pour confirmer et un pour annuler
-
-        $emailBody = sprintf(
-            'Bonjour %s,<br><p>Vous avez demandé à modifier votre adresse email pour la nouvelle adresse %s. Veuillez cliquer sur le lien suivant pour confirmer votre nouvelle adresse email : <a href="%s">Confirmer votre adresse email</a></p><p>Si vous n\'êtes pas à l\'origine de cette demande, veuillez cliquer sur le lien suivant pour annuler la modification : <a href="%s">Annuler la modification</a></p>', $user->getFirstName(), $user->getNewEmail(),$this->generateUrl('app_confirm_email_change', ['token' => $user->getEmailChangeToken()], UrlGeneratorInterface::ABSOLUTE_URL), $this->generateUrl('app_cancel_email_change', ['token' => $user->getEmailChangeToken()], UrlGeneratorInterface::ABSOLUTE_URL));
-
-        $this->mailerService->sendEmail(
-            $user->getEmail(),
-            'Modification de votre adresse email',
-            $emailBody
-        );
-
-        $emailChangeMessage="Un email de confirmation a été envoyé à votre ancienne adresse email. Veuillez cliquer sur le lien qu'il contient pour confirmer la procédure de changement.";
-
-        
-      //  $confirmationLink = $this->generateUrl('confirm_email', ['token' => $user->getEmailVerificationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
-
-    }
-
-    $this->manager->persist($user);
-    $this->manager->flush();
-
-    $updateSuccessResponse= $this->jsonResponseNormalizer->respondSuccess(200, ['message' => "Utilisateur modifié avec succès", 'emailChangeMessage' => $emailChangeMessage ?? null]);
-    return $updateSuccessResponse;
-
-}
 
 
     /**
@@ -565,15 +531,16 @@ return $jsonResponseNormalizer->respondError('not_authenticated', 'Vous n\'êtes
 
     #[Route(path: '/api/user/profil/delete', name: 'app_user_profil_delete', methods: ['DELETE'])]
 
-    function deleteProfil(Security $security, 
-    EntityManagerInterface $entityManager, 
-    JsonResponseNormalizer $jsonResponseNormalizer): Response
-    {
+    function deleteProfil(
+        Security $security,
+        EntityManagerInterface $entityManager,
+        JsonResponseNormalizer $jsonResponseNormalizer
+    ): Response {
 
         $user = $security->getUser();
 
         $role = $user->getRoles();
-    //Vérifier si l'utilisateur est authentifié et si il a bien le role ROLE_USER
+        //Vérifier si l'utilisateur est authentifié et si il a bien le role ROLE_USER
 
 
 
@@ -595,7 +562,5 @@ return $jsonResponseNormalizer->respondError('not_authenticated', 'Vous n\'êtes
 
         $profilResponse = $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, ['message' => 'Profil supprimé avec succès !']);
         return $profilResponse;
-
     }
-
 }

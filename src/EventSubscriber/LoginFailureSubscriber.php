@@ -109,7 +109,7 @@ class LoginFailureSubscriber implements EventSubscriberInterface
                     $user->generatePasswordResetToken();
 
 
-                    $confirmationLink = $this->router->generate('app_reset_password', ['token' => $user->getPasswordResetToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+                    $confirmationLink = $this->router->generate('reset_password', ['token' => $user->getPasswordResetToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
                     $this->mailerService->sendEmail(
                         $user->getEmail(),

@@ -56,6 +56,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $EventAlertConsent = false;
 
+    #[ORM\Column]
+    private ?bool $passwordResetInProgress = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $passwordResetToken = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $newEmail = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailChangeToken = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -233,4 +245,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function isPasswordResetInProgress(): ?bool
+    {
+        return $this->passwordResetInProgress;
+    }
+
+    public function setPasswordResetInProgress(bool $passwordResetInProgress): static
+    {
+        $this->passwordResetInProgress = $passwordResetInProgress;
+
+        return $this;
+    }
+
+    public function getPasswordResetToken(): ?string
+    {
+        return $this->passwordResetToken;
+    }
+
+    public function setPasswordResetToken(?string $passwordResetToken): static
+    {
+        $this->passwordResetToken = $passwordResetToken;
+
+        return $this;
+    }
+
+public function generatePasswordResetToken(): self
+    {
+        $this->passwordResetToken = bin2hex(random_bytes(32));
+        return $this;
+    }
+
+public function getNewEmail(): ?string
+{
+    return $this->newEmail;
+}
+
+public function setNewEmail(?string $newEmail): static
+{
+    $this->newEmail = $newEmail;
+
+    return $this;
+}
+
+public function getEmailChangeToken(): ?string
+{
+    return $this->emailChangeToken;
+}
+
+public function setEmailChangeToken(?string $emailChangeToken): static
+{
+    $this->emailChangeToken = $emailChangeToken;
+
+    return $this;
+}
+
+public function generateEmailChangeToken(): self
+{
+    $this->emailChangeToken = bin2hex(random_bytes(32));
+    return $this;
+
+}
+
 }
