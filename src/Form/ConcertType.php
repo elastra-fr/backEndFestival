@@ -12,23 +12,27 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Validator\Constraints\Range;
+use Doctrine\ORM\EntityRepository;
 
 class ConcertType extends AbstractType
 {
 
     private $festivalStartDate;
     private $festivalEndDate;
+    private $initialFestivalEndDate;
 
     public function __construct($festivalStartDate, $festivalEndDate)
     {
         $this->festivalStartDate = new \DateTime($festivalStartDate);
-        $this->festivalEndDate = new \DateTime($festivalEndDate);
+        $this->initialFestivalEndDate = new \DateTime($festivalEndDate);
+        $this->festivalEndDate = (new \DateTime($festivalEndDate))->modify('+1 day');
     }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
             $formatedStartDate= $this->festivalStartDate->format('d/m/Y');
-            $formatedEndDate= $this->festivalEndDate->format('d/m/Y');
+            $formatedEndDate= $this->initialFestivalEndDate->format('d/m/Y');
+
 
         $builder
             ->add('ConcertDate', DateTimeType::class, [
@@ -47,10 +51,18 @@ class ConcertType extends AbstractType
             ->add('Artist', EntityType::class, [
                 'class' => Band::class,
                 'choice_label' => 'name',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('b')
+                        ->orderBy('b.name', 'ASC');
+                },
             ])
             ->add('Stage', EntityType::class, [
                 'class' => Stage::class,
                 'choice_label' => 'name',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.name', 'ASC');
+                },
             ])
         ;
     }

@@ -105,6 +105,24 @@ gap: 25px;
 width: 15px;
 }
 
+.filterOptions{
+
+display: flex;
+gap: 15px;
+flex-direction: column;
+
+}
+
+.filterOptions select{
+
+padding: 10px;
+border-radius: 5px;
+border: 1px solid #ccc;
+
+
+
+}
+
 
 /*********************Bandeau flash**********************/
 

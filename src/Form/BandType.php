@@ -36,6 +36,7 @@ class BandType extends AbstractType
                     new NotBlank([
                         'message' => 'Veuillez une description du groupe ou de l\'artiste.',
                     ]),
+                    
                 ],
 
             ])

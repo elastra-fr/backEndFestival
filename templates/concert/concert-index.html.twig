@@ -30,6 +30,7 @@
     <h2>Gestion des concerts</h2>
     <a href="{{ path('app_admin_concert_new') }}" class="button">Créer concert</a>
 
+<div class="filterOptions">
         <h3>Filtrer par scène</h3>
     <form method="get" action="{{ path('app_admin_concert') }}">
         <select name="stage" onchange="this.form.submit()">
@@ -41,6 +42,7 @@
         </select>
         <noscript><input type="submit" value="Filtrer"></noscript>
     </form>
+</div>
 
     <h3>Planning des concerts - {{currentStageName}}</h3>
 
