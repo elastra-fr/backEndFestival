@@ -5,15 +5,15 @@
 
 
         {{ form_start(form, {'attr': {'class': 'formBase'}}) }}
-<div class="formContainerBase">
+<div class="formContainerBase flexCont">
 
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.title, 'Titre') }}
         {{ form_widget(form.title) }}
         {{ form_errors(form.title) }}
     </div>
 
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.description) }}
         {{ form_widget(form.description) }}
         {{ form_errors(form.description) }}
@@ -21,17 +21,17 @@
     </div>
 
 
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.Longitude) }}
         {{ form_widget(form.Longitude) }}
         {{ form_errors(form.Longitude) }}
     </div>
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.Latitude) }}
         {{ form_widget(form.Latitude) }}
         {{ form_errors(form.Latitude) }}
     </div>
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.type) }}
         {{ form_widget(form.type) }}
         {{ form_errors(form.type) }}

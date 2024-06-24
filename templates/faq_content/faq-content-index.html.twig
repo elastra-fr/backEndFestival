@@ -10,7 +10,7 @@
 <h3>Liste des contenus</h3>
 
 
- <div class="filterOptions">
+ <div class="filterOptions flexCont">
         <h4>Filtrer par section</h4>
         <form method="get" action="{{ path('app_admin_faq_content') }}">
             <select name="sectionId" onchange="this.form.submit()">
@@ -26,7 +26,7 @@
         <p>Aucun contenu trouvé</p>
     {% endif %}
 
-   <ul class="listBase">
+   <ul class="listBase flexCont">
         {% for content in contents %}
             
             <li class="listBaseItem">

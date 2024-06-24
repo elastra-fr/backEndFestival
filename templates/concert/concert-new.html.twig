@@ -8,26 +8,26 @@
 
 
 
-    {{ form_start(form, {'attr':{'class':'formBase'}}) }}
-<div class="formContainerBase">
+    {{ form_start(form, {'attr':{'class':'formBase flexCont'}}) }}
+<div class="formContainerBase flexCont">
 
     {% include 'flashband.html.twig' %}
     
         <h3>Créer/Editer Concert</h3>
 
-        <div class="formGroup">
+        <div class="formGroup flexCont">
             {{ form_label(form.ConcertDate) }}
             {{ form_widget(form.ConcertDate) }}
             {{ form_errors(form.ConcertDate) }}
         </div>
         
-        <div class="formGroup">
+        <div class="formGroup flexCont">
             {{ form_label(form.Artist) }}
             {{ form_widget(form.Artist) }}
             {{ form_errors(form.Artist) }}
         </div>
         
-        <div class="formGroup">
+        <div class="formGroup flexCont">
             {{ form_label(form.Stage) }}
             {{ form_widget(form.Stage) }}
             {{ form_errors(form.Stage) }}

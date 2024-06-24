@@ -5,16 +5,16 @@
 {% block content %}
     
 
-{{ form_start(form, {'attr':{'class':'formBase'} }) }}
+{{ form_start(form, {'attr':{'class':'formBase flexCont'} }) }}
 
 
-<div class="formContainerBase">
+<div class="formContainerBase flexCont">
 <h3>Enregistrer un éditeur</h3>
 
 {% include 'flashband.html.twig'%}
 
 
-<div class="formGroup">
+<div class="formGroup flexCont">
        
           {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.email) }}
@@ -22,7 +22,7 @@
 
 </div>
 
-<div class="formGroup">
+<div class="formGroup flexCont">
 
         {{ form_label(form.firstName, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}      
         {{ form_widget(form.firstName) }}
@@ -30,7 +30,7 @@
         
 </div>
 
-<div class="formGroup">
+<div class="formGroup flexCont">
         
         {{ form_label(form.lastName, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.lastName) }}

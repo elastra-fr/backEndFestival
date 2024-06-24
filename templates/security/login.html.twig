@@ -3,7 +3,7 @@
 {% block title %}Authentification{% endblock %}
 
 {% block body %}
-<form method="post" id="loginForm">
+<form method="post" id="loginForm" class="flexCont">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}

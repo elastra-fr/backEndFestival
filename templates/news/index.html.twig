@@ -10,7 +10,7 @@
 <h2>Gestion des actualités</h2>
     <a href="{{ path('app_admin_news_new') }}" class="button">Créer actualité</a>
 
-    <div class="filterOptions">
+    <div class="filterOptions flexCont">
         <h4>Filtrer par catégorie</h4>
         <form method="get" action="{{ path('app_admin_news') }}">
             <select name="categoryId" onchange="this.form.submit()">
@@ -27,7 +27,7 @@
         <p>Aucune évènement/actualité trouvé</p>
     {% endif %}
  
-   <ul class="listBase">
+   <ul class="listBase flexCont">
         {% for content in news %}
             
             <li class="listBaseItem">

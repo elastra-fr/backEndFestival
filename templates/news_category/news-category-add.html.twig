@@ -3,13 +3,13 @@
 {% block title %}Ajout | Catégorie Actualité {% endblock %}
 
 {% block content %}
-    <div class="formBase">
+    <div class="formBase flexCont">
         {{ form_start(form, {'attr': {'class': 'formBase'}}) }}
 
         <div class="formContainerBase">
             <h3>Créer une catégorie</h3>
 
-            <div class="formGroup">
+            <div class="formGroup flexCont">
                 {{ form_label(form.Category, 'Nom de la catégorie', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.Category, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.Category) }}

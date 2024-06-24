@@ -3,10 +3,10 @@
 {% block title %}Ajout | Section FAQ{% endblock %}
 
 {% block content %}
-    {{ form_start(form, {'attr' : {'class' : 'formBase'}}) }}
-    <div class="formContainerBase">
+    {{ form_start(form, {'attr' : {'class' : 'formBase flexCont'}}) }}
+    <div class="formContainerBase flexCont">
     <h3>Ajout d'une Section</h3>
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.category, 'Nouvelle Section') }}
         {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.category) }}

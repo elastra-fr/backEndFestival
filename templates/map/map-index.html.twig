@@ -6,7 +6,7 @@
 <div class="contentContainer">
 <h2>Gestion de la carte</h2>
 
-<div class="filterOptions">
+<div class="filterOptions flexCont">
     <h4>Filtrer par catégorie</h4>
     <form method="get" action="{{ path('app_admin_map') }}">
         <select name="categoryId" onchange="this.form.submit()">
@@ -33,7 +33,7 @@
 <div>
 <h3>Liste des points</h3>  
 
-<ul class="listBase">
+<ul class="listBase flexCont">
     {% for point in mapPoints %}
         <li class="listBaseItem">
             <div class="listItemTitle">

@@ -3,30 +3,30 @@
 {% block content %}
 
 
-    {{ form_start(form, {'attr': {'class': 'formBase'}}) }}
+    {{ form_start(form, {'attr': {'class': 'formBase flexCont'}}) }}
     
-    <div class="formContainerBase">
+    <div class="formContainerBase flexCont">
 
         <h3>Ajouter/Éditer Actualité</h3>
 
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.NewsCategory, 'Catégorie') }}
         {{ form_widget(form.NewsCategory) }}
         {{ form_errors(form.NewsCategory) }}
 
-        <div class="formGroup">
+        <div class="formGroup flexCont">
         {{ form_label(form.title, 'Titre')}}
         {{ form_widget(form.title) }}
         {{ form_errors(form.title) }}
     </div>
         
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.news_content, 'Contenu') }}
         {{ form_widget(form.news_content) }}
         {{ form_errors(form.news_content) }}
     </div>
 
- <div class="toggle-group">
+ <div class="toggle-group flexCont">
             <label>{{ form_label(form.enable_notification) }}</label>
             <label class="toggle-switch">
                 {{ form_widget(form.enable_notification) }}

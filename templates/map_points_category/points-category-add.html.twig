@@ -3,16 +3,16 @@
 {% block title %}Ajout | Catégorie marqueur{% endblock %}
 
 {% block content %}
-    {{ form_start(form, {'attr' : {'class' : 'formBase'}}) }}
-    <div class="formContainerBase">
+    {{ form_start(form, {'attr' : {'class' : 'formBase flexCont'}}) }}
+    <div class="formContainerBase flexCont">
     <h3>Ajout d'une catégorie de marqueur</h3>
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.PointCategory, 'Nouveau Style') }}
         {{ form_widget(form.PointCategory, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.PointCategory) }}
     </div>
 
-        <div class="formGroup">
+        <div class="formGroup flexCont">
         {{ form_label(form.file, 'Icone') }}
         {{ form_widget(form.file, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.file) }}

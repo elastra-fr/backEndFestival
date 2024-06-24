@@ -3,10 +3,10 @@
 {% block title %}Edition | Style de musique{% endblock %}
 
 {% block content %}
-    {{ form_start(form, {'attr' : {'class' : 'formBase'}}) }}
-    <div class="formContainerBase">
+    {{ form_start(form, {'attr' : {'class' : 'formBase flexCont'}}) }}
+    <div class="formContainerBase flexCont">
     <h3>Modifier style de musique</h3>
-    <div class="formGroup">
+    <div class="formGroup flexCont">
         {{ form_label(form.name, 'Nouveau Style') }}
         {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.name) }}

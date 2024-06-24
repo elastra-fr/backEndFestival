@@ -6,12 +6,12 @@
 
 {% block content %}
     <div class="formBase">
-        {{ form_start(form, {'attr': {'class': 'formBase'}}) }}
+        {{ form_start(form, {'attr': {'class': 'formBase flexCont'}}) }}
 
-        <div class="formContainerBase">
+        <div class="formContainerBase flexCont">
             <h3>Créer une catégorie</h3>
 
-            <div class="formGroup">
+            <div class="formGroup flexCont">
                 {{ form_label(form.category, 'Nom de la catégorie', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.category) }}
