@@ -108,7 +108,7 @@ Après LOGIN l'utilisateur va être dirigé vers une page d'acceuil avec une men
 - Les Informations Générales et FAQ
 - Les Partenaires et Catégories de Partenaires
 - Les actualités et évènements
-- Les points sur la carte interractive, ainsi que les catégorie de point.
+- Les points sur la carte interactive, ainsi que les catégorie de point.
 
 L'administrateur dispose également d'une page permettante de gérer les éditeur (création, blocage.déblocage, suppression). Il n'y pas de procédure de register direct pour un éditeur. 
 Seul l'administrateur peut créer un éditeur via l'interface dédiée. Lors de cette création un email porteur d'un Token de vérification va être envoyé à l'éditeur qui devra cliquer sur un lien qui va le renvoyer vers un formulaire de création de mot de passe.  Le mot de passe sera validé ou non par le service PasswordValidatorService.

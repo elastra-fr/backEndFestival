@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\News;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,18 +21,7 @@ class NewsType extends AbstractType
                 'choice_label' => 'Category',
             ])
             ->add('title')
-            ->add('news_content', TextareaType::class)
-            ->add('enable_notification', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Notification utilisateur', 
-                'mapped' => false,
-                'attr' => [
-                    'class' => 'toggle-switch',
-                ]
-                
-            ] 
-            )
-        ;
+            ->add('news_content', TextareaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

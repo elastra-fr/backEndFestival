@@ -90,15 +90,6 @@ class NewsController extends AbstractController
             $entityManager->flush();
 
 
-            $enableNotification = $form->get('enable_notification')->getData();
-
-            if ($enableNotification) {
-
-                // Send notification to users
-
-            }
-
-
             return $this->redirectToRoute('app_admin_news');
         }
 
@@ -167,11 +158,6 @@ class NewsController extends AbstractController
 
             $entityManager->persist($news);
             $entityManager->flush();
-
-            $enableNotification = $form->get('enable_notification')->getData();
-
-            if ($enableNotification) {
-            }
 
             return $this->redirectToRoute('app_admin_news');
         }
