@@ -257,8 +257,8 @@ class ConcertController extends AbstractController
         $criteria = [];
 
         if ($filterJour !== 'Tout') {
-            $filterJour = DateTime::createFromFormat('Y-m-d', $filterJour)->format('Y-m-d');
-            $criteria['ConcertDate'] = new DateTime($filterJour);
+            $criteria['ConcertDate'] = $filterJour;
+          
         }
 
         if ($filterScene !== 'Tout') {
@@ -269,6 +269,7 @@ class ConcertController extends AbstractController
             $criteria['Artist.music_style'] = $filterGenre;
         }
 
+     
 
         $concerts = $concertRepository->findByCriteria($criteria);
 
@@ -318,7 +319,11 @@ class ConcertController extends AbstractController
         }
 
         $concerts = $jsonResponseNormalizer->respondSuccess(200, $concertByDay);
+      
+        
         return $concerts;
+
+   
     }
 
 
