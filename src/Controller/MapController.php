@@ -183,7 +183,7 @@ class MapController extends AbstractController
         foreach ($mapPoints as $mapPoint) {
 
             $ImgFileName = $mapPoint->getType()->getPointUrl();
-            $commonPath = 'https://backend.nationsound2024-festival.fr/images/bands/';
+            $commonPath = 'https://backend.nationsound2024-festival.fr/images/icons/';
 
             $mapPointsList[] = [
                 'title' => $mapPoint->getTitle(),

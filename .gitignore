@@ -29,6 +29,7 @@
 ###< lexik/jwt-authentication-bundle ###
 
 /.env 
+/.env.test
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 #/public/build/
