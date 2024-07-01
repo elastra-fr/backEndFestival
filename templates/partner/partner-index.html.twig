@@ -23,6 +23,15 @@
 
 {% if partners|length == 0 %}
         <p>Aucun partenaire trouvé</p>
+
+    {% else %}
+            
+    
+            <div class="listCount">
+                <p>{{ partners|length }} Partenaire(s) trouvé(s)</p>
+                
+            </div>
+            
     {% endif %}
  
    <ul class="listBase flexCont">

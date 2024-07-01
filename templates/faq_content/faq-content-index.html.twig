@@ -24,6 +24,14 @@
 
 {% if contents|length == 0 %}
         <p>Aucun contenu trouvé</p>
+
+    {% else %}
+
+        <div class="listCount">
+            <p>{{ contents|length }} Contenu(s) trouvé(s)</p>
+             
+        </div>
+        
     {% endif %}
 
    <ul class="listBase flexCont">

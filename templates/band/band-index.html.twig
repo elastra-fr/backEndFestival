@@ -27,7 +27,16 @@
 
  {% if bands|length == 0 %}
         <p>Aucun groupe trouvé</p>
+
+    {% else %}
+
+        <div class="listCount">
+            <p>{{ bands|length }} Artiste(s)/Groupe(s) trouvés</p>
+            
+        </div>
+
     {% endif %}
+
 
    <ul class="listBase flexCont">
 

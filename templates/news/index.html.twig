@@ -27,6 +27,14 @@
 
 {% if news|length == 0 %}
         <p>Aucune évènement/actualité trouvé</p>
+
+    {% else %}
+
+        <div class="listCount">
+            <p>{{ news|length }} Actualité(s) trouvée(s)</p>
+             
+        </div>
+        
     {% endif %}
  
    <ul class="listBase flexCont">

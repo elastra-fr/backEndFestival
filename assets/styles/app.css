@@ -37,6 +37,11 @@ gap:15px;
 
 }
 
+.listCount p{
+
+font-size: 0.8rem;
+margin-left: 15px;
+}
 
 
 /**************Formulaires**************/
