@@ -20,8 +20,8 @@ class StageController extends AbstractController
     use UserInfoTrait;
 
     /**
-     * Affiche la liste des salles de concert
-     * Le contrôleur permet de gérer l'affichage de la liste des salles de concert
+     * Affiche la liste des scènes de concert
+     * Le contrôleur permet de gérer l'affichage de la liste des scènes de concert
      * 
      * @param Security $security
      * @param StageRepository $stageRepository
@@ -36,7 +36,8 @@ class StageController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        $stages = $stageRepository->findAll();
+        // Récupération de la liste des scènes de concert par ordre alphabétique    
+        $stages = $stageRepository->findBy([], ['name' => 'ASC']);
 
         return $this->render('stage/stage-index.html.twig', [
             'controller_name' => 'StageController',
@@ -49,8 +50,8 @@ class StageController extends AbstractController
     }
 
     /**
-     * Route pour créer une nouvelle salle de concert
-     * Le contrôleur permet de gérer l'ajout d'une salle de concert via un formulaire
+     * Route pour créer une nouvelle scène de concert
+     * Le contrôleur permet de gérer l'ajout d'une scène via un formulaire
      * 
      * @param Security $security
      * @param EntityManagerInterface $entityManager
@@ -89,8 +90,8 @@ class StageController extends AbstractController
     }
 
     /**
-     * Route pour éditer une salle de concert
-     * Le contrôleur permet de gérer l'édition d'une salle de concert via un formulaire
+     * Route pour éditer une scène de concert
+     * Le contrôleur permet de gérer l'édition d'une scène de concert via un formulaire
      * 
      * @param Security $security
      * @param EntityManagerInterface $entityManager
@@ -121,7 +122,7 @@ class StageController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        return $this->render('stage/stage-edit.html.twig', [
+        return $this->render('stage/stage-add.html.twig', [
             'controller_name' => 'StageController',
             'firstName' => $user['firstName'],
             'role' => $user['role'],
@@ -131,8 +132,7 @@ class StageController extends AbstractController
 
 
     /**
-     * Route pour supprimer une salle de concert
-     * Le contrôleur permet de gérer la suppression d'une salle de concert via un formulaire
+     * Route pour supprimer une scène de concert
      * 
      * @param EntityManagerInterface $entityManager
      * @param Stage $stage

@@ -13,7 +13,7 @@ class StageType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('stage_number')
+      
         ;
     }
 

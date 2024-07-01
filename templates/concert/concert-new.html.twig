@@ -16,19 +16,19 @@
         <h3>Créer/Editer Concert</h3>
 
         <div class="formGroup flexCont">
-            {{ form_label(form.ConcertDate) }}
+            {{ form_label(form.ConcertDate, 'Date et Heure du Concert') }}
             {{ form_widget(form.ConcertDate) }}
             {{ form_errors(form.ConcertDate) }}
         </div>
         
         <div class="formGroup flexCont">
-            {{ form_label(form.Artist) }}
+            {{ form_label(form.Artist, "Artiste/Groupe") }}
             {{ form_widget(form.Artist) }}
             {{ form_errors(form.Artist) }}
         </div>
         
         <div class="formGroup flexCont">
-            {{ form_label(form.Stage) }}
+            {{ form_label(form.Stage, "Scène") }}
             {{ form_widget(form.Stage) }}
             {{ form_errors(form.Stage) }}
         </div>
@@ -38,4 +38,6 @@
     
     </div>
     {{ form_end(form) }}
+
+
 {% endblock %}

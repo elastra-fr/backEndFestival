@@ -6,6 +6,7 @@ use App\Entity\Band;
 use App\Entity\Concert;
 use App\Entity\Stage;
 use DateTime;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,19 +36,23 @@ class ConcertType extends AbstractType
 
 
         $builder
-            ->add('ConcertDate', DateTimeType::class, [
-                'widget' => 'single_text',
-                'minutes' => ['00'],
-                
-                           'constraints' => [
-                    new Range([
-                        'min' => $this->festivalStartDate,
-                        'max' => $this->festivalEndDate,
-                        'notInRangeMessage' => 'Les dates de concert doivent être entre le ' . $formatedStartDate . ' et le ' . $formatedEndDate,
-                    ]),
-                ],
-              
-            ])
+    ->add('ConcertDate', DateTimeType::class, [
+        'widget' => 'single_text',
+        'html5' => true,
+        'view_timezone' => 'Europe/Paris',
+        'attr' => [
+            'value' => $this->festivalStartDate->format('Y-m-d\TH:00'), 
+            'min' => $this->festivalStartDate->format('Y-m-d\TH:00'),
+            'max' => $this->festivalEndDate->format('Y-m-d\TH:00'),
+        ],
+        'constraints' => [
+            new Range([
+                'min' => $this->festivalStartDate,
+                'max' => $this->festivalEndDate,
+                'notInRangeMessage' => 'Les dates de concert doivent être entre le ' . $formatedStartDate . ' et le ' . $formatedEndDate,
+            ]),
+        ],
+    ])
             ->add('Artist', EntityType::class, [
                 'class' => Band::class,
                 'choice_label' => 'name',

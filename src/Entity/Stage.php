@@ -18,8 +18,7 @@ class Stage
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?int $stage_number = null;
+
 
     /**
      * @var Collection<int, Concert>
@@ -49,17 +48,6 @@ class Stage
         return $this;
     }
 
-    public function getStageNumber(): ?int
-    {
-        return $this->stage_number;
-    }
-
-    public function setStageNumber(int $stage_number): static
-    {
-        $this->stage_number = $stage_number;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Concert>
