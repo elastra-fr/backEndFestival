@@ -217,7 +217,7 @@ class NewsController extends AbstractController
         }
 
         $response = $jsonResponseNormalizer->respondSuccess(200, $lastNews);
-
+        
         return $response;
     }
 

@@ -195,6 +195,13 @@ class MapController extends AbstractController
             ];
         }
 
-        return $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $mapPointsList);
+         
+        $response = $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $mapPointsList);
+
+        $response->setSharedMaxAge(1800);
+        $response->setPublic();
+
+        return $response;
+        
     }
 }

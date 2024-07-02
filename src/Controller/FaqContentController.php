@@ -222,6 +222,9 @@ class FaqContentController extends AbstractController
         }
 
         $allFaqContentResponse = $jsonResponseNormalizer->respondSuccess(200, $response);
+        $allFaqContentResponse->setSharedMaxAge(3600);
+        $allFaqContentResponse->setPublic();
+        
         return $allFaqContentResponse;
     }
 }

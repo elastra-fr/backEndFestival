@@ -410,8 +410,9 @@ class ConcertController extends AbstractController
     #[Route('/api/public/concert/now', name: 'app_api_concert_now', methods: ['GET'])]
 
     public function concertNow(ConcertRepository $concertRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
-    {
-        $now = new DateTime('2024-06-30 14:00:00');  
+    {   
+        $hourNow = date('H');
+        $now = new DateTime('2024-06-30 ' . $hourNow . ':00:00');  
         $concerts = $concertRepository->findBy(['ConcertDate' => $now]);
 
         $concertsList = [];

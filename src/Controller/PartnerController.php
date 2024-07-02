@@ -280,8 +280,15 @@ class PartnerController extends AbstractController
             ];
         }
 
-        return $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $partnersArray);
+
+        $response = $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $partnersArray);
+    
+        $response->setSharedMaxAge(21600);
+        $response->setPublic();
+
+        return $response;
     }
+
 
 
     /**
@@ -328,6 +335,14 @@ class PartnerController extends AbstractController
             ];
         }
 
-        return $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $partnersArray);
+        $response = $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, $partnersArray);
+
+        $response->setSharedMaxAge(21600);
+        $response->setPublic();
+
+        return $response;
+    
     }
+
+
 }
