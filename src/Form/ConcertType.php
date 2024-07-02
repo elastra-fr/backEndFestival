@@ -39,7 +39,6 @@ class ConcertType extends AbstractType
     ->add('ConcertDate', DateTimeType::class, [
         'widget' => 'single_text',
         'html5' => true,
-        'view_timezone' => 'Europe/Paris',
         'attr' => [
             'value' => $this->festivalStartDate->format('Y-m-d\TH:00'), 
             'min' => $this->festivalStartDate->format('Y-m-d\TH:00'),

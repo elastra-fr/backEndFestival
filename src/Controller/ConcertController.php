@@ -401,4 +401,36 @@ class ConcertController extends AbstractController
             return $response;
         }
     }
+
+/**
+ * Route pour afficher les concerts en cours en version publique sous forme de JSON
+ */
+
+
+    #[Route('/api/public/concert/now', name: 'app_api_concert_now', methods: ['GET'])]
+
+    public function concertNow(ConcertRepository $concertRepository, JsonResponseNormalizer $jsonResponseNormalizer): Response
+    {
+        $now = new DateTime('2024-06-30 14:00:00');  
+        $concerts = $concertRepository->findBy(['ConcertDate' => $now]);
+
+        $concertsList = [];
+
+        foreach ($concerts as $concert) {
+            $concertsList[] = [
+                'id' => $concert->getId(),
+                'date' => $concert->getConcertDate()->format('Y-m-d H:i:s'),
+                'location' => $concert->getStage()->getName(),
+                'description' => $concert->getArtist()->getDescription(),
+                'artist' => $concert->getArtist()->getName(),
+            ];
+        }
+
+        $response = $jsonResponseNormalizer->respondSuccess(200, $concertsList);
+        return $response;
+    }
+
+
+
+
 }
