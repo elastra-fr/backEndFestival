@@ -72,7 +72,7 @@ En cas d'erreur :
 Ce format est normalisé grace au service JsonResponseNormalizer.  
 Potentiellement cette standardisation peut faciliter la gestion des réponses par le front end.
 
-Le Trait StandardResponsesTrait va fournir des réponses standard (toujours mises en forme avec JsonResponsesNormalizer).
+
 
 ## Force du mot de passe et sécurité 
 
@@ -117,7 +117,7 @@ Seul l'administrateur peut créer un éditeur via l'interface dédiée. Lors de 
 
 Les images sont stockées dans le répertoire public/images et les sous repertoires bands, icons et logos.
 
-L'upload des images pour les parties Artistes et Paternaires va être gérée par le service  FileUploader Service qui va se chargér de renommer le fichier d'une manière unique pour l'enregistrement en BDD. Ce service va également rédimensionner l'image en plusieurs formats pour permettre la mise en place d'un SrcSet par le front END.
+L'upload des images pour les parties Artistes et Paternaires va être gérée par le service  FileUploader Service qui va se chargér de renommer le fichier d'une manière unique pour l'enregistrement en BDD. Ce service va également rédimensionner l'image en plusieurs formats pour permettre la mise en place d'un SourceSet par le front END.
 
 Lors de la suppression ou de la modification d'un ITEM Artiste ou Partenaire le service DeleteImageService va se charger d'effacer l'ancien fichier du serveur ainsi que ses variantes pour optimiser l'espace de stockage et ne pas laisser de fichier utilisés dans le répertoire public/images et ses sous dossiers.
 
@@ -537,7 +537,7 @@ Réponse :
 
 Les routes utilisateur vont être sécurisées via JWT (JSON Web Token). Elles vont permettre à l'utilisateur du front end de s'enregistrer, s'identifier et accéder à des services réservés aux utilisateurs identifiés. 
 
-Les routes api utilisateurs derrière /api/user ne peuvent être utilisées que par un utilisateur porteur d'un token JWT à l'exception des routes suivants qui nécessairement publiques :
+Les routes api utilisateurs derrière /api/user ne peuvent être utilisées que par un utilisateur porteur d'un token JWT à l'exception des routes suivants qui sont nécessairement publiques :
 - /api/user/register qui permet l'enregistrement de tout nouvel utilisateur (role USER)
 - /api/user/login qui permet l'authentification de l'utilisateur et l'obtention du token JWT
 
@@ -576,7 +576,7 @@ En cas de multiples tentatives de connexions erronnées, l'utilisateur va recevo
 Le champ password_reset_in_progress est passé à true et un token password_reset_token est généré.
 L'email de reset contient un lien vers un formulaire de reset du mot de passe. Le mot de passe fera l'objet de la même vérification qu'au moment du register.
 
-Tant que la procédure de reset est en cours le Subscriber IsPasswordResetInProgressSubscriber empêche l'utilisateur d'atteindre les routes derrière https://api.eldn-dev-app.fr/api/* et l'utilisateur recevra la réponse : 
+Tant que la procédure de reset est en cours le Subscriber IsPasswordResetInProgressSubscriber empêche l'utilisateur d'atteindre les routes derrière /api/user et l'utilisateur recevra la réponse : 
 {
 	"status": "error",
 	"data": null,
@@ -706,7 +706,7 @@ En cas de token invalide :
 
 ##### Modifier le profil utilisateur 
 
-Ce chemin permet de modifier fistName, lastName et email. Il n'est pas nécessaire de tous les modifier, la modification d'un seul paramètre est possible,.
+Ce chemin permet de modifier fistName, lastName et email ainsi que les préférences en matière d'abonnements (newsletter et évènements). Il n'est pas nécessaire de tous les modifier, la modification d'un seul paramètre est possible,.
 
 https://backend.nationsound2024-festival.fr/api/user/profil/edit
 Méthode DELETE
