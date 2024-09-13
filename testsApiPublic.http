@@ -1,0 +1,88 @@
+
+//////////////////////////API//////////////////////////
+
+///////////////Programmation///////////////
+
+//Obtenir la liste des concerts
+GET https://backend.nationsound2024-festival.fr/api/public/concert 
+
+//Obtenir la liste des concerts avec des filtres
+
+GET https://backend.nationsound2024-festival.fr/api/public/concert?scene=2 
+
+//Obtenir tous les filtres possibles pour la programmation
+
+GET https://backend.nationsound2024-festival.fr/api/public/concert/filters
+
+
+
+///////////////PARTENAIRES///////////////
+
+//Obtenir la liste des partenaires
+
+
+GET https://backend.nationsound2024-festival.fr/api/public/partner
+
+
+//Filtrer les partenaires par catégorie
+
+GET https://backend.nationsound2024-festival.fr/api/public/partner/category/4
+
+//Obtenir tous les filtres possibles pour les partenaires
+
+GET https://backend.nationsound2024-festival.fr/api/public/partner/category
+
+
+////////////////Actualités////////////////
+
+
+//Obtenir la liste des actualités sauf evenement de sécurité et météo
+
+GET https://backend.nationsound2024-festival.fr/api/public/news
+
+//Obtenir les évenements de sécurité et météo
+
+GET https://backend.nationsound2024-festival.fr/api/public/news/alert
+
+
+///////////////////FAQ et informations générales////////////////////
+
+//Obtenir la FAQ et les informations générales
+
+GET https://backend.nationsound2024-festival.fr/api/public/faq
+
+///////////////////Carte interactive////////////////////
+
+//Obtenir les categories de points de la carte
+
+
+GET https://backend.nationsound2024-festival.fr/api/public/map/points/category
+
+
+//Obtenir les points de la carte
+
+GET https://backend.nationsound2024-festival.fr/api/public/map/marker/
+
+//Obtenir les points de la carte pour une catégorie donnée
+
+GET https://backend.nationsound2024-festival.fr/api/public/map/marker/1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

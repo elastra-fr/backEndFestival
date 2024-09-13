@@ -39,7 +39,7 @@ Routes publics pour lire via le front end les données concerts, artistes, actua
 
 Routes jwt pour pour profils utilisateur via le front end register, login, update, delete.
 
-Routes backoffice backend symfony pour création, modication, supression des concerts, artistes, actualités, faq et partenaire, coordonnées points cartes via formulaires- Identification par sessions. 
+Routes backoffice symfony pour création, modication, supression des concerts, artistes, actualités, faq et partenaire, coordonnées points cartes via formulaires- Identification par sessions. 
 
 
 
