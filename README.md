@@ -9,6 +9,9 @@ Contenus concernés :
 - Carte localisation des points d'intérêts et informations relatives à chaque point
 - Programme du festival
 - Horaires et lieux de rencontre avec les artistes
+- Actualités
+- FAQ et informations
+- Partenaires du festival 
 
 
 ## Environnement de developpement
@@ -37,7 +40,7 @@ L'application prend en compte trois rôles :
 
 Routes publics pour lire via le front end les données concerts, artistes, actualités, faq et partenaire, coordonnées points cartes .
 
-Routes jwt pour pour profils utilisateur via le front end register, login, update, delete.
+Routes sécurisées par token jwt pour profils utilisateur via le front end register, login, update, delete.
 
 Routes backoffice symfony pour création, modication, supression des concerts, artistes, actualités, faq et partenaire, coordonnées points cartes via formulaires- Identification par sessions. 
 
@@ -117,7 +120,7 @@ Seul l'administrateur peut créer un éditeur via l'interface dédiée. Lors de 
 
 Les images sont stockées dans le répertoire public/images et les sous repertoires bands, icons et logos.
 
-L'upload des images pour les parties Artistes et Paternaires va être gérée par le service  FileUploader Service qui va se chargér de renommer le fichier d'une manière unique pour l'enregistrement en BDD. Ce service va également rédimensionner l'image en plusieurs formats pour permettre la mise en place d'un SourceSet par le front END.
+L'upload des images pour les parties Artistes et Partenaires va être gérée par le service  FileUploader Service qui va se chargér de renommer le fichier d'une manière unique pour l'enregistrement en BDD. Ce service va également rédimensionner l'image en plusieurs formats pour permettre la mise en place d'un SourceSet par le front END.
 
 Lors de la suppression ou de la modification d'un ITEM Artiste ou Partenaire le service DeleteImageService va se charger d'effacer l'ancien fichier du serveur ainsi que ses variantes pour optimiser l'espace de stockage et ne pas laisser de fichier utilisés dans le répertoire public/images et ses sous dossiers.
 
