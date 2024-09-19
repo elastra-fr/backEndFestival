@@ -712,7 +712,7 @@ En cas de token invalide :
 Ce chemin permet de modifier fistName, lastName et email ainsi que les préférences en matière d'abonnements (newsletter et évènements). Il n'est pas nécessaire de tous les modifier, la modification d'un seul paramètre est possible,.
 
 https://backend.nationsound2024-festival.fr/api/user/profil/edit
-Méthode DELETE
+Méthode PUT
 Header "Bearer Texte_du_token_jwt"
 
 Modification adresse email 

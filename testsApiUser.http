@@ -1,0 +1,48 @@
+
+//Route register 
+
+POST https://backend.nationsound2024-festival.fr/api/user/register HTTP/1.1
+Content-Type: application/json
+
+{
+
+	"email":"",
+	"password":"",
+	"firstName":"",
+	"lastName":""
+
+}
+
+//Route login
+
+POST https://backend.nationsound2024-festival.fr/api/user/login_check HTTP/1.1
+Content-Type: application/json
+
+{
+
+    "email":"",
+    "password":""
+
+}
+
+//Profil utilisateur (token sans guillemets)
+
+GET https://backend.nationsound2024-festival.fr/api/user/profil HTTP/1.1
+Authorization : Bearer token
+
+//Modifier le profil utilisateur
+
+PUT https://backend.nationsound2024-festival.fr/api/user/profil/edit HTTP/1.1
+Authorization: Bearer token
+Content-Type: application/json
+
+{
+    "firstName":"Jules",
+    "lastName":"Cesars",
+    "newsletter":true
+}
+
+//Effacer le profil utilisateur
+
+DELETE https://backend.nationsound2024-festival.fr/api/user/profil/delete HTTP/1.1
+Authorization : Bearer token
