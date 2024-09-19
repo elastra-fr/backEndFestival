@@ -21,11 +21,23 @@ Symfony 7
 Maria DB
 
 
+
 ## Environnement de production
 PHP 8.2
 Symfony 7
 Maria DB
 Herbergement O2 switch sur le sous-domaine : https://backend.nationsound2024-festival.fr/
+
+## Pour tester local 
+
+Vous devez après clonage du dépôt :
+- composer install
+- créer un fichier .env.local pour ajuster les paramètres à votre SGBD local 
+- créer la base de données avec php bin/console doctrine:database:create
+- php bin/console make:migration
+- Appliquer les migrations php bin/console doctrine:migrations:migrate
+- Générer les clés ssh avec la commande php bin/console lexik:jwt:generate-keypair
+- Lancer le serveur de développment avec symfony serve
 
 ### Roles
 
