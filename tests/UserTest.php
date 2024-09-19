@@ -137,5 +137,107 @@ class UserTest extends TestCase
         $this->assertFalse($responseData['eventNotification']);
     }
 
-    // Ajoutez d'autres méthodes de test pour les autres fonctions du contrôleur...
+
+
+    public function testRegisterWithInvalidPassword()
+{
+    $request = $this->createMock(Request::class);
+    $request->method('getContent')->willReturn(json_encode([
+        'email' => 'test@example.com',
+        'firstName' => 'John',
+        'lastName' => 'Doe',
+        'password' => 'weak'
+    ]));
+
+    $this->passwordValidatorService->method('isPasswordComplex')
+        ->willReturn(['Le mot de passe doit contenir au moins 8 caractères']);
+
+    $expectedJsonResponse = new JsonResponse(
+        ['errors' => ['Le mot de passe doit contenir au moins 8 caractères']],
+        JsonResponse::HTTP_BAD_REQUEST
+    );
+    $this->jsonResponseNormalizer->method('respondError')
+        ->willReturn($expectedJsonResponse);
+
+    $response = $this->userController->register(
+        $request,
+        $this->entityManager,
+        $this->passwordValidatorService,
+        $this->passwordHasher,
+        $this->jsonResponseNormalizer,
+        $this->mailerService
+    );
+
+    $this->assertInstanceOf(JsonResponse::class, $response);
+    $this->assertEquals(JsonResponse::HTTP_BAD_REQUEST, $response->getStatusCode());
+    $responseData = json_decode($response->getContent(), true);
+    $this->assertArrayHasKey('errors', $responseData);
+}
+
+
+
+public function testProfilWithUnauthenticatedUser()
+{
+    $this->security->method('getUser')->willReturn(null);
+
+    $expectedJsonResponse = new JsonResponse(
+        ['error' => 'Utilisateur non authentifié'],
+        JsonResponse::HTTP_UNAUTHORIZED
+    );
+    $this->jsonResponseNormalizer->method('respondError')
+        ->willReturn($expectedJsonResponse);
+
+    $response = $this->userController->profil(
+        $this->security,
+        $this->jsonResponseNormalizer
+    );
+
+    $this->assertInstanceOf(JsonResponse::class, $response);
+    $this->assertEquals(JsonResponse::HTTP_UNAUTHORIZED, $response->getStatusCode());
+    $responseData = json_decode($response->getContent(), true);
+    $this->assertArrayHasKey('error', $responseData);
+}
+/*
+public function testUpdateProfil()
+    {
+        $user = $this->createMock(User::class);
+        $this->security->method('getUser')->willReturn($user);
+
+        $request = $this->createMock(Request::class);
+        $request->method('getContent')->willReturn(json_encode([
+            'firstName' => 'UpdatedJohn',
+            'lastName' => 'UpdatedDoe',
+            'newsletter' => false,
+            'eventNotification' => true
+        ]));
+
+        $user->expects($this->once())->method('setFirstName')->with('UpdatedJohn');
+        $user->expects($this->once())->method('setLastName')->with('UpdatedDoe');
+        $user->expects($this->once())->method('setNewsletterConsent')->with(false);
+        $user->expects($this->once())->method('setEventAlertConsent')->with(true);
+
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $expectedJsonResponse = new JsonResponse(['message' => 'Profil mis à jour avec succès'], JsonResponse::HTTP_OK);
+        $this->jsonResponseNormalizer->method('respondSuccess')
+            ->willReturn($expectedJsonResponse);
+
+        $response = $this->userController->updateProfile(
+            $request,
+            $this->security,
+            $this->entityManager,
+            $this->jsonResponseNormalizer
+        );
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertEquals(JsonResponse::HTTP_OK, $response->getStatusCode());
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('message', $responseData);
+    }
+
+*/
+
+
+
+
 }

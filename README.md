@@ -135,6 +135,8 @@ Toutefois l'architecture de l'API permet la consommation par d'autres clients si
 
 Il s'agit de route de "lecture" uniquement, aucune donnée ne peut être modifiée via une route publique. 
 
+Vous pouvez utiliser le fichier testsApiPublic.http pour tester les différentes routes.
+
 ##### Routes publics programmation 
 
 Route pour récupérer la programmation. Cette route va permettre de récupérer la programmation par jours
@@ -546,6 +548,8 @@ Les routes api utilisateurs derrière /api/user ne peuvent être utilisées que 
 
 Le système d'authentification JWT mis en place avec lexik/jwt-authentication-bundle et extension open SSL pour création des clés publique et privée.
 Durée de validité du token 3600 secondes (1h). Cette durée peut être modifiée dans \config\packages\lexik_jwt_authentication.yaml.
+
+Vous pouvez utiliser le fichier testsApiUser.http pour tester les différentes routes (effacer les identifiants après test SVP).
 
 ##### Vérification email utilisateur
 Lors de l'enregistrement un message d'inscription est envoyé, grace à MailerService, à l'utilisateur pour confirmer son adresse mail et un token d'identification mail est généré et enregistré dans la base de données. Le mail contient un lien de vérification.
