@@ -376,15 +376,18 @@ class UserController extends AbstractController
      * @param JsonResponseNormalizer $jsonResponseNormalizer
      * @return Response
      * 
+     * 
      */
 
     #[Route(path: '/api/user/profil', name: 'app_user_profil', methods: ['GET'])]
 
     function profil(
         Security $security,
-        JsonResponseNormalizer $jsonResponseNormalizer
+        JsonResponseNormalizer $jsonResponseNormalizer,
     ): Response {
 
+        
+          /** @var User $user */
         $user = $security->getUser();
 
         if (!$user) {
@@ -431,9 +434,11 @@ class UserController extends AbstractController
         MailerService $mailerService,
         EntityManagerInterface $entityManager
     ): Response {
+
+
         $data = json_decode($request->getContent(), true);
 
-
+          /** @var User $user */
         $user = $this->getUser();
 
         if (!$user) {

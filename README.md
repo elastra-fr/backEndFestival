@@ -28,7 +28,7 @@ Symfony 7
 Maria DB
 Herbergement O2 switch sur le sous-domaine : https://backend.nationsound2024-festival.fr/
 
-## Pour tester local 
+## Pour tester en local 
 
 Vous devez après clonage du dépôt :
 - composer install
