@@ -4,32 +4,25 @@
 
 {% block content %}
 
-
-
 <div class="contentContainer">
 
-{% include 'flashband.html.twig'%}
+    {% include 'flashband.html.twig' %}
 
-
-
-<h2>Gestion des styles musicaux</h2>
+    <h2>Gestion des styles musicaux</h2>
     <a href="{{ path('app_admin_style_new') }}" class="button">Créer style</a>
 
-<h3>Liste des styles</h3>
+    <h3>Liste des styles</h3>
 
- 
-   <ul class="listBase flexCont">
+    <ul class="listBase flexCont">
         {% for style in styles %}
-            
             <li class="listBaseItem">
-            
                 <div class="listItemTitle">
                     <img src="{{ asset('images/icons/music-solid.svg') }}" alt="Icon" class="listItemIcon" />
-                    <span>{{ style.name }} </span>
+                    <span>{{ style.musicStyleName }}</span> {# Utilisation correcte de la méthode d'accès #}
                 </div>
                 
                 <div class="listItemAction">
-                    <a href="{{ path('app_admin_style_edit', {'id': style.id}) }}" class="button">Editer</a>
+                    <a href="{{ path('app_admin_style_edit', {'id': style.id}) }}" class="button">Éditer</a>
                     <a href="{{ path('app_admin_style_delete', {'id': style.id}) }}" class="button needs-confirmation">Effacer</a>
                 </div>
             </li>

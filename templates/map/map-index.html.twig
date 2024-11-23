@@ -38,10 +38,10 @@
         <li class="listBaseItem">
             <div class="listItemTitle">
                 <img src="{{ asset('images/icons/location-pin-solid.svg') }}" alt="Icon" class="listItemIcon" />
-                <span>{{ point.title }} </span>
+                <span>{{ point.map_point_title}} </span>
             </div>
             <div class="listItemAction">
-                <a href="{{ path('app_admin_map_points_delete', {'id': point.id}) }}" class="button needs-confirmation">Effacer</a>
+                <a href="{{ path('app_admin_map_points_delete', {'id': point.map_point_id}) }}" class="button needs-confirmation">Effacer</a>
             </div>
         </li>
     {% endfor %}

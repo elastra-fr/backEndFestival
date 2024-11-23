@@ -12,26 +12,26 @@ class Band
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(name: "band_id", type: "integer")]
+    private ?int $band_id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $band_name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    #[ORM\Column(name: "band_description", length: 255)]
+    private ?string $band_description = null;
 
     #[ORM\Column(length: 255)]
     private ?string $url_image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bands')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: MusicStyle::class, inversedBy: 'bands')]
+    #[ORM\JoinColumn(name: 'music_style_id', referencedColumnName: 'music_style_id', nullable: false)]
     private ?MusicStyle $music_style = null;
 
     /**
      * @var Collection<int, Concert>
      */
-    #[ORM\OneToMany(targetEntity: Concert::class, mappedBy: 'Artist')]
+    #[ORM\OneToMany(targetEntity: Concert::class, mappedBy: 'band')]
     private Collection $concerts;
 
     public function __construct()
@@ -39,32 +39,30 @@ class Band
         $this->concerts = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getBandId(): ?int
     {
-        return $this->id;
+        return $this->band_id;
     }
 
-    public function getName(): ?string
+    public function getBandName(): ?string
     {
-        return $this->name;
+        return $this->band_name;
     }
 
-    public function setName(string $name): static
+    public function setBandName(string $band_name): static
     {
-        $this->name = $name;
-
+        $this->band_name = $band_name;
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getBandDescription(): ?string
     {
-        return $this->description;
+        return $this->band_description;
     }
 
-    public function setDescription(string $description): static
+    public function setBandDescription(string $band_description): static
     {
-        $this->description = $description;
-
+        $this->band_description = $band_description;
         return $this;
     }
 
@@ -76,7 +74,6 @@ class Band
     public function setUrlImage(string $url_image): static
     {
         $this->url_image = $url_image;
-
         return $this;
     }
 
@@ -88,7 +85,6 @@ class Band
     public function setMusicStyle(?MusicStyle $music_style): static
     {
         $this->music_style = $music_style;
-
         return $this;
     }
 
@@ -104,21 +100,18 @@ class Band
     {
         if (!$this->concerts->contains($concert)) {
             $this->concerts->add($concert);
-            $concert->setArtist($this);
+            $concert->setBand($this); // Vérifiez ici que 'band' est la propriété dans Concert
         }
-
         return $this;
     }
 
     public function removeConcert(Concert $concert): static
     {
         if ($this->concerts->removeElement($concert)) {
-            // set the owning side to null (unless already changed)
-            if ($concert->getArtist() === $this) {
-                $concert->setArtist(null);
+            if ($concert->getBand() === $this) {
+                $concert->setBand(null);
             }
         }
-
         return $this;
     }
 }

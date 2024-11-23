@@ -2,96 +2,91 @@
 
 namespace App\Entity;
 
-use App\Repository\MapPointRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MapPointRepository::class)]
+#[ORM\Entity]
 class MapPoint
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: "integer")]
+    private ?int $map_point_id = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 7)]
-    private ?string $Longitude = null;
+    #[ORM\ManyToOne(targetEntity: MapPointsCategory::class, inversedBy: 'mapPoints')]
+    #[ORM\JoinColumn(name: "map_point_category_id", referencedColumnName: "map_point_category_id", nullable: false)]
+    private ?MapPointsCategory $mapPointCategory = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 7)]
-    private ?string $Latitude = null;
+    #[ORM\Column(type: "decimal", precision: 10, scale: 7)]
+    private ?string $longitude = null;
 
-    #[ORM\ManyToOne(inversedBy: 'mapPoints')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?MapPointsCategory $type = null;
+    #[ORM\Column(type: "decimal", precision: 10, scale: 7)]
+    private ?string $latitude = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $title = null;
+    private ?string $map_point_title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $description = null;
+    private ?string $map_point_description = null;
+
+    // Getter and Setter methods
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->map_point_id;
     }
 
     public function getLongitude(): ?string
     {
-        return $this->Longitude;
+        return $this->longitude;
     }
 
-    public function setLongitude(string $Longitude): static
+    public function setLongitude(string $longitude): self
     {
-        $this->Longitude = $Longitude;
-
+        $this->longitude = $longitude;
         return $this;
     }
 
     public function getLatitude(): ?string
     {
-        return $this->Latitude;
+        return $this->latitude;
     }
 
-    public function setLatitude(string $Latitude): static
+    public function setLatitude(string $latitude): self
     {
-        $this->Latitude = $Latitude;
-
+        $this->latitude = $latitude;
         return $this;
     }
 
-    public function getType(): ?MapPointsCategory
+    public function getMapPointCategory(): ?MapPointsCategory
     {
-        return $this->type;
+        return $this->mapPointCategory;
     }
 
-    public function setType(?MapPointsCategory $type): static
+    public function setMapPointCategory(MapPointsCategory $mapPointsCategory): self
     {
-        $this->type = $type;
-
+        $this->mapPointCategory = $mapPointsCategory;
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getMapPointTitle(): ?string
     {
-        return $this->title;
+        return $this->map_point_title;
     }
 
-    public function setTitle(string $title): static
+    public function setMapPointTitle(string $map_point_title): self
     {
-        $this->title = $title;
-
+        $this->map_point_title = $map_point_title;
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getMapPointDescription(): ?string
     {
-        return $this->description;
+        return $this->map_point_description;
     }
 
-    public function setDescription(?string $description): static
+    public function setMapPointDescription(?string $map_point_description): self
     {
-        $this->description = $description;
-
+        $this->map_point_description = $map_point_description;
         return $this;
     }
 }
