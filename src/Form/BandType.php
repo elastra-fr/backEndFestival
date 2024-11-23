@@ -20,7 +20,7 @@ class BandType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class,
+            ->add('band_name', TextType::class,
                 [
                     'required' => true,
                     'constraints' => [
@@ -30,7 +30,7 @@ class BandType extends AbstractType
                     ],
                 ]   
             )
-            ->add('description', TextareaType::class, [
+            ->add('band_description', TextareaType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
@@ -49,7 +49,7 @@ class BandType extends AbstractType
             ])
             ->add('music_style', EntityType::class, [
                 'class' => MusicStyle::class,
-                'choice_label' => 'name',
+                'choice_label' => 'music_style_name',
             ])
         ;
     }
