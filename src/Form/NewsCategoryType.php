@@ -12,7 +12,7 @@ class NewsCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Category')
+            ->add('news_category_name')
         ;
     }
 

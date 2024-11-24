@@ -38,14 +38,14 @@ class NewsController extends AbstractController
 
     $newsCategoryFilter = $request->query->get('categoryId');
 
-        $categories = $newsCategoryRepository->findBy([], ['Category' => 'ASC']);
+        $categories = $newsCategoryRepository->findBy([], ['news_category_name' => 'ASC']);
 
         if ($newsCategoryFilter) {
 
-            $news = $newsRepository->findBy(['NewsCategory' => $newsCategoryFilter], ['news_date' => 'DESC']);
+            $news = $newsRepository->findBy(['NewsCategory' => $newsCategoryFilter], ['newsDate' => 'DESC']);
         } else {
             
-        $news = $newsRepository->findBy([], ['news_date' => 'DESC']);
+        $news = $newsRepository->findBy([], ['newsDate' => 'DESC']);
         }
 
         return $this->render('news/index.html.twig', [

@@ -18,9 +18,9 @@ class NewsType extends AbstractType
         $builder
             ->add('NewsCategory', EntityType::class, [
                 'class' => NewsCategory::class,
-                'choice_label' => 'Category',
+                'choice_label' => 'NewsCategoryName',
             ])
-            ->add('title')
+            ->add('news_title')
             ->add('news_content', TextareaType::class);
     }
 
