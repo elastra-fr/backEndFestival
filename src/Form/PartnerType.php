@@ -18,17 +18,17 @@ class PartnerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('url_logo', HiddenType::class)
+            ->add('partnerName')
+            ->add('partnerLogo', HiddenType::class)
             ->add('file', FileType::class, [
                 'label' => 'Image',
                 'mapped' => false,
                 'required' => false,
             ])
-            ->add('description', TextareaType::class)
-            ->add('category', EntityType::class, [
+            ->add('partnerDescription', TextareaType::class)
+            ->add('partnerCategory', EntityType::class, [
                 'class' => PartnerCategory::class,
-                'choice_label' => 'category',
+                'choice_label' => 'partnerCategory',
             ])
         ;
     }

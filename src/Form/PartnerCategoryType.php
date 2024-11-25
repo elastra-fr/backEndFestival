@@ -12,7 +12,7 @@ class PartnerCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('category')
+            ->add('partnerCategory')
         ;
     }
 

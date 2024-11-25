@@ -12,11 +12,11 @@ class FaqCategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column (name: "faq_category_id", type: "integer")]
+    private ?int $faqCategoryId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $category = null;
+    private ?string $faqCategory = null;
 
     /**
      * @var Collection<int, FaqContent>
@@ -29,19 +29,19 @@ class FaqCategory
         $this->faqContents = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getFaqCategoryId(): ?int
     {
-        return $this->id;
+        return $this->faqCategoryId;
     }
 
-    public function getCategory(): ?string
+    public function getFaqCategory(): ?string
     {
-        return $this->category;
+        return $this->faqCategory;
     }
 
-    public function setCategory(string $category): static
+    public function setFaqCategory(string $faqCategory): static
     {
-        $this->category = $category;
+        $this->faqCategory = $faqCategory;
 
         return $this;
     }

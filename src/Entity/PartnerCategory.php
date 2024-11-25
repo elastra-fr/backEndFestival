@@ -12,11 +12,11 @@ class PartnerCategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column (name: "partner_category_id", type: "integer")]
+    private ?int $partnerCategoryId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $category = null;
+    private ?string $partnerCategory = null;
 
     /**
      * @var Collection<int, Partner>
@@ -29,19 +29,19 @@ class PartnerCategory
         $this->partners = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getPartnerCategoryId(): ?int
     {
-        return $this->id;
+        return $this->partnerCategoryId;
     }
 
-    public function getCategory(): ?string
+    public function getPartnerCategory(): ?string
     {
-        return $this->category;
+        return $this->partnerCategory;
     }
 
-    public function setCategory(string $category): static
+    public function setPartnerCategory(string $partnerCategory): static
     {
-        $this->category = $category;
+        $this->partnerCategory = $partnerCategory;
 
         return $this;
     }
@@ -58,7 +58,7 @@ class PartnerCategory
     {
         if (!$this->partners->contains($partner)) {
             $this->partners->add($partner);
-            $partner->setCategory($this);
+            $partner->setPartnerCategory($this);
         }
 
         return $this;
@@ -68,8 +68,8 @@ class PartnerCategory
     {
         if ($this->partners->removeElement($partner)) {
             // set the owning side to null (unless already changed)
-            if ($partner->getCategory() === $this) {
-                $partner->setCategory(null);
+            if ($partner->getPartnerCategory() === $this) {
+                $partner->setPartnerCategory(null);
             }
         }
 

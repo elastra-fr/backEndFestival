@@ -12,46 +12,46 @@ class FaqContent
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $faqContentId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $faqContentTitle = null;
 
     #[ORM\Column(length: 500)]
-    private ?string $content = null;
+    private ?string $faqContentDetails = null;
 
     #[ORM\ManyToOne(inversedBy: 'faqContents')]
-    #[ORM\JoinColumn(nullable: false)]
+   #[ORM\JoinColumn(name: 'faq_category_id', referencedColumnName: 'faq_category_id', nullable: false)]
     private ?FaqCategory $section = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $content_update = null;
 
-    public function getId(): ?int
+    public function getFaqContentId(): ?int
     {
-        return $this->id;
+        return $this->faqContentId;
     }
 
-    public function getTitle(): ?string
+    public function getFaqContentTitle(): ?string
     {
-        return $this->title;
+        return $this->faqContentTitle;
     }
 
-    public function setTitle(string $title): static
+    public function setFaqContentTitle(string $faqContentTitle): static
     {
-        $this->title = $title;
+        $this->faqContentTitle = $faqContentTitle;
 
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getFaqContentDetails(): ?string
     {
-        return $this->content;
+        return $this->faqContentDetails;
     }
 
-    public function setContent(string $content): static
+    public function setFaqContentDetails(string $faqContentDetails): static
     {
-        $this->content = $content;
+        $this->faqContentDetails = $faqContentDetails;
 
         return $this;
     }
