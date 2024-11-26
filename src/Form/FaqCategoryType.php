@@ -12,7 +12,7 @@ class FaqCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('category')
+            ->add('faqCategory')
         ;
     }
 

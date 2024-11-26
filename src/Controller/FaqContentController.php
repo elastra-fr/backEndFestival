@@ -45,7 +45,7 @@ class FaqContentController extends AbstractController
 
         $sectionFilter = $request->query->get('sectionId');
 
-        $sections = $faqCategoryRepository->findBy([], ['category' => 'ASC']);
+        $sections = $faqCategoryRepository->findBy([], ['faqCategory' => 'ASC']);
 
 
         if ($sectionFilter) {

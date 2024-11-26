@@ -16,7 +16,7 @@
             <select name="sectionId" onchange="this.form.submit()">
                 <option value="">Toutes les sections</option>
                 {% for section in sections %}
-                    <option value="{{ section.id }}" {% if section.id == sectionFilter %}selected{% endif %}>{{ section.category }}</option>
+                    <option value="{{ section.faqCategoryId }}" {% if section.faqCategoryId == sectionFilter %}selected{% endif %}>{{ section.faqCategory }}</option>
                 {% endfor %}
             </select>
         </form>
@@ -40,12 +40,12 @@
             <li class="listBaseItem">
                 <div class="listItemTitle">
                     <img src="{{ asset('images/icons/info-solid.svg') }}" alt="Icon" class="listItemIcon" />
-                    <span>{{ content.title }} </span>
+                    <span>{{ content.faqContentTitle }} </span>
                 </div>
                 
                 <div class="listItemAction">
-                    <a href="{{ path('app_admin_faq_content_edit', {'id': content.id}) }}" class="button">Editer</a>
-                    <a href="{{ path('app_admin_faq_content_delete', {'id': content.id}) }}" class="button needs-confirmation">Effacer</a>
+                    <a href="{{ path('app_admin_faq_content_edit', {'id': content.faqContentId}) }}" class="button">Editer</a>
+                    <a href="{{ path('app_admin_faq_content_delete', {'id': content.faqContentId}) }}" class="button needs-confirmation">Effacer</a>
                 </div>
         </li>
         {% endfor %}

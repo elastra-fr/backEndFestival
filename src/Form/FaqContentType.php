@@ -16,11 +16,11 @@ class FaqContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('content', TextareaType::class)
+            ->add('faqContentTitle')
+            ->add('faqContentDetails', TextareaType::class)
             ->add('section', EntityType::class, [
                 'class' => FaqCategory::class,
-                'choice_label' => 'category',
+                'choice_label' => 'faqCategory',
             ])
         ;
     }
