@@ -188,7 +188,7 @@ class MapPointsCategoryController extends AbstractController
      * 
      */
 
-    #[Route('/admin/map/points/category/delete/{map_point_category_id}', name: 'app_admin_map_points_category_delete')]
+    #[Route('/admin/map/points/category/delete/{id}', name: 'app_admin_map_points_category_delete')]
 
     public function delete(
         EntityManagerInterface $entityManager,

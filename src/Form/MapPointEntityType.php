@@ -14,13 +14,13 @@ class MapPointEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('description')
+            ->add('mapPointTitle')
+            ->add('mapPointDescription')
             ->add('Longitude')
             ->add('Latitude')
-            ->add('type', EntityType::class, [
+            ->add('mapPointCategory', EntityType::class, [
                 'class' => MapPointsCategory::class,
-                'choice_label' => 'PointCategory',
+                'choice_label' => 'mapPointCategory',
             ])
         ;
     }

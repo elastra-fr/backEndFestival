@@ -21,11 +21,11 @@
             <li class="listBaseItem">
                 <div class="listItemTitle">
                     <img src="{{ asset('images/icons/music-solid.svg') }}" alt="Icon" class="listItemIcon" />
-                    <span>{{ stage.name }} </span>
+                    <span>{{ stage.stageName }} </span>
                 </div>
                 <div class="listItemAction">
-                    <a href="{{ path('app_admin_stage_edit', {'id': stage.id}) }}" class="button">Editer</a>
-                    <a href="{{ path('app_admin_stage_delete', {'id': stage.id}) }}" class="button needs-confirmation">Effacer</a>
+                    <a href="{{ path('app_admin_stage_edit', {'id': stage.stageId}) }}" class="button">Editer</a>
+                    <a href="{{ path('app_admin_stage_delete', {'id': stage.stageId}) }}" class="button needs-confirmation">Effacer</a>
                 </div>
             </li>
         {% endfor %}

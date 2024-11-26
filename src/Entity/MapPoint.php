@@ -30,7 +30,7 @@ class MapPoint
 
     // Getter and Setter methods
 
-    public function getId(): ?int
+    public function getMapPointId(): ?int
     {
         return $this->map_point_id;
     }

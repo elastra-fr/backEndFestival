@@ -12,7 +12,7 @@
         <select name="categoryId" onchange="this.form.submit()">
             <option value="">Toutes les catégories</option>
             {% for category in categories %}
-                <option value="{{ category.id }}" {% if category.id == categoryFilter %}selected{% endif %}>{{ category.PointCategory }}</option>
+                <option value="{{ category.mapPointCategoryId }}" {% if category.mapPointCategoryId == categoryFilter %}selected{% endif %}>{{ category.mapPointCategory }}</option>
             {% endfor %}
         </select>
     </form>
@@ -38,10 +38,10 @@
         <li class="listBaseItem">
             <div class="listItemTitle">
                 <img src="{{ asset('images/icons/location-pin-solid.svg') }}" alt="Icon" class="listItemIcon" />
-                <span>{{ point.map_point_title}} </span>
+                <span>{{ point.mapPointTitle}} </span>
             </div>
             <div class="listItemAction">
-                <a href="{{ path('app_admin_map_points_delete', {'id': point.map_point_id}) }}" class="button needs-confirmation">Effacer</a>
+                <a href="{{ path('app_admin_map_points_delete', {'id': point.mapPointId}) }}" class="button needs-confirmation">Effacer</a>
             </div>
         </li>
     {% endfor %}

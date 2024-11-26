@@ -20,7 +20,7 @@ class Concert
 
     // La relation ManyToOne avec Stage
     #[ORM\ManyToOne(targetEntity: Stage::class, inversedBy: 'concerts')]
-    #[ORM\JoinColumn(nullable: false)] // Lier avec la table Stage
+    #[ORM\JoinColumn(name:'stage_id', referencedColumnName: 'stage_id',nullable: false)] // Lier avec la table Stage
     private ?Stage $stage = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

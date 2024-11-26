@@ -12,11 +12,11 @@ class Stage
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(name: "stage_id", type: 'integer' )]
+    private ?int $stageId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $stageName = null;
 
 
 
@@ -31,19 +31,19 @@ class Stage
         $this->concerts = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getStageId(): ?int
     {
-        return $this->id;
+        return $this->stageId;
     }
 
-    public function getName(): ?string
+    public function getStageName(): ?string
     {
-        return $this->name;
+        return $this->stageName;
     }
 
-    public function setName(string $name): static
+    public function setStageName(string $stageName): static
     {
-        $this->name = $name;
+        $this->stageName = $stageName;
 
         return $this;
     }
