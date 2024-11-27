@@ -51,11 +51,11 @@ class ConcertController extends AbstractController
         $stages = $stageRepository->findAll();
 
         if ($selectedStageId) {
-            $concerts = $concertRepository->findBy(['Stage' => $selectedStageId]);
-            $currentStageName = $stageRepository->find($selectedStageId)->getName();
+            $concerts = $concertRepository->findBy(['stage' => $selectedStageId]);
+            $currentStageName = $stageRepository->find($selectedStageId)->getStageName();
         } else {
-            $concerts = $concertRepository->findBy(['Stage' => $stages[0]->getId()]);
-            $currentStageName = $stages[0]->getName();
+            $concerts = $concertRepository->findBy(['stage' => $stages[0]->getStageId()]);
+            $currentStageName = $stages[0]->getStageName();
         }
 
         $user = $this->getUserInfo($security);
@@ -72,9 +72,9 @@ class ConcertController extends AbstractController
             $concertsList[] = [
                 'id' => $concert->getId(),
                 'date' => $concert->getConcertDate()->format('Y-m-d H:i:s'),
-                'location' => $concert->getStage()->getName(),
-                'description' => $concert->getArtist()->getDescription(),
-                'artist' => $concert->getArtist()->getName(),
+                'location' => $concert->getStage()->getStageName(),
+                'description' => $concert->getBand()->getBandDescription(),
+                'artist' => $concert->getBand()->getBandName(),
 
 
 
@@ -130,7 +130,7 @@ class ConcertController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $concertDateTime = $concert->getConcertDate();
-            $stageId = $concert->getStage()->getId();
+            $stageId = $concert->getStage()->getStageId();
 
             if ($slotCheckerService->isSlotTaken($concertDateTime, $stageId)) {
 
@@ -182,7 +182,7 @@ class ConcertController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $concertDateTime = $concert->getConcertDate();
-            $stageId = $concert->getStage()->getId();
+            $stageId = $concert->getStage()->getStageId();
 
             if ($slotCheckerService->isSlotTaken($concertDateTime, $stageId)) {
                 $this->addFlash('danger', 'Ce créneau est déjà pris. Consultez la programmation pour choisir un autre créneau.');

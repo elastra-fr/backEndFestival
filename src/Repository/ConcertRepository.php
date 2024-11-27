@@ -26,7 +26,7 @@ public function findByCriteria(array $criteria): array
     }
 
     if (isset($criteria['Stage'])) {
-        $qb->andWhere('c.Stage = :Stage')
+        $qb->andWhere('c.Stage = :stage')
             ->setParameter('Stage', $criteria['Stage']);
     }
 
