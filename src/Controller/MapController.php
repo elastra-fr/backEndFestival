@@ -33,7 +33,7 @@ class MapController extends AbstractController
 
         $mapPoints = $mapPointRepository->findAll();
 
-        $categories = $mapPointsCategoryRepository->findBy([], ['map_point_category' => 'ASC']);
+        $categories = $mapPointsCategoryRepository->findBy([], ['mapPointCategoryName' => 'ASC']);
 
         if ($categoryFilter) {
             $mapPoints = $mapPointRepository->findBy(['mapPointCategory' => $categoryFilter], );
@@ -49,7 +49,7 @@ class MapController extends AbstractController
                 'description' => $mapPoint->getMapPointDescription(),
                 'latitude' => $mapPoint->getLatitude(),
                 'longitude' => $mapPoint->getLongitude(),
-                'type' => $mapPoint->getMapPointCategory()->getMapPointCategory(),
+                'type' => $mapPoint->getMapPointCategory()->getMapPointCategoryName(),
                 'img' => $mapPoint->getMapPointCategory()->getMapPointIconUrl(),
             ];
         }

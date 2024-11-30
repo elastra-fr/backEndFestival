@@ -57,7 +57,7 @@ class ConcertType extends AbstractType
                 'choice_label' => 'band_name',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('b')
-                        ->orderBy('b.band_name', 'ASC');
+                        ->orderBy('b.bandName', 'ASC');
                 },
             ])
             ->add('Stage', EntityType::class, [

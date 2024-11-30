@@ -47,7 +47,7 @@ class PartnerController extends AbstractController
 
         $categoryFilter = $request->query->get('categoryId');
 
-        $categories = $partnerCategoryRepository->findBy([], ['partnerCategory' => 'ASC']);
+        $categories = $partnerCategoryRepository->findBy([], ['partnerCategoryName' => 'ASC']);
 
         if ($categoryFilter) {
 

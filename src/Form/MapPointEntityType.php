@@ -20,7 +20,7 @@ class MapPointEntityType extends AbstractType
             ->add('Latitude')
             ->add('mapPointCategory', EntityType::class, [
                 'class' => MapPointsCategory::class,
-                'choice_label' => 'mapPointCategory',
+                'choice_label' => 'mapPointCategoryName',
             ])
         ;
     }

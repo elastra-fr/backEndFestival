@@ -28,7 +28,7 @@ class PartnerType extends AbstractType
             ->add('partnerDescription', TextareaType::class)
             ->add('partnerCategory', EntityType::class, [
                 'class' => PartnerCategory::class,
-                'choice_label' => 'partnerCategory',
+                'choice_label' => 'partnerCategoryName',
             ])
         ;
     }

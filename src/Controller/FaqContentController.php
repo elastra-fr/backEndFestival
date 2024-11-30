@@ -45,7 +45,7 @@ class FaqContentController extends AbstractController
 
         $sectionFilter = $request->query->get('sectionId');
 
-        $sections = $faqCategoryRepository->findBy([], ['faqCategory' => 'ASC']);
+        $sections = $faqCategoryRepository->findBy([], ['faqCategoryName' => 'ASC']);
 
 
         if ($sectionFilter) {
@@ -92,7 +92,7 @@ class FaqContentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $faqContent->setContentUpdate(new \DateTime('now'));
+            $faqContent->setFaqContentUpdate(new \DateTime('now'));
 
             $entityManager->persist($faqContent);
             $entityManager->flush();
@@ -157,7 +157,7 @@ class FaqContentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $faqContent->setContentUpdate(new \DateTime('now'));
+            $faqContent->setFaqContentUpdate(new \DateTime('now'));
             $entityManager->persist($faqContent);
             $entityManager->flush();
 

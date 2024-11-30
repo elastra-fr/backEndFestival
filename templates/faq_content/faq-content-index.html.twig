@@ -16,7 +16,7 @@
             <select name="sectionId" onchange="this.form.submit()">
                 <option value="">Toutes les sections</option>
                 {% for section in sections %}
-                    <option value="{{ section.faqCategoryId }}" {% if section.faqCategoryId == sectionFilter %}selected{% endif %}>{{ section.faqCategory }}</option>
+                    <option value="{{ section.faqCategoryId }}" {% if section.faqCategoryId == sectionFilter %}selected{% endif %}>{{ section.faqCategoryName }}</option>
                 {% endfor %}
             </select>
         </form>

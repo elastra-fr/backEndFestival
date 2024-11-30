@@ -70,7 +70,7 @@ class ConcertController extends AbstractController
 
         foreach ($concerts as $concert) {
             $concertsList[] = [
-                'id' => $concert->getId(),
+                'id' => $concert->getConcertId(),
                 'date' => $concert->getConcertDate()->format('Y-m-d H:i:s'),
                 'location' => $concert->getStage()->getStageName(),
                 'description' => $concert->getBand()->getBandDescription(),

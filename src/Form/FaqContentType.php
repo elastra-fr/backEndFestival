@@ -20,7 +20,7 @@ class FaqContentType extends AbstractType
             ->add('faqContentDetails', TextareaType::class)
             ->add('section', EntityType::class, [
                 'class' => FaqCategory::class,
-                'choice_label' => 'faqCategory',
+                'choice_label' => 'faqCategoryName',
             ])
         ;
     }

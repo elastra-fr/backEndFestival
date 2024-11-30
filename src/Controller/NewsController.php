@@ -38,7 +38,7 @@ class NewsController extends AbstractController
 
     $newsCategoryFilter = $request->query->get('categoryId');
 
-        $categories = $newsCategoryRepository->findBy([], ['news_category_name' => 'ASC']);
+        $categories = $newsCategoryRepository->findBy([], ['newsCategoryName' => 'ASC']);
 
         if ($newsCategoryFilter) {
 
