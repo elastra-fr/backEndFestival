@@ -13,7 +13,7 @@ class Partner
     #[ORM\Column (name: "partner_id", type: "integer")]
     private ?int $partnerId = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $partnerName = null;
 
     #[ORM\ManyToOne(inversedBy: 'partners')]

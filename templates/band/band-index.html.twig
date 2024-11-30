@@ -19,7 +19,7 @@
             <select name="styleId" onchange="this.form.submit()">
                 <option value="">Tous les styles</option>
                 {% for style in styles %}
-                    <option value="{{ style.id }}" {% if style.id == styleFilter %}selected{% endif %}>{{style.musicStyleName }}</option>
+                    <option value="{{ style.musicStyleId }}" {% if style.musicStyleId == styleFilter %}selected{% endif %}>{{style.musicStyleName }}</option>
                 {% endfor %}
             </select>
         </form>

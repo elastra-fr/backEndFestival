@@ -13,13 +13,13 @@ class MapPointsCategory
     #[ORM\Id]
     #[ORM\Column(name: "map_point_category_id", type: "integer")]
     #[ORM\GeneratedValue]
-    private ?int $map_point_category_id = null;
+    private ?int $mapPointCategoryId = null;
 
-    #[ORM\Column(name: "map_point_category", type: "string", length: 100)]
-    private ?string $map_point_category = null;
+    #[ORM\Column(name: "map_point_category_name", type: "string", length: 50)]
+    private ?string $mapPointCategoryName = null;
 
     #[ORM\Column(name: "map_point_icon_url", type: "string", length: 255, nullable: true)]
-    private ?string $map_point_icon_url = null;
+    private ?string $mapPointIconUrl = null;
 
     /**
      * @var Collection<int, MapPoint>
@@ -34,29 +34,29 @@ class MapPointsCategory
 
     public function getMapPointCategoryId(): ?int
     {
-        return $this->map_point_category_id;
+        return $this->mapPointCategoryId;
     }
 
-    public function getMapPointCategory(): ?string
+    public function getMapPointCategoryName(): ?string
     {
-        return $this->map_point_category;
+        return $this->mapPointCategoryName;
     }
 
-    public function setMapPointCategory(string $mapPointCategory): self
+    public function setMapPointCategoryName(string $mapPointCategoryName): self
     {
-        $this->map_point_category = $mapPointCategory;
+        $this->mapPointCategoryName = $mapPointCategoryName;
 
         return $this;
     }
 
     public function getMapPointIconUrl(): ?string
     {
-        return $this->map_point_icon_url;
+        return $this->mapPointIconUrl;
     }
 
     public function setMapPointIconUrl(?string $mapPointIconUrl): self
     {
-        $this->map_point_icon_url = $mapPointIconUrl;
+        $this->mapPointIconUrl = $mapPointIconUrl;
 
         return $this;
     }

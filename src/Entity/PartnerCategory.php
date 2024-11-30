@@ -15,8 +15,8 @@ class PartnerCategory
     #[ORM\Column (name: "partner_category_id", type: "integer")]
     private ?int $partnerCategoryId = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $partnerCategory = null;
+    #[ORM\Column(length: 100)]
+    private ?string $partnerCategoryName = null;
 
     /**
      * @var Collection<int, Partner>
@@ -34,14 +34,14 @@ class PartnerCategory
         return $this->partnerCategoryId;
     }
 
-    public function getPartnerCategory(): ?string
+    public function getPartnerCategoryName(): ?string
     {
-        return $this->partnerCategory;
+        return $this->partnerCategoryName;
     }
 
-    public function setPartnerCategory(string $partnerCategory): static
+    public function setPartnerCategoryName(string $partnerCategoryName): static
     {
-        $this->partnerCategory = $partnerCategory;
+        $this->partnerCategoryName = $partnerCategoryName;
 
         return $this;
     }

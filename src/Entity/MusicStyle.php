@@ -12,10 +12,10 @@ class MusicStyle
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: "music_style_id", type: "integer")]
-    private ?int $id = null;
+    private ?int $musicStyleId = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $music_style_name = null;
+    #[ORM\Column(length: 100)]
+    private ?string $musicStyleName = null;
 
     /**
      * @var Collection<int, Band>
@@ -28,19 +28,19 @@ class MusicStyle
         $this->bands = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getMusicStyleId(): ?int
     {
-        return $this->id;
+        return $this->musicStyleId;
     }
 
     public function getMusicStyleName(): ?string
     {
-        return $this->music_style_name;
+        return $this->musicStyleName;
     }
 
-    public function setMusicStyleName(string $music_style_name): static
+    public function setMusicStyleName(string $musicStyleName): static
     {
-        $this->music_style_name = $music_style_name;
+        $this->musicStyleName = $musicStyleName;
         return $this;
     }
 

@@ -10,8 +10,8 @@ class Concert
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column (name: "concert_id", type: "integer")]
+    private ?int $concertId = null;
 
     // La relation ManyToOne avec Band
     #[ORM\ManyToOne(targetEntity: Band::class, inversedBy: 'concerts')]
@@ -28,9 +28,9 @@ class Concert
 
     // Getters et Setters
 
-    public function getId(): ?int
+    public function getConcertId(): ?int
     {
-        return $this->id;
+        return $this->concertId;
     }
 
     public function getBand(): ?Band

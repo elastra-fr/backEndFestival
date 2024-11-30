@@ -15,7 +15,7 @@ class Stage
     #[ORM\Column(name: "stage_id", type: 'integer' )]
     private ?int $stageId = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $stageName = null;
 
 

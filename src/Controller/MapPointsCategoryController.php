@@ -37,7 +37,7 @@ class MapPointsCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        $categories = $mapPointsCategoryRepository->findBy([], ['map_point_category' => 'ASC']);
+        $categories = $mapPointsCategoryRepository->findBy([], ['mapPointCategoryName' => 'ASC']);
 
         return $this->render('map_points_category/points-category-index.html.twig', [
             'controller_name' => 'MapPointsCategoryController',

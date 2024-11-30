@@ -15,8 +15,8 @@ class FaqCategory
     #[ORM\Column (name: "faq_category_id", type: "integer")]
     private ?int $faqCategoryId = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $faqCategory = null;
+    #[ORM\Column(length: 100)]
+    private ?string $faqCategoryName = null;
 
     /**
      * @var Collection<int, FaqContent>
@@ -34,14 +34,14 @@ class FaqCategory
         return $this->faqCategoryId;
     }
 
-    public function getFaqCategory(): ?string
+    public function getFaqCategoryName(): ?string
     {
-        return $this->faqCategory;
+        return $this->faqCategoryName;
     }
 
-    public function setFaqCategory(string $faqCategory): static
+    public function setFaqCategoryName(string $faqCategoryName): static
     {
-        $this->faqCategory = $faqCategory;
+        $this->faqCategoryName = $faqCategoryName;
 
         return $this;
     }

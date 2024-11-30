@@ -40,7 +40,7 @@ class BandType extends AbstractType
                 ],
 
             ])
-            ->add('url_image', HiddenType::class, 
+            ->add('band_image', HiddenType::class, 
             )
             ->add('file', FileType::class, [
                 'label' => 'Image',

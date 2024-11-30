@@ -10,7 +10,7 @@ class MapPoint
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: "integer")]
-    private ?int $map_point_id = null;
+    private ?int $mapPointId = null;
 
     #[ORM\ManyToOne(targetEntity: MapPointsCategory::class, inversedBy: 'mapPoints')]
     #[ORM\JoinColumn(name: "map_point_category_id", referencedColumnName: "map_point_category_id", nullable: false)]
@@ -23,16 +23,16 @@ class MapPoint
     private ?string $latitude = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $map_point_title = null;
+    private ?string $mapPointTitle = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $map_point_description = null;
+    private ?string $mapPointDescription = null;
 
     // Getter and Setter methods
 
     public function getMapPointId(): ?int
     {
-        return $this->map_point_id;
+        return $this->mapPointId;
     }
 
     public function getLongitude(): ?string
@@ -70,23 +70,23 @@ class MapPoint
 
     public function getMapPointTitle(): ?string
     {
-        return $this->map_point_title;
+        return $this->mapPointTitle;
     }
 
-    public function setMapPointTitle(string $map_point_title): self
+    public function setMapPointTitle(string $mapPointTitle): self
     {
-        $this->map_point_title = $map_point_title;
+        $this->mapPointTitle = $mapPointTitle;
         return $this;
     }
 
     public function getMapPointDescription(): ?string
     {
-        return $this->map_point_description;
+        return $this->mapPointDescription;
     }
 
-    public function setMapPointDescription(?string $map_point_description): self
+    public function setMapPointDescription(?string $mapPointDescription): self
     {
-        $this->map_point_description = $map_point_description;
+        $this->mapPointDescription = $mapPointDescription;
         return $this;
     }
 }

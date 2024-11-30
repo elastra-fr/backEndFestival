@@ -36,7 +36,7 @@ class NewsCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        $categories = $newsCategoryRepository->findBy([], ['news_category_name' => 'ASC']);
+        $categories = $newsCategoryRepository->findBy([], ['newsCategoryName' => 'ASC']);
 
         return $this->render('news_category/news-category-index.html.twig', [
             'controller_name' => 'NewsCategoryController',

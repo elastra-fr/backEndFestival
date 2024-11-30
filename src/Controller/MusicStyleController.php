@@ -29,7 +29,7 @@ class MusicStyleController extends AbstractController
         MusicStyleRepository $musicStyleRepository
     ): Response {
         $user = $this->getUserInfo($security);
-        $styles = $musicStyleRepository->findBy([], ['music_style_name' => 'ASC']);
+        $styles = $musicStyleRepository->findBy([], ['musicStyleName' => 'ASC']);
 
         dump($styles);
     

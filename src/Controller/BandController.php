@@ -39,12 +39,12 @@ class BandController extends AbstractController
 
         $styleFilter = $request->query->get('styleId');
 
-        $styles = $musicStyleRepository->findBy([], ['music_style_name' => 'ASC']);
+        $styles = $musicStyleRepository->findBy([], ['musicStyleName' => 'ASC']);
 
         if ($styleFilter) {
-            $bands = $bandRepository->findBy(['music_style' => $styleFilter], ['band_name' => 'ASC']);
+            $bands = $bandRepository->findBy(['musicStyle' => $styleFilter], ['bandName' => 'ASC']);
         } else {
-            $bands = $bandRepository->findBy([], ['band_name' => 'ASC']);
+            $bands = $bandRepository->findBy([], ['bandName' => 'ASC']);
         }
 
         return $this->render('band/band-index.html.twig', [
@@ -84,7 +84,7 @@ class BandController extends AbstractController
             if ($file) {
                 $targetDirectory = $this->getParameter('upload_bands_directory');
                 $fileName = $fileUploaderService->upload($file, $targetDirectory);
-                $band->setUrlImage($fileName);
+                $band->setBandImage($fileName);
             }
 
             $entityManagerInterface->persist($band);
@@ -158,10 +158,10 @@ class BandController extends AbstractController
 
             if ($file) {
                 $targetDirectory = $this->getParameter('upload_bands_directory');
-                $imageName = $band->getUrlImage();
+                $imageName = $band->getBandImage();
                 $deleteImagesService->deleteImages($imageName, $targetDirectory);
                 $fileName = $fileUploaderService->upload($file, $targetDirectory);
-                $band->setUrlImage($fileName);
+                $band->setBandImage($fileName);
             }
 
             $entityManagerInterface->persist($band);
@@ -170,7 +170,7 @@ class BandController extends AbstractController
             return $this->redirectToRoute('app_admin_band');
         }
 
-        $currentImageName = $band->getUrlImage();
+        $currentImageName = $band->getBandImage();
         $currentImagePath = './images/bands/' . $currentImageName;
 
         return $this->render('band/band-edit.html.twig', [

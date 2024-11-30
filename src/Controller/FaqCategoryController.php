@@ -33,7 +33,7 @@ class FaqCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        $categories = $faqCategoryRepository->findBy([], ['faqCategory' => 'ASC']);
+        $categories = $faqCategoryRepository->findBy([], ['faqCategoryName' => 'ASC']);
 
 
         return $this->render('faq_category/faq-category-index.html.twig', [

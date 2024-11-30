@@ -14,7 +14,7 @@ class FaqContent
     #[ORM\Column]
     private ?int $faqContentId = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $faqContentTitle = null;
 
     #[ORM\Column(length: 500)]
@@ -25,7 +25,7 @@ class FaqContent
     private ?FaqCategory $section = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $content_update = null;
+    private ?\DateTimeInterface $faqContentUpdate = null;
 
     public function getFaqContentId(): ?int
     {
@@ -68,14 +68,14 @@ class FaqContent
         return $this;
     }
 
-    public function getContentUpdate(): ?\DateTimeInterface
+    public function getFaqContentUpdate(): ?\DateTimeInterface
     {
-        return $this->content_update;
+        return $this->faqContentUpdate;
     }
 
-    public function setContentUpdate(\DateTimeInterface $content_update): static
+    public function setFaqContentUpdate(\DateTimeInterface $faqContentUpdate): static
     {
-        $this->content_update = $content_update;
+        $this->faqContentUpdate = $faqContentUpdate;
 
         return $this;
     }

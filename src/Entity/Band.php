@@ -13,20 +13,20 @@ class Band
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: "band_id", type: "integer")]
-    private ?int $band_id = null;
+    private ?int $bandId = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $bandName = null;
+
+    #[ORM\Column(name: "band_description", length: 100)]
+    private ?string $bandDescription = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $band_name = null;
-
-    #[ORM\Column(name: "band_description", length: 255)]
-    private ?string $band_description = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $url_image = null;
+    private ?string $bandImage = null;
 
     #[ORM\ManyToOne(targetEntity: MusicStyle::class, inversedBy: 'bands')]
     #[ORM\JoinColumn(name: 'music_style_id', referencedColumnName: 'music_style_id', nullable: false)]
-    private ?MusicStyle $music_style = null;
+    private ?MusicStyle $musicStyle = null;
 
     /**
      * @var Collection<int, Concert>
@@ -41,50 +41,50 @@ class Band
 
     public function getBandId(): ?int
     {
-        return $this->band_id;
+        return $this->bandId;
     }
 
     public function getBandName(): ?string
     {
-        return $this->band_name;
+        return $this->bandName;
     }
 
-    public function setBandName(string $band_name): static
+    public function setBandName(string $bandName): static
     {
-        $this->band_name = $band_name;
+        $this->bandName = $bandName;
         return $this;
     }
 
     public function getBandDescription(): ?string
     {
-        return $this->band_description;
+        return $this->bandDescription;
     }
 
     public function setBandDescription(string $band_description): static
     {
-        $this->band_description = $band_description;
+        $this->bandDescription = $band_description;
         return $this;
     }
 
-    public function getUrlImage(): ?string
+    public function getBandImage(): ?string
     {
-        return $this->url_image;
+        return $this->bandImage;
     }
 
-    public function setUrlImage(string $url_image): static
+    public function setBandImage(string $bandImage): static
     {
-        $this->url_image = $url_image;
+        $this->bandImage = $bandImage;
         return $this;
     }
 
     public function getMusicStyle(): ?MusicStyle
     {
-        return $this->music_style;
+        return $this->musicStyle;
     }
 
     public function setMusicStyle(?MusicStyle $music_style): static
     {
-        $this->music_style = $music_style;
+        $this->musicStyle = $music_style;
         return $this;
     }
 
@@ -100,7 +100,7 @@ class Band
     {
         if (!$this->concerts->contains($concert)) {
             $this->concerts->add($concert);
-            $concert->setBand($this); // Vérifiez ici que 'band' est la propriété dans Concert
+            $concert->setBand($this);
         }
         return $this;
     }
