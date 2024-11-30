@@ -190,7 +190,7 @@ class MapController extends AbstractController
                 'description' => $mapPoint->getMapPointDescription(),
                 'latitude' => $mapPoint->getLatitude(),
                 'longitude' => $mapPoint->getLongitude(),
-                'type' => $mapPoint->getMapPointCategory()->getMapPointCategory(),
+                'type' => $mapPoint->getMapPointCategory()->getMapPointCategoryName(),
                 'img' => $commonPath . $ImgFileName,
             ];
         }

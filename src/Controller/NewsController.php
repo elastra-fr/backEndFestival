@@ -195,10 +195,10 @@ class NewsController extends AbstractController
 
         if ($limit === 'all') {
 
-            $news = $newsRepository->findBy(['NewsCategory' => [1, 2, 5]], ['news_date' => 'DESC']);
+            $news = $newsRepository->findBy(['NewsCategory' => [1, 2, 5]], ['newsDate' => 'DESC']);
         } else {
 
-            $news = $newsRepository->findBy(['NewsCategory' => [1, 2, 5]], ['news_date' => 'DESC'], $limit);
+            $news = $newsRepository->findBy(['NewsCategory' => [1, 2, 5]], ['newsDate' => 'DESC'], $limit);
         }
 
 
@@ -209,8 +209,8 @@ class NewsController extends AbstractController
         foreach ($news as $newsItem) {
 
             $lastNews[] = [
-                'id' => $newsItem->getId(),
-                'title' => $newsItem->getTitle(),
+                'id' => $newsItem->getNewsId(),
+                'title' => $newsItem->getNewsTitle(),
                 'content' => $newsItem->getNewsContent(),
                 'newsDate' => $newsItem->getNewsDate(),
             ];
@@ -236,15 +236,15 @@ class NewsController extends AbstractController
         JsonResponseNormalizer $jsonResponseNormalizer
     ): Response {
 
-        $news = $newsRepository->findBy(['NewsCategory' => [3, 4]], ['news_date' => 'DESC']);
+        $news = $newsRepository->findBy(['NewsCategory' => [3, 4]], ['newsDate' => 'DESC']);
 
         $alertNews = [];
 
         foreach ($news as $newsItem) {
 
             $alertNews[] = [
-                'id' => $newsItem->getId(),
-                'title' => $newsItem->getTitle(),
+                'id' => $newsItem->getNewsId(),
+                'title' => $newsItem->getNewsTitle(),
                 'content' => $newsItem->getNewsContent(),
                 'newsDate' => $newsItem->getNewsDate(),
             ];

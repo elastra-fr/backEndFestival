@@ -215,14 +215,14 @@ class MapPointsCategoryController extends AbstractController
         MapPointsCategoryRepository $mapPointsCategoryRepository,
         JsonResponseNormalizer $jsonResponseNormalizer
     ): Response {
-        $categories = $mapPointsCategoryRepository->findBy([], ['map_point_category' => 'ASC']);
+        $categories = $mapPointsCategoryRepository->findBy([], ['mapPointCategoryName' => 'ASC']);
 
         $categoriesData = [];
 
         foreach ($categories as $category) {
             $categoriesData[] = [
-                'map_point_category_id' => $category->getId(),
-                'map_point_category' => $category->getMapPointCategory(),
+                'map_point_category_id' => $category->getMapPointCategoryId(),
+                'map_point_category' => $category->getMapPointCategoryName(),
             ];
         }
 

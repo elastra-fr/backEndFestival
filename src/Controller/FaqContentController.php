@@ -201,17 +201,17 @@ class FaqContentController extends AbstractController
             $contents = $category->getFaqContents();
 
             $categoryData = [
-                'category' => $category->getCategory(),
+                'category' => $category->getFaqCategoryName(),
                 'contents' => [],
             ];
 
 
             foreach ($contents as $content) {
                 $categoryData['contents'][] = [
-                    'id' => $content->getId(),
-                    'title' => $content->getTitle(),
-                    'content' => $content->getContent(),
-                    'contentUpdate' => $content->getContentUpdate(),
+                    'id' => $content->getFaqContentId(),
+                    'title' => $content->getFaqContentTitle(),
+                    'content' => $content->getFaqContentDetails(),
+                    'contentUpdate' => $content->getFaqContentUpdate(),
                 ];
             }
 

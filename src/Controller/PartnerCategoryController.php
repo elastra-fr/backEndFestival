@@ -179,14 +179,14 @@ class PartnerCategoryController extends AbstractController
         JsonResponseNormalizer $jsonResponseNormalizer
     ): Response {
 
-        $categories = $partnerCategoryRepository->findBy([], ['category' => 'ASC']);
+        $categories = $partnerCategoryRepository->findBy([], ['partnerCategoryName' => 'ASC']);
 
         $categoriesArray = [];
 
         foreach ($categories as $category) {
             $categoriesArray[] = [
-                'id' => $category->getId(),
-                'category' => $category->getCategory(),
+                'id' => $category->getPartnerCategoryId(),
+                'category' => $category->getPartnerCategoryName(),
             ];
         }
 

@@ -276,7 +276,7 @@ class PartnerController extends AbstractController
                 'name' => $partner->getPartnerName(),
                 'url_logo' => $urlLogo,
                 'description' => $partner->getPartnerDescription(),
-                'category' => $partner->getPartnerCategory()->getPartnerCategory(),
+                'category' => $partner->getPartnerCategory()->getPartnerCategoryName(),
             ];
         }
 
@@ -327,11 +327,11 @@ class PartnerController extends AbstractController
 
             $partnersArray[] = [
 
-                'id' => $partner->getId(),
-                'name' => $partner->getName(),
+                'id' => $partner->getPartnerId(),
+                'name' => $partner->getPartnerName(),
                 'url_logo' => $urlLogo,
-                'description' => $partner->getDescription(),
-                'category' => $partner->getCategory()->getCategory(),
+                'description' => $partner->getPartnerDescription(),
+                'category' => $partner->getPartnerCategory()->getPartnerCategoryName(),
             ];
         }
 
