@@ -43,6 +43,8 @@ security:
             pattern: ^/api/user
             stateless: true
             jwt: ~
+            
+
 
 
         #Parefeu pour les routes admin#
