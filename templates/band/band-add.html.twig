@@ -11,16 +11,16 @@
     <h3>Ajout d'un groupe</h3>
 
     <div class="formGroup flexCont">
-        {{ form_label(form.name, 'Nom du groupe') }}
-        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'maxlength': 100} }) }}
-        {{ form_errors(form.name) }}
+        {{ form_label(form.band_name, 'Nom du groupe') }}
+        {{ form_widget(form.band_name, {'attr': {'class': 'form-control', 'maxlength': 100} }) }}
+        {{ form_errors(form.band_name) }}
 
     </div>
     
     <div class="formGroup flexCont">
-        {{ form_label(form.description) }}
-        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'maxlength': 150}}) }}
-        {{ form_errors(form.description) }}
+        {{ form_label(form.band_description) }}
+        {{ form_widget(form.band_description, {'attr': {'class': 'form-control', 'maxlength': 150}}) }}
+        {{ form_errors(form.band_description) }}
     </div>
     
 <div class="formGroup flexCont">
@@ -39,7 +39,7 @@
     </div>
     
     {# Notez que url_image est de type HiddenType, donc nous n'affichons pas de label ou de widget ici #}
-    {{ form_widget(form.url_image) }}
+    {{ form_widget(form.band_image) }}
 
     <button type="submit" class="button">Enregistrer</button>
     <a href="{{ path('app_admin_band') }}" class="button">Annuler</a>

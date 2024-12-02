@@ -15,8 +15,8 @@ class MapPointsCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('PointCategory')
-            ->add('PointUrl', HiddenType::class)
+            ->add('mapPointCategoryName')
+            ->add('mapPointIconUrl', HiddenType::class)
             ->add('file', FileType::class, [
                 'label' => 'Icone',
                 'mapped' => false,

@@ -11,20 +11,20 @@ use Doctrine\ORM\Mapping as ORM;
 class MapPointsCategory
 {
     #[ORM\Id]
+    #[ORM\Column(name: "map_point_category_id", type: "integer")]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    private ?int $mapPointCategoryId = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $PointCategory = null;
+    #[ORM\Column(name: "map_point_category_name", type: "string", length: 50)]
+    private ?string $mapPointCategoryName = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $PointUrl = null;
+    #[ORM\Column(name: "map_point_icon_url", type: "string", length: 255, nullable: true)]
+    private ?string $mapPointIconUrl = null;
 
     /**
      * @var Collection<int, MapPoint>
      */
-    #[ORM\OneToMany(targetEntity: MapPoint::class, mappedBy: 'type')]
+    #[ORM\OneToMany(targetEntity: MapPoint::class, mappedBy: 'mapPointCategory')]
     private Collection $mapPoints;
 
     public function __construct()
@@ -32,31 +32,31 @@ class MapPointsCategory
         $this->mapPoints = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getMapPointCategoryId(): ?int
     {
-        return $this->id;
+        return $this->mapPointCategoryId;
     }
 
-    public function getPointCategory(): ?string
+    public function getMapPointCategoryName(): ?string
     {
-        return $this->PointCategory;
+        return $this->mapPointCategoryName;
     }
 
-    public function setPointCategory(string $PointCategory): static
+    public function setMapPointCategoryName(string $mapPointCategoryName): self
     {
-        $this->PointCategory = $PointCategory;
+        $this->mapPointCategoryName = $mapPointCategoryName;
 
         return $this;
     }
 
-    public function getPointUrl(): ?string
+    public function getMapPointIconUrl(): ?string
     {
-        return $this->PointUrl;
+        return $this->mapPointIconUrl;
     }
 
-    public function setPointUrl(?string $PointUrl): static
+    public function setMapPointIconUrl(?string $mapPointIconUrl): self
     {
-        $this->PointUrl = $PointUrl;
+        $this->mapPointIconUrl = $mapPointIconUrl;
 
         return $this;
     }
@@ -69,22 +69,21 @@ class MapPointsCategory
         return $this->mapPoints;
     }
 
-    public function addMapPoint(MapPoint $mapPoint): static
+    public function addMapPoint(MapPoint $mapPoint): self
     {
         if (!$this->mapPoints->contains($mapPoint)) {
             $this->mapPoints->add($mapPoint);
-            $mapPoint->setType($this);
+            $mapPoint->setMapPointCategory($this);  
         }
 
         return $this;
     }
 
-    public function removeMapPoint(MapPoint $mapPoint): static
+    public function removeMapPoint(MapPoint $mapPoint): self
     {
         if ($this->mapPoints->removeElement($mapPoint)) {
-            // set the owning side to null (unless already changed)
-            if ($mapPoint->getType() === $this) {
-                $mapPoint->setType(null);
+            if ($mapPoint->getMapPointCategory() === $this) {
+                $mapPoint->setMapPointCategory(null);
             }
         }
 

@@ -52,20 +52,20 @@ class ConcertType extends AbstractType
             ]),
         ],
     ])
-            ->add('Artist', EntityType::class, [
+            ->add('Band', EntityType::class, [
                 'class' => Band::class,
-                'choice_label' => 'name',
+                'choice_label' => 'band_name',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('b')
-                        ->orderBy('b.name', 'ASC');
+                        ->orderBy('b.bandName', 'ASC');
                 },
             ])
             ->add('Stage', EntityType::class, [
                 'class' => Stage::class,
-                'choice_label' => 'name',
+                'choice_label' => 'stageName',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
-                        ->orderBy('s.name', 'ASC');
+                        ->orderBy('s.stageName', 'ASC');
                 },
             ])
         ;

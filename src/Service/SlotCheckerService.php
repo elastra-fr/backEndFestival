@@ -30,8 +30,8 @@ class SlotCheckerService
         $concertDateTime->setTime($concertDateTime->format('H'), 0, 0);
     
         $query = $concertRepository->createQueryBuilder('c')
-            ->where('c.Stage = :stageId')
-            ->andWhere('c.ConcertDate = :concertDateTime')
+            ->where('c.stage = :stageId')
+            ->andWhere('c.concertDate = :concertDateTime')
             ->setParameter('stageId', $stageId)
             ->setParameter('concertDateTime', $concertDateTime)
             ->getQuery();

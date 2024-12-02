@@ -37,7 +37,8 @@ class PartnerCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        $categories = $partnerCategoryRepository->findBy([], ['category' => 'ASC']);
+        $categories = $partnerCategoryRepository->findBy([], ['partnerCategoryName' => 'ASC']);
+        dump($categories);
 
         return $this->render('partner_category/partner-category-index.html.twig', [
             'controller_name' => 'PartnerCategoryController',
@@ -178,14 +179,14 @@ class PartnerCategoryController extends AbstractController
         JsonResponseNormalizer $jsonResponseNormalizer
     ): Response {
 
-        $categories = $partnerCategoryRepository->findBy([], ['category' => 'ASC']);
+        $categories = $partnerCategoryRepository->findBy([], ['partnerCategoryName' => 'ASC']);
 
         $categoriesArray = [];
 
         foreach ($categories as $category) {
             $categoriesArray[] = [
-                'id' => $category->getId(),
-                'category' => $category->getCategory(),
+                'id' => $category->getPartnerCategoryId(),
+                'category' => $category->getPartnerCategoryName(),
             ];
         }
 

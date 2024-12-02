@@ -1,20 +1,22 @@
 {% extends 'home/index.html.twig' %}
 
-{% block title %}Edition | Style de musique{% endblock %}
+{% block title %}Édition | Style de musique{% endblock %}
 
 {% block content %}
-    {{ form_start(form, {'attr' : {'class' : 'formBase flexCont'}}) }}
+    {{ form_start(form, {'attr': {'class': 'formBase flexCont'}}) }}
     <div class="formContainerBase flexCont">
-    <h3>Modifier style de musique</h3>
-    <div class="formGroup flexCont">
-        {{ form_label(form.name, 'Nouveau Style') }}
-        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.name) }}
+        <h3>Modifier un style de musique</h3>
+        
+        <div class="formGroup flexCont">
+            {{ form_label(form.music_style_name, 'Nom du style') }}
+            {{ form_widget(form.music_style_name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.music_style_name) }}
+        </div>
+        
+        <div class="formActions flexCont">
+            <button type="submit" class="button">Enregistrer les modifications</button>
+            <a href="{{ path('app_admin_style') }}" class="button">Annuler</a>
+        </div>
     </div>
-    <button type="submit" class="button">Enregistrer modification</button>
-
-    <a href="{{ path('app_admin_style') }}" class="button">Annuler</a>
     {{ form_end(form) }}
-
-    </div>
 {% endblock %}

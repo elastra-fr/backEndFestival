@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\ConcertRepository;
@@ -11,58 +10,59 @@ class Concert
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column (name: "concert_id", type: "integer")]
+    private ?int $concertId = null;
 
-    #[ORM\ManyToOne(inversedBy: 'concerts')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Band $Artist = null;
+    // La relation ManyToOne avec Band
+    #[ORM\ManyToOne(targetEntity: Band::class, inversedBy: 'concerts')]
+    #[ORM\JoinColumn(name: 'band_id', referencedColumnName: 'band_id', nullable: false)]  // Précision de la colonne
+    private ?Band $band = null;
 
-    #[ORM\ManyToOne(inversedBy: 'concerts')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Stage $Stage = null;
+    // La relation ManyToOne avec Stage
+    #[ORM\ManyToOne(targetEntity: Stage::class, inversedBy: 'concerts')]
+    #[ORM\JoinColumn(name:'stage_id', referencedColumnName: 'stage_id',nullable: false)] // Lier avec la table Stage
+    private ?Stage $stage = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $ConcertDate = null;
+    private ?\DateTimeInterface $concertDate = null;
 
-    public function getId(): ?int
+    // Getters et Setters
+
+    public function getConcertId(): ?int
     {
-        return $this->id;
+        return $this->concertId;
     }
 
-    public function getArtist(): ?Band
+    public function getBand(): ?Band
     {
-        return $this->Artist;
+        return $this->band;
     }
 
-    public function setArtist(?Band $Artist): static
+    public function setBand(?Band $band): static
     {
-        $this->Artist = $Artist;
-
+        $this->band = $band;
         return $this;
     }
 
     public function getStage(): ?Stage
     {
-        return $this->Stage;
+        return $this->stage;
     }
 
-    public function setStage(?Stage $Stage): static
+    public function setStage(?Stage $stage): static
     {
-        $this->Stage = $Stage;
-
+        $this->stage = $stage;
         return $this;
     }
 
     public function getConcertDate(): ?\DateTimeInterface
     {
-        return $this->ConcertDate;
+        return $this->concertDate;
     }
 
-    public function setConcertDate(\DateTimeInterface $ConcertDate): static
+    public function setConcertDate(\DateTimeInterface $concertDate): static
     {
-        $this->ConcertDate = $ConcertDate;
-
+        $this->concertDate = $concertDate;
         return $this;
     }
 }

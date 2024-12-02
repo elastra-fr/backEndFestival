@@ -11,12 +11,12 @@
     <h3>Modifier partenaire</h3>
 
     <div class="formGroup flexCont">
-    {{ form_label(form.name, 'Nom*') }}
-        {{ form_widget(form.name) }}
+    {{ form_label(form.partnerName, 'Nom*') }}
+        {{ form_widget(form.partnerName) }}
     </div>
 
     <div class="formGroup flexCont">
-    {{ form_label(form.url_logo, 'Logo') }}
+    {{ form_label(form.partnerLogo, 'Logo') }}
  {{ form_widget(form.file, {'attr': { 'class': 'form-control-file'}}) }}
     </div>
 
@@ -31,13 +31,13 @@
        </div>
 
     <div class="formGroup flexCont">
-    {{ form_label(form.description, 'Description') }}
-{{ form_widget(form.description) }}
+    {{ form_label(form.partnerDescription, 'Description') }}
+{{ form_widget(form.partnerDescription) }}
     </div>
 
     <div class="formGroup flexCont">
-    {{ form_label(form.category, 'Catégorie*') }} 
-    {{ form_widget(form.category) }}
+    {{ form_label(form.partnerCategory, 'Catégorie*') }} 
+    {{ form_widget(form.partnerCategory) }}
     </div>
         
     <button type="submit" class="button">Enregistrer Modifications</button>

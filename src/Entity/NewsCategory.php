@@ -12,11 +12,11 @@ class NewsCategory
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column (name: "news_category_id", type: "integer")]
+    private ?int $newsCategoryId = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $Category = null;
+    private ?string $newsCategoryName = null;
 
     /**
      * @var Collection<int, News>
@@ -29,19 +29,19 @@ class NewsCategory
         $this->news = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getNewsCategoryId(): ?int
     {
-        return $this->id;
+        return $this->newsCategoryId;
     }
 
-    public function getCategory(): ?string
+    public function getNewsCategoryName(): ?string
     {
-        return $this->Category;
+        return $this->newsCategoryName;
     }
 
-    public function setCategory(string $Category): static
+    public function setNewsCategoryName(string $newsCategoryName): static
     {
-        $this->Category = $Category;
+        $this->newsCategoryName = $newsCategoryName;
 
         return $this;
     }

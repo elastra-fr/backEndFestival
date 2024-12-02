@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\MusicStyleRepository;
@@ -12,11 +11,11 @@ class MusicStyle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(name: "music_style_id", type: "integer")]
+    private ?int $musicStyleId = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 100)]
+    private ?string $musicStyleName = null;
 
     /**
      * @var Collection<int, Band>
@@ -29,20 +28,19 @@ class MusicStyle
         $this->bands = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getMusicStyleId(): ?int
     {
-        return $this->id;
+        return $this->musicStyleId;
     }
 
-    public function getName(): ?string
+    public function getMusicStyleName(): ?string
     {
-        return $this->name;
+        return $this->musicStyleName;
     }
 
-    public function setName(string $name): static
+    public function setMusicStyleName(string $musicStyleName): static
     {
-        $this->name = $name;
-
+        $this->musicStyleName = $musicStyleName;
         return $this;
     }
 
@@ -60,19 +58,16 @@ class MusicStyle
             $this->bands->add($band);
             $band->setMusicStyle($this);
         }
-
         return $this;
     }
 
     public function removeBand(Band $band): static
     {
         if ($this->bands->removeElement($band)) {
-            // set the owning side to null (unless already changed)
             if ($band->getMusicStyle() === $this) {
                 $band->setMusicStyle(null);
             }
         }
-
         return $this;
     }
 }

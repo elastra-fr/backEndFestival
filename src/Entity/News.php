@@ -5,65 +5,66 @@ namespace App\Entity;
 use App\Repository\NewsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 #[ORM\Entity(repositoryClass: NewsRepository::class)]
 class News
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column (name: "news_id", type: "integer")]
+    private ?int $newsId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $newsTitle = null;
 
     #[ORM\Column(length: 600)]
-    private ?string $news_content = null;
+    private ?string $newsContent = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $news_date = null;
+    private ?\DateTimeInterface $newsDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'news')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'news_category_id', referencedColumnName: 'news_category_id', nullable: false)]
     private ?NewsCategory $NewsCategory = null;
 
-    public function getId(): ?int
+    public function getNewsId(): ?int
     {
-        return $this->id;
+        return $this->newsId;
     }
 
-    public function getTitle(): ?string
+    public function getNewsTitle(): ?string
     {
-        return $this->title;
+        return $this->newsTitle;
     }
 
-    public function setTitle(string $title): static
+    public function setNewsTitle(string $newsTitle): static
     {
-        $this->title = $title;
+        $this->newsTitle = $newsTitle;
 
         return $this;
     }
 
     public function getNewsContent(): ?string
     {
-        return $this->news_content;
+        return $this->newsContent;
     }
 
-    public function setNewsContent(string $news_content): static
+    public function setNewsContent(string $newsContent): static
     {
-        $this->news_content = $news_content;
+        $this->newsContent = $newsContent;
 
         return $this;
     }
 
     public function getNewsDate(): ?\DateTimeInterface
     {
-        return $this->news_date;
+        return $this->newsDate;
     }
 
-    public function setNewsDate(\DateTimeInterface $news_date): static
+    public function setNewsDate(\DateTimeInterface $newsDate): static
     {
-        $this->news_date = $news_date;
+        $this->newsDate = $newsDate;
 
         return $this;
     }

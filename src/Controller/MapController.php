@@ -33,10 +33,10 @@ class MapController extends AbstractController
 
         $mapPoints = $mapPointRepository->findAll();
 
-        $categories = $mapPointsCategoryRepository->findBy([], ['PointCategory' => 'ASC']);
+        $categories = $mapPointsCategoryRepository->findBy([], ['mapPointCategoryName' => 'ASC']);
 
         if ($categoryFilter) {
-            $mapPoints = $mapPointRepository->findBy(['type' => $categoryFilter], );
+            $mapPoints = $mapPointRepository->findBy(['mapPointCategory' => $categoryFilter], );
         } else {
             $mapPoints = $mapPointRepository->findAll();
         }
@@ -45,12 +45,12 @@ class MapController extends AbstractController
 
         foreach ($mapPoints as $mapPoint) {
             $mapPointsList[] = [
-                'title' => $mapPoint->getTitle(),
-                'description' => $mapPoint->getDescription(),
+                'title' => $mapPoint->getMapPointTitle(),
+                'description' => $mapPoint->getMapPointDescription(),
                 'latitude' => $mapPoint->getLatitude(),
                 'longitude' => $mapPoint->getLongitude(),
-                'type' => $mapPoint->getType()->getPointCategory(),
-                'img' => $mapPoint->getType()->getPointUrl(),
+                'type' => $mapPoint->getMapPointCategory()->getMapPointCategoryName(),
+                'img' => $mapPoint->getMapPointCategory()->getMapPointIconUrl(),
             ];
         }
 
@@ -168,7 +168,7 @@ class MapController extends AbstractController
         if ($id !== null) {
 
 
-            $mapPoints = $mapPointRepository->findBy(['type' => $id]);
+            $mapPoints = $mapPointRepository->findBy(['mapPointCategory' => $id]);
         } else {
 
 
@@ -182,15 +182,15 @@ class MapController extends AbstractController
 
         foreach ($mapPoints as $mapPoint) {
 
-            $ImgFileName = $mapPoint->getType()->getPointUrl();
+            $ImgFileName = $mapPoint->getMapPointCategory()->getMapPointIconUrl();
             $commonPath = 'https://backend.nationsound2024-festival.fr/images/icons/';
 
             $mapPointsList[] = [
-                'title' => $mapPoint->getTitle(),
-                'description' => $mapPoint->getDescription(),
+                'title' => $mapPoint->getMapPointTitle(),
+                'description' => $mapPoint->getMapPointDescription(),
                 'latitude' => $mapPoint->getLatitude(),
                 'longitude' => $mapPoint->getLongitude(),
-                'type' => $mapPoint->getType()->getPointCategory(),
+                'type' => $mapPoint->getMapPointCategory()->getMapPointCategoryName(),
                 'img' => $commonPath . $ImgFileName,
             ];
         }

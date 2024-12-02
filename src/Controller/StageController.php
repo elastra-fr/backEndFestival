@@ -37,7 +37,7 @@ class StageController extends AbstractController
         $user = $this->getUserInfo($security);
 
         // Récupération de la liste des scènes de concert par ordre alphabétique    
-        $stages = $stageRepository->findBy([], ['name' => 'ASC']);
+        $stages = $stageRepository->findBy([], ['stageName' => 'ASC']);
 
         return $this->render('stage/stage-index.html.twig', [
             'controller_name' => 'StageController',

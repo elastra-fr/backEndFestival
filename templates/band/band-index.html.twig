@@ -19,7 +19,7 @@
             <select name="styleId" onchange="this.form.submit()">
                 <option value="">Tous les styles</option>
                 {% for style in styles %}
-                    <option value="{{ style.id }}" {% if style.id == styleFilter %}selected{% endif %}>{{ style.name }}</option>
+                    <option value="{{ style.musicStyleId }}" {% if style.musicStyleId == styleFilter %}selected{% endif %}>{{style.musicStyleName }}</option>
                 {% endfor %}
             </select>
         </form>
@@ -45,12 +45,12 @@
             <li class="listBaseItem">
                 <div class="listItemTitle">
                     <img src="{{ asset('images/icons/guitar-solid.svg') }}" alt="Icon" class="listItemIcon" />
-                    <span>{{ band.name }} </span>
+                    <span>{{ band.bandName }} </span>
                 </div>
                 
                 <div class="listItemAction">
-                    <a href="{{ path('app_admin_band_edit', {'id': band.id}) }}" class="button">Editer</a>
-                     <a href="{{ path('app_admin_band_delete', {'id': band.id}) }}" class="button needs-confirmation">Effacer</a>
+                    <a href="{{ path('app_admin_band_edit', {'id': band.bandId}) }}" class="button">Editer</a>
+                     <a href="{{ path('app_admin_band_delete', {'id': band.bandId}) }}" class="button needs-confirmation">Effacer</a>
                      </div>
         </li>
         {% endfor %}

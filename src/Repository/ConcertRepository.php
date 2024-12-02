@@ -26,7 +26,7 @@ public function findByCriteria(array $criteria): array
     }
 
     if (isset($criteria['Stage'])) {
-        $qb->andWhere('c.Stage = :Stage')
+        $qb->andWhere('c.stage = :Stage')
             ->setParameter('Stage', $criteria['Stage']);
     }
 
@@ -37,7 +37,7 @@ public function findByCriteria(array $criteria): array
             ->setParameter('music_style', $criteria['Artist.music_style']);
     }
 
-    $qb->orderBy('c.ConcertDate', 'ASC');
+    $qb->orderBy('c.concertDate', 'ASC');
 
     return $qb->getQuery()->getResult();
 }

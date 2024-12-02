@@ -10,71 +10,71 @@ class Partner
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column (name: "partner_id", type: "integer")]
+    private ?int $partnerId = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 100)]
+    private ?string $partnerName = null;
 
     #[ORM\ManyToOne(inversedBy: 'partners')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'partner_category_id', referencedColumnName: 'partner_category_id', nullable: false)]
     private ?PartnerCategory $category = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $url_logo = null;
+    private ?string $partnerLogo = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $description = null;
+    private ?string $partnerDescription = null;
 
-    public function getId(): ?int
+    public function getPartnerId(): ?int
     {
-        return $this->id;
+        return $this->partnerId;
     }
 
-    public function getName(): ?string
+    public function getPartnerName(): ?string
     {
-        return $this->name;
+        return $this->partnerName;
     }
 
-    public function setName(string $name): static
+    public function setPartnerName(string $partnerName): static
     {
-        $this->name = $name;
+        $this->partnerName = $partnerName;
 
         return $this;
     }
 
-    public function getCategory(): ?PartnerCategory
+    public function getPartnerCategory(): ?PartnerCategory
     {
         return $this->category;
     }
 
-    public function setCategory(?PartnerCategory $category): static
+    public function setPartnerCategory(?PartnerCategory $category): static
     {
         $this->category = $category;
 
         return $this;
     }
 
-    public function getUrlLogo(): ?string
+    public function getPartnerLogo(): ?string
     {
-        return $this->url_logo;
+        return $this->partnerLogo;
     }
 
-    public function setUrlLogo(?string $url_logo): static
+    public function setPartnerLogo(?string $partnerLogo): static
     {
-        $this->url_logo = $url_logo;
+        $this->partnerLogo = $partnerLogo;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getPartnerDescription(): ?string
     {
-        return $this->description;
+        return $this->partnerDescription;
     }
 
-    public function setDescription(?string $description): static
+    public function setPartnerDescription(?string $partnerDescription): static
     {
-        $this->description = $description;
+        $this->partnerDescription = $partnerDescription;
 
         return $this;
     }

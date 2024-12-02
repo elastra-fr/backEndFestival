@@ -45,7 +45,7 @@ class FaqContentController extends AbstractController
 
         $sectionFilter = $request->query->get('sectionId');
 
-        $sections = $faqCategoryRepository->findBy([], ['category' => 'ASC']);
+        $sections = $faqCategoryRepository->findBy([], ['faqCategoryName' => 'ASC']);
 
 
         if ($sectionFilter) {
@@ -92,7 +92,7 @@ class FaqContentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $faqContent->setContentUpdate(new \DateTime('now'));
+            $faqContent->setFaqContentUpdate(new \DateTime('now'));
 
             $entityManager->persist($faqContent);
             $entityManager->flush();
@@ -157,7 +157,7 @@ class FaqContentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $faqContent->setContentUpdate(new \DateTime('now'));
+            $faqContent->setFaqContentUpdate(new \DateTime('now'));
             $entityManager->persist($faqContent);
             $entityManager->flush();
 
@@ -201,17 +201,17 @@ class FaqContentController extends AbstractController
             $contents = $category->getFaqContents();
 
             $categoryData = [
-                'category' => $category->getCategory(),
+                'category' => $category->getFaqCategoryName(),
                 'contents' => [],
             ];
 
 
             foreach ($contents as $content) {
                 $categoryData['contents'][] = [
-                    'id' => $content->getId(),
-                    'title' => $content->getTitle(),
-                    'content' => $content->getContent(),
-                    'contentUpdate' => $content->getContentUpdate(),
+                    'id' => $content->getFaqContentId(),
+                    'title' => $content->getFaqContentTitle(),
+                    'content' => $content->getFaqContentDetails(),
+                    'contentUpdate' => $content->getFaqContentUpdate(),
                 ];
             }
 

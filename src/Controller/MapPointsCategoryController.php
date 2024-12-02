@@ -37,7 +37,7 @@ class MapPointsCategoryController extends AbstractController
 
         $user = $this->getUserInfo($security);
 
-        $categories = $mapPointsCategoryRepository->findBy([], ['PointCategory' => 'ASC']);
+        $categories = $mapPointsCategoryRepository->findBy([], ['mapPointCategoryName' => 'ASC']);
 
         return $this->render('map_points_category/points-category-index.html.twig', [
             'controller_name' => 'MapPointsCategoryController',
@@ -91,7 +91,7 @@ class MapPointsCategoryController extends AbstractController
                 } catch (FileException $e) {
                 }
 
-                $mapPointsCategory->setPointUrl($newFilename);
+                $mapPointsCategory->setMapPointIconUrl($newFilename);
             }
 
             $entityManager->persist($mapPointsCategory);
@@ -158,7 +158,7 @@ class MapPointsCategoryController extends AbstractController
                     // ... handle exception if something happens during file upload
                 }
 
-                $mapPointsCategory->setPointUrl($newFilename);
+                $mapPointsCategory->setMapPointIconUrl($newFilename);
             }
 
 
@@ -215,14 +215,14 @@ class MapPointsCategoryController extends AbstractController
         MapPointsCategoryRepository $mapPointsCategoryRepository,
         JsonResponseNormalizer $jsonResponseNormalizer
     ): Response {
-        $categories = $mapPointsCategoryRepository->findBy([], ['PointCategory' => 'ASC']);
+        $categories = $mapPointsCategoryRepository->findBy([], ['mapPointCategoryName' => 'ASC']);
 
         $categoriesData = [];
 
         foreach ($categories as $category) {
             $categoriesData[] = [
-                'id' => $category->getId(),
-                'PointCategory' => $category->getPointCategory(),
+                'map_point_category_id' => $category->getMapPointCategoryId(),
+                'map_point_category' => $category->getMapPointCategoryName(),
             ];
         }
 

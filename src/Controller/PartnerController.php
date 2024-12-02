@@ -47,13 +47,13 @@ class PartnerController extends AbstractController
 
         $categoryFilter = $request->query->get('categoryId');
 
-        $categories = $partnerCategoryRepository->findBy([], ['category' => 'ASC']);
+        $categories = $partnerCategoryRepository->findBy([], ['partnerCategoryName' => 'ASC']);
 
         if ($categoryFilter) {
 
-            $partners = $partnerRepository->findBy(['category' => $categoryFilter], ['name' => 'ASC']);
+            $partners = $partnerRepository->findBy(['category' => $categoryFilter], ['partnerName' => 'ASC']);
         } else {
-            $partners = $partnerRepository->findBy([], ['name' => 'ASC']);
+            $partners = $partnerRepository->findBy([], ['partnerName' => 'ASC']);
         }
     
 
@@ -106,7 +106,7 @@ class PartnerController extends AbstractController
 
                 $fileName = $fileUploaderService->upload($file, $targetDirectory);
 
-                $partner->setUrlLogo($fileName);
+                $partner->setPartnerLogo($fileName);
             }
 
 
@@ -164,7 +164,7 @@ class PartnerController extends AbstractController
 
                 $targetDirectory = $this->getParameter('upload_logos_directory');
 
-                $oldImage = $partner->getUrlLogo();
+                $oldImage = $partner->getPartnerLogo();
 
 
                 $deleteImagesService->deleteImages($oldImage, $targetDirectory);
@@ -172,9 +172,9 @@ class PartnerController extends AbstractController
 
                 $fileName = $fileUploaderService->upload($file, $targetDirectory);
 
-                $partner->setUrlLogo($fileName);
+                $partner->setPartnerLogo($fileName);
             } else {
-                $partner->setUrlLogo(null);
+                $partner->setPartnerLogo(null);
             }
 
             $entityManager->persist($partner);
@@ -185,7 +185,7 @@ class PartnerController extends AbstractController
 
 
 
-        $currentLogoName = $partner->getUrlLogo();
+        $currentLogoName = $partner->getPartnerLogo();
 
         if ($currentLogoName != null) {
             $currentLogoPath = './images/logos/' . $currentLogoName;
@@ -223,7 +223,7 @@ class PartnerController extends AbstractController
 
         try {
 
-            $logoName = $partner->getUrlLogo();
+            $logoName = $partner->getPartnerLogo();
             $directory = $this->getParameter('upload_logos_directory');
             $deleteImagesService->deleteImages($logoName, $directory);
             $entityManager->remove($partner);
@@ -264,19 +264,19 @@ class PartnerController extends AbstractController
         foreach ($partners as $partner) {
 
             //verifie si l'url du logo est null ou non
-            if ($partner->getUrlLogo() != null) {
-                $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos/" . $partner->getUrlLogo();
+            if ($partner->getPartnerLogo() != null) {
+                $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos/" . $partner->getPartnerLogo();
             } else {
                 $urlLogo = null;
             }
 
 
             $partnersArray[] = [
-                'id' => $partner->getId(),
-                'name' => $partner->getName(),
+                'id' => $partner->getPartnerId(),
+                'name' => $partner->getPartnerName(),
                 'url_logo' => $urlLogo,
-                'description' => $partner->getDescription(),
-                'category' => $partner->getCategory()->getCategory(),
+                'description' => $partner->getPartnerDescription(),
+                'category' => $partner->getPartnerCategory()->getPartnerCategoryName(),
             ];
         }
 
@@ -319,19 +319,19 @@ class PartnerController extends AbstractController
 
         foreach ($partners as $partner) {
             //verifie si l'url du logo est null ou non
-            if ($partner->getUrlLogo() != null) {
-                $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos/" . $partner->getUrlLogo();
+            if ($partner->getPartnerLogo() != null) {
+                $urlLogo = "https://backend.nationsound2024-festival.fr/images/logos/" . $partner->getPartnerLogo();
             } else {
                 $urlLogo = null;
             }
 
             $partnersArray[] = [
 
-                'id' => $partner->getId(),
-                'name' => $partner->getName(),
+                'id' => $partner->getPartnerId(),
+                'name' => $partner->getPartnerName(),
                 'url_logo' => $urlLogo,
-                'description' => $partner->getDescription(),
-                'category' => $partner->getCategory()->getCategory(),
+                'description' => $partner->getPartnerDescription(),
+                'category' => $partner->getPartnerCategory()->getPartnerCategoryName(),
             ];
         }
 
