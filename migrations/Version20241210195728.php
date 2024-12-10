@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241129204410 extends AbstractMigration
+final class Version20241210195728 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -32,6 +32,7 @@ final class Version20241129204410 extends AbstractMigration
         $this->addSql('CREATE TABLE partner (partner_id INT AUTO_INCREMENT NOT NULL, partner_category_id INT NOT NULL, partner_name VARCHAR(100) NOT NULL, partner_logo VARCHAR(255) DEFAULT NULL, partner_description VARCHAR(255) DEFAULT NULL, INDEX IDX_312B3E165B352BAC (partner_category_id), PRIMARY KEY(partner_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE partner_category (partner_category_id INT AUTO_INCREMENT NOT NULL, partner_category_name VARCHAR(100) NOT NULL, PRIMARY KEY(partner_category_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE stage (stage_id INT AUTO_INCREMENT NOT NULL, stage_name VARCHAR(100) NOT NULL, PRIMARY KEY(stage_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE `user` (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(100) NOT NULL, roles JSON NOT NULL COMMENT \'(DC2Type:json)\', password VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(100) NOT NULL, email_verification_token VARCHAR(100) DEFAULT NULL, user_verified TINYINT(1) NOT NULL, is_blocked TINYINT(1) NOT NULL, login_attempt INT NOT NULL, newsletter_consent TINYINT(1) NOT NULL, event_alert_consent TINYINT(1) NOT NULL, password_reset_in_progress TINYINT(1) NOT NULL, password_reset_token VARCHAR(255) DEFAULT NULL, new_email VARCHAR(255) DEFAULT NULL, email_change_token VARCHAR(100) DEFAULT NULL, UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', available_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', delivered_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE band ADD CONSTRAINT FK_48DFA2EB7DDE3C52 FOREIGN KEY (music_style_id) REFERENCES music_style (music_style_id)');
         $this->addSql('ALTER TABLE concert ADD CONSTRAINT FK_D57C02D249ABEB17 FOREIGN KEY (band_id) REFERENCES band (band_id)');
@@ -40,7 +41,6 @@ final class Version20241129204410 extends AbstractMigration
         $this->addSql('ALTER TABLE map_point ADD CONSTRAINT FK_3753BC4837769206 FOREIGN KEY (map_point_category_id) REFERENCES map_points_category (map_point_category_id)');
         $this->addSql('ALTER TABLE news ADD CONSTRAINT FK_1DD399503B732BAD FOREIGN KEY (news_category_id) REFERENCES news_category (news_category_id)');
         $this->addSql('ALTER TABLE partner ADD CONSTRAINT FK_312B3E165B352BAC FOREIGN KEY (partner_category_id) REFERENCES partner_category (partner_category_id)');
-        $this->addSql('ALTER TABLE user CHANGE email email VARCHAR(100) NOT NULL, CHANGE last_name last_name VARCHAR(100) NOT NULL, CHANGE email_verification_token email_verification_token VARCHAR(100) DEFAULT NULL, CHANGE email_change_token email_change_token VARCHAR(100) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -65,7 +65,7 @@ final class Version20241129204410 extends AbstractMigration
         $this->addSql('DROP TABLE partner');
         $this->addSql('DROP TABLE partner_category');
         $this->addSql('DROP TABLE stage');
+        $this->addSql('DROP TABLE `user`');
         $this->addSql('DROP TABLE messenger_messages');
-        $this->addSql('ALTER TABLE `user` CHANGE email email VARCHAR(180) NOT NULL, CHANGE last_name last_name VARCHAR(255) NOT NULL, CHANGE email_verification_token email_verification_token VARCHAR(255) DEFAULT NULL, CHANGE email_change_token email_change_token VARCHAR(255) DEFAULT NULL');
     }
 }
