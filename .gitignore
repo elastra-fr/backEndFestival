@@ -43,3 +43,8 @@ yarn-error.log
 
 ###Ignorer le dossier migrations###
 /src/Migrations/
+
+###Ignorer les certificats SSL###
+
+server.crt
+server.key
