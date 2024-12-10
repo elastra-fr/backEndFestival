@@ -35,6 +35,10 @@ services:
         arguments:
             $festivalStartDate: '%festival_start_date%'
             $festivalEndDate: '%festival_end_date%'
+
+    App\Security\JwtSuccessHandler:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccess }
     
 
 

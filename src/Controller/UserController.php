@@ -12,6 +12,7 @@ use App\Trait\UserInfoTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -568,4 +569,28 @@ class UserController extends AbstractController
         $profilResponse = $jsonResponseNormalizer->respondSuccess(Response::HTTP_OK, ['message' => 'Profil supprimé avec succès !']);
         return $profilResponse;
     }
+
+
+
+#[Route('/api/user/check-auth', name: 'user_check_auth', methods: ['GET'])]
+function checkAuth(Request $request, Security $security): Response
+{
+    // Vérifier si le cookie 'access_token' est présent
+    $cookie = $request->cookies->get('access_token');
+    print_r($cookie);
+    
+    if (!$cookie) {
+        return new JsonResponse(['message' => 'Cookie non trouvé !'], JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    // Vérifier si l'utilisateur est authentifié
+    $user = $security->getUser();
+    if (!$user) {
+        return new JsonResponse(['message' => 'Vous n\'êtes pas authentifié !'], JsonResponse::HTTP_UNAUTHORIZED);
+    }
+
+    return new JsonResponse(['message' => 'Vous êtes authentifié !'], JsonResponse::HTTP_OK);
+}
+
+
 }
