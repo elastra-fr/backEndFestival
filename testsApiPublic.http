@@ -14,6 +14,9 @@ GET https://backend.nationsound2024-festival.fr/api/public/concert?scene=2 HTTP/
 
 GET https://backend.nationsound2024-festival.fr/api/public/concert/filters HTTP/1.1
 
+//Obtenir tous les concerts en cours actuellement
+
+GET https://backend.nationsound2024-festival.fr/api/public/concert/now HTTP/1.1
 
 
 ///////////////PARTENAIRES///////////////

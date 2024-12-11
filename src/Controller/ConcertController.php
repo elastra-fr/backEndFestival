@@ -413,7 +413,7 @@ class ConcertController extends AbstractController
     {   
         $hourNow = date('H');
         $now = new DateTime('2024-06-30 ' . $hourNow . ':00:00');  
-        $concerts = $concertRepository->findBy(['ConcertDate' => $now]);
+        $concerts = $concertRepository->findBy(['concertDate' => $now]);
 
         $concertsList = [];
 
