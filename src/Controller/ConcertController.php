@@ -266,7 +266,7 @@ class ConcertController extends AbstractController
         }
 
         if ($filterGenre !== 'Tout') {
-            $criteria['Artist.music_style'] = $filterGenre;
+            $criteria['Band.music_style'] = $filterGenre;
         }
 
      

@@ -20,6 +20,8 @@ public function findByCriteria(array $criteria): array
 {
     $qb = $this->createQueryBuilder('c');
 
+    var_dump($criteria);
+
     if (isset($criteria['ConcertDate']) && $criteria['ConcertDate'] instanceof \DateTime) {
         $qb->andWhere('c.ConcertDate = :ConcertDate')
             ->setParameter('ConcertDate', $criteria['ConcertDate']);
@@ -30,12 +32,12 @@ public function findByCriteria(array $criteria): array
             ->setParameter('Stage', $criteria['Stage']);
     }
 
-    if (isset($criteria['Artist.music_style'])) {
-        $qb->join('c.Artist', 'a')
-            ->join('a.music_style', 'm')
-            ->andWhere('m.id = :music_style')
-            ->setParameter('music_style', $criteria['Band.music_style']);
-    }
+if (isset($criteria['Band.music_style'])) {
+    $qb->join('c.band', 'b') // Jointure avec Band
+        ->join('b.musicStyle', 'm') // Jointure avec MusicStyle
+        ->andWhere('m.musicStyleId = :music_style')
+        ->setParameter('music_style', $criteria['Band.music_style']);
+}
 
     $qb->orderBy('c.concertDate', 'ASC');
 
