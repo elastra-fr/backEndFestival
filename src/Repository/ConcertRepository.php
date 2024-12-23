@@ -34,7 +34,7 @@ public function findByCriteria(array $criteria): array
         $qb->join('c.Artist', 'a')
             ->join('a.music_style', 'm')
             ->andWhere('m.id = :music_style')
-            ->setParameter('music_style', $criteria['Artist.music_style']);
+            ->setParameter('music_style', $criteria['Band.music_style']);
     }
 
     $qb->orderBy('c.concertDate', 'ASC');
