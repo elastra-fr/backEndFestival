@@ -13,17 +13,18 @@ class JwtSuccessHandler
 
         $response = $event->getResponse();
 
-$cookie = new Cookie(
-    'access_token',  // Nom du cookie
-    $token,          // Valeur (le token JWT)
-    time() + 3600,   // Expiration (1 heure)
-    '/',             // Path (accessible sur tout le site)
-    null,            // Domaine
-    true,            // Secure (en production HTTPS)
-    true,            // HttpOnly (accessible uniquement par HTTP, pas JavaScript)
-    'None'           // SameSite (doit être 'None' pour les cookies cross-origin)
-);
+        // Crée le cookie avec SameSite='None' et les autres paramètres
+        $cookie = Cookie::create(
+            'access_token',  // Nom du cookie
+            $token,          // Valeur (le token JWT)
+        )
+        ->withExpires(time() + 3600)    // Expiration (1 heure)
+        ->withPath('/')                // Path (accessible sur tout le site)
+        ->withSecure(true)             // Secure (en production HTTPS)
+        ->withHttpOnly(true)           // HttpOnly (accessible uniquement par HTTP, pas JavaScript)
+        ->withSameSite('None');        // SameSite pour les cookies cross-origin
 
+        // Ajoute le cookie dans les en-têtes de la réponse
         $response->headers->setCookie($cookie);
 
         // Facultatif : Supprimer le token de la réponse JSON si non nécessaire
