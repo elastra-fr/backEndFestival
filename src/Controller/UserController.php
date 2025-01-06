@@ -577,7 +577,7 @@ function checkAuth(Request $request, Security $security): Response
 {
     // Vérifier si le cookie 'access_token' est présent
     $cookie = $request->cookies->get('access_token');
-    print_r($cookie);
+    //print_r($cookie);
     
     if (!$cookie) {
         return new JsonResponse(['message' => 'Cookie non trouvé !'], JsonResponse::HTTP_UNAUTHORIZED);
