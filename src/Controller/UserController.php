@@ -573,7 +573,7 @@ class UserController extends AbstractController
 
 
 #[Route('/api/user/check-auth', name: 'user_check_auth', methods: ['GET'])]
-function checkAuth(Request $request, Security $security): Response
+public function checkAuth(Request $request, Security $security): Response
 {
     // Vérifier si le cookie 'access_token' est présent
     $cookie = $request->cookies->get('access_token');
@@ -591,6 +591,22 @@ function checkAuth(Request $request, Security $security): Response
 
     return new JsonResponse(['message' => 'Vous êtes authentifié !'], JsonResponse::HTTP_OK);
 }
+
+//Route de logout pour supprimer le cookie 'access_token'
+
+#[Route('/api/user/logout', name: 'user_logout', methods: ['GET'])]
+
+public function logout(): Response
+{
+    $response = new JsonResponse(['message' => 'Déconnexion réussie !'], JsonResponse::HTTP_OK);
+    $response->headers->clearCookie('access_token');
+    return $response;
+
+}
+
+
+
+
 
 
 }
