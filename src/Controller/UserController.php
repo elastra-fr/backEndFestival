@@ -595,14 +595,21 @@ public function checkAuth(Request $request, Security $security): Response
 //Route de logout pour supprimer le cookie 'access_token'
 
 #[Route('/api/user/logout', name: 'user_logout', methods: ['GET'])]
-
 public function logout(): Response
 {
     $response = new JsonResponse(['message' => 'Déconnexion réussie !'], JsonResponse::HTTP_OK);
-    $response->headers->clearCookie('access_token', path: '/', domain: 'backend.nationsound2024-festival.com', secure: true, httponly: true, samesite: 'None'
+    
+    // Créer le cookie avec les mêmes paramètres que dans JwtSuccessHandler
+    $response->headers->clearCookie(
+        'access_token',    // même nom
+        '/',              // même path
+        null,             // même domain
+        true,            // même secure
+        true,            // même httpOnly
+        'None'           // même sameSite
     );
+    
     return $response;
-
 }
 
 
