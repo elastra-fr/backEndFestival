@@ -599,7 +599,8 @@ public function checkAuth(Request $request, Security $security): Response
 public function logout(): Response
 {
     $response = new JsonResponse(['message' => 'Déconnexion réussie !'], JsonResponse::HTTP_OK);
-    $response->headers->clearCookie('access_token');
+    $response->headers->clearCookie('access_token', path: '/', domain: 'backend.nationsound2024-festival.com', secure: true, httponly: true, samesite: 'None'
+    );
     return $response;
 
 }
