@@ -422,8 +422,8 @@ class ConcertController extends AbstractController
                 'id' => $concert->getConcertId(),
                 'date' => $concert->getConcertDate()->format('Y-m-d H:i:s'),
                 'location' => $concert->getStage()->getStageName(),
-                'musicStyle' => $concert->getArtist()->getMusicStyle()->getName(),
-                'artist' => $concert->getArtist()->getName(),
+                'musicStyle' => $concert->getBand()->getMusicStyle()->getMusicStyleName(),
+                'artist' => $concert->getBand()->getBandName(),
             ];
         }
 
