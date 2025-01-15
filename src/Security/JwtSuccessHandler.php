@@ -4,8 +4,17 @@ namespace App\Security;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\HttpFoundation\Cookie;
 
+
 class JwtSuccessHandler
 {
+
+  private statelessCsrfTokenManager $csrfTokenManager; 
+
+    public function __construct(StatelessCsrfTokenManager $csrfTokenManager)
+    {
+        $this->csrfTokenManager = $csrfTokenManager;
+    }
+
     public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
     {
         $data = $event->getData();
@@ -29,6 +38,17 @@ class JwtSuccessHandler
 
         // Facultatif : Supprimer le token de la réponse JSON si non nécessaire
         unset($data['token']);
+
+        
+
+        $csrfToken = $this->csrfTokenManager->getToken('authenticate')->getValue();
+        
+        $data['csrf_token'] = $csrfToken;
+
+
+
         $event->setData($data);
+
+
     }
 }
