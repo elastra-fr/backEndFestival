@@ -22,7 +22,7 @@ nelmio_cors:
         origin_regex: true
         allow_origin: ['https://localhost:5173']  # Précisez exactement l'URL de dev
         allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-        allow_headers: ['Content-Type', 'Authorization', 'X-Requested-With', "set-cookie"]
+        allow_headers: ['Content-Type', 'Authorization', 'X-Requested-With', "set-cookie", "X-csrf-token", "X-Form-ID"]
         #expose_headers: ['Set-Cookie']
         max_age: 3600
         allow_credentials: true
