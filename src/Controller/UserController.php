@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterEditorType;
 use App\Repository\UserRepository;
+use App\Security\StatelessCsrfTokenManager;
 use App\Service\JsonResponseNormalizer;
 use App\Service\MailerService;
 use App\Service\PasswordValidatorService;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 
 
@@ -433,9 +435,29 @@ class UserController extends AbstractController
         JsonResponseNormalizer $jsonResponseNormalizer,
         UserRepository $userRepository,
         MailerService $mailerService,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        StatelessCsrfTokenManager $csrfTokenManager
     ): Response {
+        
+        //Récupération et vérification de l'id du formulaire
 
+        $formId = $request->headers->get('X-FORM-ID');
+
+        if ($formId !== 'user-profil-form') {
+            return $jsonResponseNormalizer->respondError('invalid_form_id', 'ID de formulaire invalide !', 400);
+        }
+
+        //Récupération du token CSRF dans l'en-tête de la requête 
+
+        $csrfToken = $request->headers->get('X-CSRF-TOKEN');
+
+        $token = new CsrfToken('authenticate', $csrfToken);
+
+        //Vérification du token CSRF
+
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            return $jsonResponseNormalizer->respondError('invalid_csrf_token', 'Token CSRF invalide !', 403);
+        }
 
         $data = json_decode($request->getContent(), true);
 
@@ -446,6 +468,8 @@ class UserController extends AbstractController
 
             return $jsonResponseNormalizer->respondError('not_authenticated', 'Vous n\'êtes pas authentifié !', 401);
         }
+
+    
 
         //Analyser les données reçues et vérifier que seuls les champs autorisés sont modifiés sinon retourner une erreur
 
@@ -540,8 +564,33 @@ class UserController extends AbstractController
     function deleteProfil(
         Security $security,
         EntityManagerInterface $entityManager,
-        JsonResponseNormalizer $jsonResponseNormalizer
+        JsonResponseNormalizer $jsonResponseNormalizer,
+        statelessCsrfTokenManager $csrfTokenManager,
+        Request $request
     ): Response {
+
+                //Récupération et vérification de l'id du formulaire
+
+        $formId = $request->headers->get('X-FORM-ID');
+
+        if ($formId !== 'user-profil-form') {
+            return $jsonResponseNormalizer->respondError('invalid_form_id', 'ID de formulaire invalide !', 400);
+        }
+
+
+        //Récupération du token CSRF dans l'en-tête de la requête
+
+        $csrfToken = $request->headers->get('X-CSRF-TOKEN');
+
+        $token = new CsrfToken('authenticate', $csrfToken);
+
+        //Vérification du token CSRF
+
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            return $jsonResponseNormalizer->respondError('invalid_csrf_token', 'Token CSRF invalide !', 403);
+        }
+
+
 
         $user = $security->getUser();
 
@@ -573,7 +622,7 @@ class UserController extends AbstractController
 
 
 #[Route('/api/user/check-auth', name: 'user_check_auth', methods: ['GET'])]
-public function checkAuth(Request $request, Security $security): Response
+public function checkAuth(Request $request, Security $security, StatelessCsrfTokenManager $csrfTokenManager): Response
 {
     // Vérifier si le cookie 'access_token' est présent
     $cookie = $request->cookies->get('access_token');
@@ -589,8 +638,18 @@ public function checkAuth(Request $request, Security $security): Response
         return new JsonResponse(['message' => 'Vous n\'êtes pas authentifié !'], JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    return new JsonResponse(['message' => 'Vous êtes authentifié !'], JsonResponse::HTTP_OK);
+    //Générer un token CSRF pour les requêtes POST, PUT et DELETE
+
+$csrfToken = $csrfTokenManager->getToken('authenticate');
+
+    return new JsonResponse(['message' => 'Vous êtes authentifié !', 
+    'csrf_token' => $csrfToken->getValue()
+    ], JsonResponse::HTTP_OK);
 }
+
+
+
+
 
 //Route de logout pour supprimer le cookie 'access_token'
 
