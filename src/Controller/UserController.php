@@ -444,7 +444,7 @@ class UserController extends AbstractController
         $formId = $request->headers->get('X-FORM-ID');
 
         if ($formId !== 'user-profil-form') {
-            return $jsonResponseNormalizer->respondError('invalid_form_id', 'ID de formulaire invalide !', 400);
+            return $jsonResponseNormalizer->respondError('INVALID_REQUEST', 'Invalid request', 400);
         }
 
         //Récupération du token CSRF dans l'en-tête de la requête 
@@ -456,7 +456,7 @@ class UserController extends AbstractController
         //Vérification du token CSRF
 
         if (!$csrfTokenManager->isTokenValid($token)) {
-            return $jsonResponseNormalizer->respondError('invalid_csrf_token', 'Token CSRF invalide !', 403);
+            return $jsonResponseNormalizer->respondError('ACCESS_DENIED', 'Access denied', 403);
         }
 
         $data = json_decode($request->getContent(), true);
@@ -574,7 +574,7 @@ class UserController extends AbstractController
         $formId = $request->headers->get('X-FORM-ID');
 
         if ($formId !== 'user-profil-form') {
-            return $jsonResponseNormalizer->respondError('invalid_form_id', 'ID de formulaire invalide !', 400);
+            return $jsonResponseNormalizer->respondError('INVALID_REQUEST', 'Invalid request', 400);
         }
 
 
@@ -587,7 +587,7 @@ class UserController extends AbstractController
         //Vérification du token CSRF
 
         if (!$csrfTokenManager->isTokenValid($token)) {
-            return $jsonResponseNormalizer->respondError('invalid_csrf_token', 'Token CSRF invalide !', 403);
+            return $jsonResponseNormalizer->respondError('ACCESS_DENIED', 'Access denied', 403);
         }
 
 
