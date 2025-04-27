@@ -48,3 +48,8 @@ yarn-error.log
 
 server.crt
 server.key
+
+SecureTestApiUser.http
+testApiUserLocal.http
+testsApiUser.http
+testApiPublicLocal.http

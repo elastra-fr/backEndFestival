@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 class JwtSuccessHandler
 {
 
-  private statelessCsrfTokenManager $csrfTokenManager; 
+    private statelessCsrfTokenManager $csrfTokenManager;
 
     public function __construct(StatelessCsrfTokenManager $csrfTokenManager)
     {
@@ -27,11 +27,11 @@ class JwtSuccessHandler
             'access_token',  // Nom du cookie
             $token,          // Valeur (le token JWT)
         )
-        ->withExpires(time() + 3600)    // Expiration (1 heure)
-        ->withPath('/')                // Path (accessible sur tout le site)
-        ->withSecure(true)             // Secure (en production HTTPS)
-        ->withHttpOnly(true)           // HttpOnly (accessible uniquement par HTTP, pas JavaScript)
-        ->withSameSite('None');        // SameSite pour les cookies cross-origin
+            ->withExpires(time() + 3600)    // Expiration (1 heure)
+            ->withPath('/')                // Path (accessible sur tout le site)
+            ->withSecure(true)             // Secure (en production HTTPS)
+            ->withHttpOnly(true)           // HttpOnly (accessible uniquement par HTTP, pas JavaScript)
+            ->withSameSite('None');        // SameSite pour les cookies cross-origin
 
         // Ajoute le cookie dans les en-têtes de la réponse
         $response->headers->setCookie($cookie);
@@ -39,10 +39,10 @@ class JwtSuccessHandler
         // Facultatif : Supprimer le token de la réponse JSON si non nécessaire
         unset($data['token']);
 
-        
+
 
         $csrfToken = $this->csrfTokenManager->getToken('authenticate')->getValue();
-        
+
         $data['csrf_token'] = $csrfToken;
 
 

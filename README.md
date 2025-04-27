@@ -52,7 +52,7 @@ L'application prend en compte trois rôles :
 
 Routes publics pour lire via le front end les données concerts, artistes, actualités, faq et partenaire, coordonnées points cartes .
 
-Routes sécurisées par token jwt pour profils utilisateur via le front end register, login, update, delete.
+Routes sécurisées par token jwt  (et renfort CSRF pour les opérations sensibles) pour profils utilisateur via le front end register, login, update, delete.
 
 Routes backoffice symfony pour création, modication, supression des concerts, artistes, actualités, faq et partenaire, coordonnées points cartes via formulaires- Identification par sessions. 
 
@@ -552,16 +552,21 @@ Réponse :
 
 #### Routes API Utilisateur
 
-Les routes utilisateur vont être sécurisées via JWT (JSON Web Token). Elles vont permettre à l'utilisateur du front end de s'enregistrer, s'identifier et accéder à des services réservés aux utilisateurs identifiés. 
+Les routes utilisateur sont sécurisées via un système d'authentification à deux niveaux :
+1. Un cookie sécurisé contenant le JWT (JSON Web Token)
+2. Une protection CSRF pour les opérations sensibles (comme la modification du profil ou la suppression de compte).
 
-Les routes api utilisateurs derrière /api/user ne peuvent être utilisées que par un utilisateur porteur d'un token JWT à l'exception des routes suivants qui sont nécessairement publiques :
-- /api/user/register qui permet l'enregistrement de tout nouvel utilisateur (role USER)
-- /api/user/login qui permet l'authentification de l'utilisateur et l'obtention du token JWT
+Les routes derrière `/api/user` sont protégées et nécessitent :
+- Un cookie sécurisé `access_token` valide (httpOnly, secure, SameSite=None)
+- Un token CSRF pour les opérations sensibles (PUT, DELETE)
+
+À l'exception des routes publiques :
+- `/api/user/register` : permet l'enregistrement de nouveaux utilisateurs (rôle USER)
+- `/api/user/login_check` : permet l'authentification et la génération du cookie sécurisé
 
 Le système d'authentification JWT mis en place avec lexik/jwt-authentication-bundle et extension open SSL pour création des clés publique et privée.
 Durée de validité du token 3600 secondes (1h). Cette durée peut être modifiée dans \config\packages\lexik_jwt_authentication.yaml.
 
-Vous pouvez utiliser le fichier testsApiUser.http pour tester les différentes routes (effacer les identifiants après test SVP).
 
 ##### Vérification email utilisateur
 Lors de l'enregistrement un message d'inscription est envoyé, grace à MailerService, à l'utilisateur pour confirmer son adresse mail et un token d'identification mail est généré et enregistré dans la base de données. Le mail contient un lien de vérification.
@@ -684,11 +689,15 @@ Body :
 	"password" : password"
 }
 
-En cas de succès un token est JWT est retourné :
+En cas de succès le serveur va renvoyer : 
+- Un cookier sécurisé httpOnly contenant le token JWT
+- Un token CSRF pour les opérations sensibles (PUT, DELETE)
 
 {
-	"token": "Token"
+    "csrf_token": "71c5ad80f6d961e58ddb025aa667f53a47b2b09cc25fe6b55c2fd56edb5af8ad"
 }
+
+
 
 En cas d'erreurs de mot de passe ou d'email :
 
@@ -701,7 +710,10 @@ En cas d'erreurs de mot de passe ou d'email :
 
 https://backend.nationsound2024-festival.fr/api/user/profil
 Méthode Get
-Header "Bearer Texte_du_token_jwt"
+Header avec cookie sécurisé  
+X-CSRF-TOKEN: {token_csrf}
+X-FORM-ID: {form_id}  
+
 
 {
 	"status": "success",
@@ -729,7 +741,9 @@ Ce chemin permet de modifier fistName, lastName et email ainsi que les préfére
 
 https://backend.nationsound2024-festival.fr/api/user/profil/edit
 Méthode PUT
-Header "Bearer Texte_du_token_jwt"
+Header avec cookie sécurisé  
+X-CSRF-TOKEN: {token_csrf}
+X-FORM-ID: {form_id}  
 
 Modification adresse email 
 
@@ -760,7 +774,9 @@ Cette procédure ne peut être utilisée que pour les rôles USER
 
 https://backend.nationsound2024-festival.fr/api/user/profil/delete
 Méthode DELETE
-Header "Bearer Texte_du_token_jwt"
+Header avec cookie sécurisé  
+X-CSRF-TOKEN: {token_csrf}
+X-FORM-ID: {form_id}  
 
 {
 	"status": "success",
